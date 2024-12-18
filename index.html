@@ -441,12 +441,18 @@
           ]
         }
       ],
-      "projects": [
-        {
-          "name": "Betagioco.it",
-          "description": "Sito di scommesse sviluppato e manutenuto in symfony, con flussi di lavoro basati su Git flow. è il progetto migliore al quale ho contribuito attivamente per un anno, mi ha fornito un’importante esperienza nello sviluppo web di siti complessi e dinamici, oltre a una grande conoscenza dei flussi di lavoro in team."
-        }
-      ],
+      "projects": [ 
+      {
+        "name": "Betagioco.it",
+        "description": "Sito di scommesse sviluppato e manutenuto in Symfony, con flussi di lavoro basati su Git Flow. È il progetto migliore al quale ho contribuito attivamente per un anno, fornendomi un’importante esperienza nello sviluppo web di siti complessi e dinamici, oltre a una grande conoscenza dei flussi di lavoro in team.",
+        "url":"https://betagioco.it"
+      },
+      {
+        "name": "SocialGaming.com",
+        "description": "Piattaforma social gaming con un sistema di amicizie e messaggistica istantanea (basato su WebSocket), interazioni dirette tramite commenti e post sui videogiochi, personalizzazione completa del sito con temi multipli, possibilità di modificare password e avatar, sistema di guard per limitare l’accesso a determinate sezioni, oltre all’integrazione con le API di Free-to-Game per offrire un’ampia lista di titoli free-to-play da giocare e commentare.",
+        "url":"https://socialgamingfrontend.onrender.com/"
+      }
+    ],
       "skills": {
         "technical": [
           "JavaScript/TypeScript",
@@ -531,8 +537,8 @@
       const block = document.createElement('div');
       block.className = 'project-block';
       block.innerHTML = `
-        <h3>${proj.name}</h3>
-        <p>${proj.description}</p>
+        <h3 ><a href="${proj.url}">${proj.name}</a></h3>
+        <p >${proj.description}</p>
       `;
       projectsContainer.appendChild(block);
     });
