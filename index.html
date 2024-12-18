@@ -325,8 +325,6 @@
     </div>
   </div>
 
-
-
   <section class="content-section">
     <header>
       <button class="theme-toggle" id="themeToggle">Light/Dark</button>
@@ -379,7 +377,6 @@
   <footer>
     © 2024 - Curriculum di Emiliano Pizzuti
   </footer>
-
   <script>
      const data = {
       "name": "Emiliano Pizzuti",
@@ -389,7 +386,7 @@
         "phone_number": "+39 366 973 90 30",
         "Github":"https://github.com/emilianoPiz"
       },
-      "professional_profile": "Sviluppatore con solida esperienza nell’ambito web, con un orientamento verso lo sviluppo back-end e un forte interesse per l’innovazione tecnologica. Attualmente studente di Informatica presso La Sapienza di Roma, possiedo una visione completa del ciclo di vita del software, dalla progettazione iniziale fino alla manutenzione e all’ottimizzazione continua. Desidero contribuire a progetti nati da zero, lavorando all’interno di un team coeso e strutturato, per migliorare costantemente le mie competenze e generare valore tangibile per l’azienda.",
+      "professional_profile": "Sviluppatore con solida esperienza nell’ambito web, con un orientamento verso lo sviluppo front-end e un forte interesse per l’innovazione tecnologica. Attualmente studente di Informatica presso La Sapienza di Roma, possiedo una visione completa del ciclo di vita del software, dalla progettazione iniziale fino alla manutenzione e all’ottimizzazione continua. Desidero contribuire a progetti nati da zero, lavorando all’interno di un team coeso e strutturato, per migliorare costantemente le mie competenze e generare valore tangibile per l’azienda.",
       "education": {
         "diploma": {
           "istituto": "Istituto tecnico professionale G. Falcone, Colleferro (RM)",
@@ -402,13 +399,14 @@
         {
           "name": "Angular Developer Certificate",
           "provider": "Udemy",
-          "course_title": "Maximilian Schwarzmueller 'The Complete Angular Course'"
+          "course_title": "Maximilian Schwarzmueller 'The Complete Angular Course'",
+          "skills":"ho imparato come utilizzare angular nelle versioni 8-14 e 14+ con un corso da più di 560 ore, imparando con successo la libreria rxjs, la comunicazione tra componenti, l'integrazione di librerie esterne in ambiente angular, l'uso della CLI di angular, l'uso dello state manager NgRx, il lifecycle dei componenti, lo sviluppo di applicazioni SSR e SPA, l'uso di Less e Sass per rendere il sito themizabile, il testing con cypress, il deploy in produzione di un'applicazione angular "
         }
       ],
       "experience": [
         {
           "title": "Frontend Developer",
-          "company": "Jeeweb Solutions (ora Sport-Tech srl)",
+          "company": "Jeyweb Solutions (ora Sport-Tech srl)",
           "start_date": "01/2024",
           "responsibilities": [
             "Progettazione e manutenzione di funzionalità client-side utilizzando Symfony e Twig",
@@ -446,7 +444,7 @@
       "projects": [
         {
           "name": "Betagioco.it",
-          "description": "Prototipo di sito di scommesse sviluppato parzialmente in Angular, con flussi di lavoro basati su Git flow. Sebbene il progetto non sia stato completato, ha fornito un’importante esperienza nell’adozione di TypeScript, Angular e metodologie collaborative."
+          "description": "Sito di scommesse sviluppato e manutenuto in symfony, con flussi di lavoro basati su Git flow. è il progetto migliore al quale ho contribuito attivamente per un anno, mi ha fornito un’importante esperienza nello sviluppo web di siti complessi e dinamici, oltre a una grande conoscenza dei flussi di lavoro in team."
         }
       ],
       "skills": {
@@ -483,15 +481,12 @@
         "Capacità di iniziativa",
         "Esperienza decennale in help desk e customer care, utile per comprendere a 360° le esigenze del cliente e le dinamiche interne ai team di sviluppo"
       ]
-    };
-
-    // Populate header info
+    };// Populate header info
     document.getElementById('name').textContent = data.name;
     document.getElementById('title').textContent = data.title;
     document.getElementById('phone').textContent = data.contacts.phone_number;
     document.getElementById('Github').setAttribute("href", data.contacts.Github);
     document.getElementById('linkedin').setAttribute("href", data.contacts.linkedin);
-    // Profile
     document.getElementById('profile').textContent = data.professional_profile;
 
     // Education
@@ -509,6 +504,7 @@
         <h3>${cert.name}</h3>
         <p><strong>Provider:</strong> ${cert.provider}</p>
         <p><strong>Corso:</strong> ${cert.course_title}</p>
+        <p><strong>Cosa ho imparato:</strong> ${cert.skills}</p>
       `;
       certificationsContainer.appendChild(block);
     });
@@ -602,11 +598,24 @@
     });
     blocks.forEach(block => observer.observe(block));
 
-    // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
+
+    // Theme persistence and initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark-mode') {
+        document.body.classList.add('dark-mode');
+      }
+      // Set the initial button text based on current theme
+      themeToggle.textContent = document.body.classList.contains('dark-mode') ? 'Dark → Light' : 'Light → Dark';
+    });
+
+    // Single theme toggle event listener
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
-      themeToggle.textContent = document.body.classList.contains('dark-mode') ? 'Dark → Light' : 'Light → Dark';
+      const isDark = document.body.classList.contains('dark-mode');
+      themeToggle.textContent = isDark ? 'Dark → Light' : 'Light → Dark';
+      localStorage.setItem('theme', isDark ? 'dark-mode' : 'light-mode');
     });
 
     // Parallax scroll effect
@@ -616,13 +625,12 @@
 
     window.addEventListener('scroll', () => {
       let scrollValue = window.scrollY;
-      // Move each hill at different speeds
       hill1.style.transform = `translate(-50%, ${scrollValue * 0.1}px)`;
       hill2.style.transform = `translate(-50%, ${scrollValue * 0.3}px)`;
       hill3.style.transform = `translate(-50%, ${scrollValue * 0.5}px)`;
     });
 
-    // Animazione GSAP iniziale su header
+    // GSAP initial animations
     document.addEventListener('DOMContentLoaded', () => {
       gsap.from(".hero-content h1", {
         duration: 1, 
@@ -648,20 +656,34 @@
       });
     });
 
-    // Animazione gradiente dinamico al movimento del mouse
+    // Smooth, Delicate Color Transition on Mousemove
     document.addEventListener('mousemove', (e) => {
       const xPercent = (e.clientX / window.innerWidth) * 100;
       const yPercent = (e.clientY / window.innerHeight) * 100;
       document.documentElement.style.setProperty('--gradient-x', xPercent + '%');
       document.documentElement.style.setProperty('--gradient-y', yPercent + '%');
 
-      // Aggiorniamo anche il colore delle colline in base alla posizione del mouse
-      // Possiamo usare GSAP per transizioni morbide:
-      const hueShift = xPercent * 3.6; // da 0 a 360
-      gsap.to("#hill1-path", {fill: `hsl(${hueShift},70%,80%)`, duration: 0.5});
-      gsap.to("#hill2-path", {fill: `hsl(${(hueShift+40)%360},70%,70%)`, duration: 0.5});
-      gsap.to("#hill3-path", {fill: `hsl(${(hueShift+80)%360},70%,60%)`, duration: 0.5});
+      const hueShift = xPercent * 0.5;
+
+      gsap.to("#hill1-path", {
+        fill: `hsl(${hueShift},70%,90%)`, 
+        duration: 2, 
+        ease: "power1.inOut"
+      });
+
+      gsap.to("#hill2-path", {
+        fill: `hsl(${(hueShift+40)%360},70%,90%)`,
+        duration: 2, 
+        ease: "power1.inOut"
+      });
+
+      gsap.to("#hill3-path", {
+        fill: `hsl(${(hueShift+80)%360},70%,90%)`,
+        duration: 2, 
+        ease: "power1.inOut"
+      });
     });
+
   </script>
 </body>
 </html>
