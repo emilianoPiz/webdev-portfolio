@@ -8,377 +8,158 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
   <title>CV - Emiliano Pizzuti</title>
   <style>
-   :root {
-      /* Light mode colors */
+    :root {
       --primary: #2a7ae2;
       --text-dark: #333;
       --text-light: #fff;
       --card-background-light: rgba(255,255,255,0.8);
       --footer-bg-light: #2a7ae2;
-
-      /* Dark mode colors */
-      --text-dark-mode: #eee;
-      --card-background-dark: rgba(0,0,0,0.6);
-      --footer-bg-dark: #000;
-
       --transition-speed: 0.4s;
-
-      /* Coordinate del gradiente */
-      --gradient-x: 50%;
-      --gradient-y: 50%;
-
-      /* Colori base per le colline in light mode */
-      --bg-hill1: #cce0ff;
-      --bg-hill2: #99c2ff;
-      --bg-hill3: #2a7ae2;
-
-      /* Gradiente di sfondo per light e dark mode */
-      --gradient-light-start: rgba(255,255,255,0.1);
-      --gradient-light-end: rgba(0,0,0,0);
-      --gradient-dark-start: rgba(0,0,0,0.3);
-      --gradient-dark-end: rgba(0,0,0,0);
-
-      --header-text: #fff;
     }
 
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
-      transition: color var(--transition-speed);
       color: var(--text-dark);
-      position: relative;
     }
 
-    /* Light mode */
-    body:not(.dark-mode) {
-      --bg-hill1: #cce0ff;
-      --bg-hill2: #99c2ff;
-      --bg-hill3: #2a7ae2;
-      --text-color: var(--text-dark);
-      --card-bg: var(--card-background-light);
-      --footer-bg: var(--footer-bg-light);
-      --header-text: #fff;
-    }
-
-    /* Dark mode */
-    body.dark-mode {
-      --bg-hill1: #333;
-      --bg-hill2: #222;
-      --bg-hill3: #111;
-      --text-color: var(--text-dark-mode);
-      --card-bg: var(--card-background-dark);
-      --footer-bg: var(--footer-bg-dark);
-      --header-text: #fff;
-    }
-
-    body {
-      color: var(--text-color);
-    }
-
-    /* Gradiente dinamico sullo sfondo che cambia con la modalità */
-    body::after {
-      content: '';
+    header {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: -2;
-      background: radial-gradient(circle at var(--gradient-x) var(--gradient-y), var(--gradient-light-start), var(--gradient-light-end));
-      transition: background 0.2s;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
     }
 
-    body.dark-mode::after {
-      background: radial-gradient(circle at var(--gradient-x) var(--gradient-y), var(--gradient-dark-start), var(--gradient-dark-end));
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px;
     }
 
-    /* Parallax container */
-    .parallax-container {
+    .navbar a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      margin: 0 15px;
+      transition: color var(--transition-speed);
+    }
+
+    .navbar a:hover {
+      color: var(--primary);
+    }
+
+    .content-section {
+      padding: 100px 20px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2.section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: var(--primary);
+    }
+
+    #particles-js {
       position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      overflow: hidden;
-      pointer-events: none; 
       z-index: -1;
-    }
-
-    .hill {
-      position: absolute;
-      width: 200%;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 0;
-    }
-
-    .hill svg {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: fill 0.3s;
-    }
-
-    header {
-      position: relative;
-      padding: 60px 20px;
-      text-align: center;
-      color: var(--header-text);
-    }
-
-    .hero-content h1 {
-      font-size: 2.5rem;
-      margin: 0.5em 0;
-    }
-
-    .hero-content h2 {
-      font-weight: 500;
-      margin-bottom: 1em;
-    }
-  
-
-    .contact a {
-      color: var(--text-color);
-      text-decoration: none;
-    }
-
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 20px;
-      font-weight: 500;
-      color: #fff;
-      transition: background var(--transition-speed), color var(--transition-speed);
-      font-size: 0.9rem;
-    }
-
-    body.dark-mode .theme-toggle {
-      background: rgba(0,0,0,0.2);
-      color: #fff;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2rem;
-      margin: 60px 0 30px;
-      color: var(--primary);
-      font-weight: 700;
-      position: relative;
-      transition: color var(--transition-speed);
-    }
-
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: var(--primary);
-      margin: 10px auto 0;
-      transition: background var(--transition-speed);
-    }
-
-    .content-section {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto 60px auto;
-      padding: 30px;
-      border-radius: 10px;
-      background: var(--card-bg);
-      backdrop-filter: blur(5px);
-      transition: background var(--transition-speed);
-      position: relative;
-      z-index: 1;
-    }
-
-    .profile-text {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      text-align: justify;
-      margin-bottom: 40px;
-      transition: color var(--transition-speed);
-    }
-
-    .education, .experience, .projects, .skills, .languages, .qualities, .certifications {
-      margin-bottom: 40px;
-    }
-
-    .education-block, .experience-block, .project-block, .skills-block, .lang-block, .qualities-block, .certification-block {
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s ease, background var(--transition-speed), color var(--transition-speed);
-    }
-
-    body.dark-mode .education-block,
-    body.dark-mode .experience-block,
-    body.dark-mode .project-block,
-    body.dark-mode .skills-block,
-    body.dark-mode .lang-block,
-    body.dark-mode .qualities-block,
-    body.dark-mode .certification-block {
-      background: rgba(0,0,0,0.3);
-    }
-    .name,
-    .contact, .title, .theme-toggle {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-weight: 500;
-      margin-top: 20px;
-      color: var(--text-color);
-      transition: color var(--transition-speed);
-    }
-    .education-block h3,
-    .experience-block h3,
-    .project-block h3,
-    .skills-block h3,
-    .lang-block h3,
-    .qualities-block h3,
-    .certification-block h3 {
-      margin-top: 0;
-      color: var(--primary);
-      transition: color var(--transition-speed);
-    }
-
-    .exp-company {
-      color: var(--primary);
-      font-weight: 600;
-      margin-bottom: 5px;
-      transition: color var(--transition-speed);
-    }
-
-    .responsibility-list, .skill-list, .lang-list, .qualities-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 10px 0;
-    }
-
-    .responsibility-list li, .skill-list li, .lang-list li, .qualities-list li {
-      margin-bottom: 8px;
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .responsibility-list li::before, .skill-list li::before, .lang-list li::before, .qualities-list li::before {
-      content: '•';
-      color: var(--primary);
-      margin-right: 8px;
-      font-weight: bold;
-      transition: color var(--transition-speed);
     }
 
     footer {
       text-align: center;
       padding: 20px;
-      background: var(--footer-bg);
+      background: var(--footer-bg-light);
       color: #fff;
       font-size: 0.9rem;
-      transition: background var(--transition-speed), color var(--transition-speed);
-      position: relative;
-      z-index: 1;
     }
 
-    .visible {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+    html {
+      scroll-behavior: smooth;
     }
-
-    @media (max-width: 768px) {
-      .hero-content h1 {
-        font-size: 2rem;
-      }
-      .section-title {
-        font-size: 1.7rem;
-      }
-    }
-
   </style>
 </head>
 <body>
-  <!-- Parallax Layers -->
-  <div class="parallax-container">
-    <!-- Hill 1 -->
-    <div class="hill" id="hill1">
-      <svg viewBox="0 0 1440 320"><path id="hill1-path" fill="var(--bg-hill1)" fill-opacity="1" d="M0,256L60,240C120,224,240,192,360,192C480,192,600,224,720,213.3C840,203,960,149,1080,112C1200,75,1320,53,1380,42.7L1440,32L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
-    </div>
-    <!-- Hill 2 -->
-    <div class="hill" id="hill2">
-      <svg viewBox="0 0 1440 320"><path id="hill2-path" fill="var(--bg-hill2)" fill-opacity="1" d="M0,128L80,154.7C160,181,320,235,480,224C640,213,800,139,960,106.7C1120,75,1280,85,1360,90.7L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
-    </div>
-    <!-- Hill 3 -->
-    <div class="hill" id="hill3">
-      <svg viewBox="0 0 1440 320"><path id="hill3-path" fill="var(--bg-hill3)" fill-opacity="1" d="M0,288L60,261.3C120,235,240,181,360,154.7C480,128,600,128,720,128C840,128,960,128,1080,138.7C1200,149,1320,171,1380,181.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
-    </div>
-  </div>
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
 
-  <section class="content-section">
-    <header>
-      <button class="theme-toggle" id="themeToggle">Light/Dark</button>
-      <div class="hero-content">
-        <h1 class="name" id="name"></h1>
-        <h2 class="title" id="title"></h2>
-        <div class="contact">
-          <div><strong>LinkedIn:</strong> <a id="linkedin" href=""> <span >Emiliano Pizzuti</span></a></div>
-          <div><strong>Tel:</strong> <span id="phone"></span></div>
-          <div><strong>Github</strong> <a  id="Github" href=""><span>Emiliano Piz</span></a></div>
-        </div>
-      </div>
-    </header>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <a href="#profile">Profilo</a>
+      <a href="#education">Educazione</a>
+      <a href="#certifications">Certificazioni</a>
+      <a href="#experience">Esperienza</a>
+      <a href="#projects">Progetti</a>
+      <a href="#skills">Competenze</a>
+      <a href="#languages">Lingue</a>
+      <a href="#qualities">Qualità</a>
+    </nav>
+  </header>
+
+  <!-- Sections dynamically filled with JSON data -->
+  <section id="profile" class="content-section">
     <h2 class="section-title">Profilo Professionale</h2>
-    <p class="profile-text" id="profile"></p>
+    <p id="profile-text"></p>
+  </section>
 
+  <section id="education" class="content-section">
     <h2 class="section-title">Educazione</h2>
-    <div class="education">
-      <div class="education-block">
-        <h3>Diploma</h3>
-        <p><strong>Istituto:</strong> <span id="diploma-istituto"></span></p>
-        <p><strong>Indirizzo:</strong> <span id="diploma-indirizzo"></span></p>
-        <p><strong>Votazione:</strong> <span id="diploma-voto"></span></p>
-      </div>
-      <div class="education-block">
-        <h3>Università</h3>
-        <p id="universita"></p>
-      </div>
-    </div>
+    <div id="education-container"></div>
+  </section>
 
+  <section id="certifications" class="content-section">
     <h2 class="section-title">Certificazioni</h2>
-    <div class="certifications"></div>
+    <div id="certifications-container"></div>
+  </section>
 
+  <section id="experience" class="content-section">
     <h2 class="section-title">Esperienza</h2>
-    <div class="experience" id="experience"></div>
+    <div id="experience-container"></div>
+  </section>
 
+  <section id="projects" class="content-section">
     <h2 class="section-title">Progetti</h2>
-    <div class="projects" id="projects"></div>
+    <div id="projects-container"></div>
+  </section>
 
+  <section id="skills" class="content-section">
     <h2 class="section-title">Competenze Tecniche</h2>
-    <div class="skills" id="skills"></div>
+    <div id="skills-container"></div>
+  </section>
 
+  <section id="languages" class="content-section">
     <h2 class="section-title">Lingue</h2>
-    <div class="languages" id="languages"></div>
+    <div id="languages-container"></div>
+  </section>
 
+  <section id="qualities" class="content-section">
     <h2 class="section-title">Qualità Personali</h2>
-    <div class="qualities" id="qualities"></div>
+    <div id="qualities-container"></div>
   </section>
 
   <footer>
-    © 2024 - Curriculum di Emiliano Pizzuti
+    &copy; 2024 - Curriculum di Emiliano Pizzuti
   </footer>
+
   <script>
-     const data = {
+    const data = {
       "name": "Emiliano Pizzuti",
       "title": "Web Developer",
       "contacts": {
@@ -487,208 +268,104 @@
         "Capacità di iniziativa",
         "Esperienza decennale in help desk e customer care, utile per comprendere a 360° le esigenze del cliente e le dinamiche interne ai team di sviluppo"
       ]
-    };// Populate header info
-    document.getElementById('name').textContent = data.name;
-    document.getElementById('title').textContent = data.title;
-    document.getElementById('phone').textContent = data.contacts.phone_number;
-    document.getElementById('Github').setAttribute("href", data.contacts.Github);
-    document.getElementById('linkedin').setAttribute("href", data.contacts.linkedin);
-    document.getElementById('profile').textContent = data.professional_profile;
+    };
 
-    // Education
-    document.getElementById('diploma-istituto').textContent = data.education.diploma.istituto;
-    document.getElementById('diploma-indirizzo').textContent = data.education.diploma.indirizzo;
-    document.getElementById('diploma-voto').textContent = data.education.diploma.votazione;
-    document.getElementById('universita').textContent = data.education.universita;
+    // Populate sections
+document.getElementById('profile-text').textContent = data.professional_profile;
 
-    // Certifications
-    const certificationsContainer = document.querySelector('.certifications');
-    data.certifications.forEach(cert => {
-      const block = document.createElement('div');
-      block.className = 'education-block certification-block';
-      block.innerHTML = `
-        <h3>${cert.name}</h3>
-        <p><strong>Provider:</strong> ${cert.provider}</p>
-        <p><strong>Corso:</strong> ${cert.course_title}</p>
-        <p><strong>Cosa ho imparato:</strong> ${cert.skills}</p>
-      `;
-      certificationsContainer.appendChild(block);
-    });
+// Populate education
+const educationContainer = document.getElementById('education-container');
+const education = data.education;
+const uniDiv = document.createElement('div');
+uniDiv.innerHTML = `
+  <h3>Università</h3>
+  <p>${education.universita}</p>`;
+educationContainer.appendChild(uniDiv);
 
-    // Experience
-    const experienceContainer = document.getElementById('experience');
-    data.experience.forEach(exp => {
-      const block = document.createElement('div');
-      block.className = 'experience-block';
-      block.innerHTML = `
-        <h3>${exp.title}</h3>
-        <p class="exp-company">${exp.company} - ${exp.date_range ? exp.date_range : exp.start_date}</p>
-        <ul class="responsibility-list">
-          ${exp.responsibilities.map(r => `<li>${r}</li>`).join('')}
-        </ul>
-        ${exp.note ? `<p><em>Note: ${exp.note}</em></p>` : ''}
-      `;
-      experienceContainer.appendChild(block);
-    });
+const diplomaDiv = document.createElement('div');
+diplomaDiv.innerHTML = `
+  <h3>Diploma</h3>
+  <p>${education.diploma.istituto}</p>
+  <p>${education.diploma.indirizzo}, ${education.diploma.votazione}</p>`;
+educationContainer.appendChild(diplomaDiv);
 
-    // Projects
-    const projectsContainer = document.getElementById('projects');
-    data.projects.forEach(proj => {
-      const block = document.createElement('div');
-      block.className = 'project-block';
-      block.innerHTML = `
-        <h3 ><a href="${proj.url}">${proj.name}</a></h3>
-        <p >${proj.description}</p>
-      `;
-      projectsContainer.appendChild(block);
-    });
+// Populate certifications
+const certificationsContainer = document.getElementById('certifications-container');
+data.certifications.forEach(cert => {
+  const div = document.createElement('div');
+  div.innerHTML = `<h3>${cert.name}</h3><p>${cert.provider}</p><p>${cert.skills}</p>`;
+  certificationsContainer.appendChild(div);
+});
 
-    // Skills
-    const skillsContainer = document.getElementById('skills');
-    const techBlock = document.createElement('div');
-    techBlock.className = 'skills-block';
-    techBlock.innerHTML = `
-      <h3>Technical</h3>
-      <ul class="skill-list">
-        ${data.skills.technical.map(s => `<li>${s}</li>`).join('')}
-      </ul>
-    `;
-    skillsContainer.appendChild(techBlock);
+// Populate experience
+const experienceContainer = document.getElementById('experience-container');
+data.experience.forEach(exp => {
+  const div = document.createElement('div');
+  div.innerHTML = `<h3>${exp.title}</h3><p>${exp.company} (${exp.start_date || exp.date_range})</p>
+                   <ul>${exp.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>`;
+  experienceContainer.appendChild(div);
+});
 
-    const methBlock = document.createElement('div');
-    methBlock.className = 'skills-block';
-    methBlock.innerHTML = `
-      <h3>Methodologies</h3>
-      <ul class="skill-list">
-        ${data.skills.methodologies.map(s => `<li>${s}</li>`).join('')}
-      </ul>
-    `;
-    skillsContainer.appendChild(methBlock);
+// Populate projects
+const projectsContainer = document.getElementById('projects-container');
+data.projects.forEach(proj => {
+  const div = document.createElement('div');
+  div.innerHTML = `<h3><a href="${proj.url}" target="_blank">${proj.name}</a></h3><p>${proj.description}</p>`;
+  projectsContainer.appendChild(div);
+});
 
-    // Languages
-    const languagesContainer = document.getElementById('languages');
-    const langBlock = document.createElement('div');
-    langBlock.className = 'lang-block';
-    let langs = '';
-    for (const [lang, level] of Object.entries(data.languages)) {
-      langs += `<li>${lang}: ${level}</li>`;
+// Populate skills
+const skillsContainer = document.getElementById('skills-container');
+Object.entries(data.skills).forEach(([category, skills]) => {
+  const div = document.createElement('div');
+  div.innerHTML = `<h3>${category}</h3><ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>`;
+  skillsContainer.appendChild(div);
+});
+
+// Populate languages
+const languagesContainer = document.getElementById('languages-container');
+Object.entries(data.languages).forEach(([lang, level]) => {
+  const div = document.createElement('div');
+  div.innerHTML = `<p>${lang}: ${level}</p>`;
+  languagesContainer.appendChild(div);
+});
+
+// Populate personal qualities
+const qualitiesContainer = document.getElementById('qualities-container');
+data.personal_qualities.forEach(quality => {
+  const div = document.createElement('div');
+  div.textContent = quality;
+  qualitiesContainer.appendChild(div);
+});
+
+   // Particles.js configuration
+   particlesJS('particles-js', {
+  particles: {
+    number: { value: 80, density: { enable: true, value_area: 800 } },
+    color: { value: "#2a7ae2" },
+    shape: { type: "circle", polygon: { nb_sides: 5 } },
+    opacity: { value: 0.5, anim: { enable: false } },
+    size: { value: 3, random: true, anim: { enable: false } },
+    line_linked: { enable: true, distance: 150, color: "#2a7ae2", opacity: 0.4, width: 1 },
+    move: { enable: true, speed: 3, random: false, straight: false, out_mode: "out" }
+  },
+  interactivity: {
+    detect_on: "canvas",
+    events: {
+      onhover: { enable: true, mode: "grab" },
+      onclick: { enable: true, mode: "push" },
+      resize: true
+    },
+    modes: {
+      grab: { distance: 140, line_linked: { opacity: 1 } },
+      bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+      repulse: { distance: 200, duration: 0.4 },
+      push: { particles_nb: 4 },
+      remove: { particles_nb: 2 }
     }
-    langBlock.innerHTML = `
-      <h3>Lingue Conosciute</h3>
-      <ul class="lang-list">${langs}</ul>
-    `;
-    languagesContainer.appendChild(langBlock);
-
-    // Qualities
-    const qualitiesContainer = document.getElementById('qualities');
-    const qualBlock = document.createElement('div');
-    qualBlock.className = 'qualities-block';
-    qualBlock.innerHTML = `
-      <h3>Qualità Personali</h3>
-      <ul class="qualities-list">
-        ${data.personal_qualities.map(q => `<li>${q}</li>`).join('')}
-      </ul>
-    `;
-    qualitiesContainer.appendChild(qualBlock);
-
-    // Reveal on scroll
-    const blocks = document.querySelectorAll('.education-block, .experience-block, .project-block, .skills-block, .lang-block, .qualities-block, .certification-block');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {
-      threshold: 0.2
-    });
-    blocks.forEach(block => observer.observe(block));
-
-    const themeToggle = document.getElementById('themeToggle');
-
-    // Theme persistence and initial load
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark-mode') {
-        document.body.classList.add('dark-mode');
-      }
-      // Set the initial button text based on current theme
-      themeToggle.textContent = document.body.classList.contains('dark-mode') ? 'Dark → Light' : 'Light → Dark';
-    });
-
-    // Single theme toggle event listener
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      themeToggle.textContent = isDark ? 'Dark → Light' : 'Light → Dark';
-      localStorage.setItem('theme', isDark ? 'dark-mode' : 'light-mode');
-    });
-
-    // Parallax scroll effect
-    const hill1 = document.getElementById('hill1');
-    const hill2 = document.getElementById('hill2');
-    const hill3 = document.getElementById('hill3');
-
-    window.addEventListener('scroll', () => {
-      let scrollValue = window.scrollY;
-      hill1.style.transform = `translate(-50%, ${scrollValue * 0.1}px)`;
-      hill2.style.transform = `translate(-50%, ${scrollValue * 0.3}px)`;
-      hill3.style.transform = `translate(-50%, ${scrollValue * 0.5}px)`;
-    });
-
-    // GSAP initial animations
-    document.addEventListener('DOMContentLoaded', () => {
-      gsap.from(".hero-content h1", {
-        duration: 1, 
-        y: 50, 
-        opacity: 0, 
-        ease: "power3.out"
-      });
-
-      gsap.from(".hero-content h2", {
-        duration: 1, 
-        y: 50, 
-        opacity: 0, 
-        ease: "power3.out",
-        delay: 0.2
-      });
-
-      gsap.from(".hero-content .contact", {
-        duration: 1, 
-        y: 50, 
-        opacity: 0,
-        ease: "power3.out",
-        delay: 0.4
-      });
-    });
-
-    // Smooth, Delicate Color Transition on Mousemove
-    document.addEventListener('mousemove', (e) => {
-      const xPercent = (e.clientX / window.innerWidth) * 100;
-      const yPercent = (e.clientY / window.innerHeight) * 100;
-      document.documentElement.style.setProperty('--gradient-x', xPercent + '%');
-      document.documentElement.style.setProperty('--gradient-y', yPercent + '%');
-
-      const hueShift = xPercent * 0.5;
-
-      gsap.to("#hill1-path", {
-        fill: `hsl(${hueShift},70%,90%)`, 
-        duration: 2, 
-        ease: "power1.inOut"
-      });
-
-      gsap.to("#hill2-path", {
-        fill: `hsl(${(hueShift+40)%360},70%,90%)`,
-        duration: 2, 
-        ease: "power1.inOut"
-      });
-
-      gsap.to("#hill3-path", {
-        fill: `hsl(${(hueShift+80)%360},70%,90%)`,
-        duration: 2, 
-        ease: "power1.inOut"
-      });
-    });
+  },
+  retina_detect: true
+});
 
   </script>
 </body>
