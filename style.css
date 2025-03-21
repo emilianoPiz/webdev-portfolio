@@ -277,6 +277,15 @@ body.dark-theme .header {
 .theme-switch-input:checked + .theme-switch-label .theme-switch-slider::before {
   content: '🌙';
 }
+.theme-switch-slider {
+    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  .theme-switch-input:checked + .theme-switch-label .theme-switch-slider {
+    -webkit-transform: translateX(30px);
+    transform: translateX(30px);
+  }
+  
 
 /* 6. Mobile Menu */
 .menu-toggle {
