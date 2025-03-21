@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Librerie esterne -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -23,10 +22,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Background interattivo -->
-  <div id="cube-canvas"></div>
-
+    <!-- Intro -->
+    <div id="intro-overlay">
+        <canvas id="intro-canvas"></canvas>
+        <div class="intro-content">
+            <h1 class="intro-title">Emiliano Pizzuti</h1>
+            <p class="intro-subtitle">Web & Game Developer con una mente Creativa</p>
+            <button id="enter-btn">Entra nel Futuro</button>
+        </div>
+      </div>
+    
   <!-- Navbar responsive -->
   <header class="header">
     <div class="header-container">
@@ -37,7 +42,7 @@
       <nav class="dynamic-island" id="desktopMenu">
         <ul>
           <li><a href="#profile">Profilo</a></li>
-          <li><a href="#education">Educazione</a></li>
+          <li><a href="#education">Formazione</a></li>
           <li><a href="#certifications">Certificazioni</a></li>
           <li><a href="#experience">Esperienza</a></li>
           <li><a href="#projects">Progetti</a></li>
@@ -63,9 +68,9 @@
     
     <nav class="mobile-nav" id="mobileMenu">
       <ul>
-          <li><a href="#profile">Profilo</a></li>
-          <li><a href="#education">Educazione</a></li>
-          <li><a href="#certifications">Certificazioni</a></li>
+        <li><a href="#profile">Profilo</a></li>
+        <li><a href="#education">Formazione</a></li>
+        <li><a href="#certifications">Certificazioni</a></li>
         <li><a href="#experience">Esperienza</a></li>
         <li><a href="#projects">Progetti</a></li>
         <li><a href="#skills">Competenze</a></li>
@@ -74,14 +79,6 @@
       </ul>
     </nav>
 </header>
-<div id="intro-overlay">
-    <canvas id="intro-canvas"></canvas>
-    <div class="intro-content">
-        <h1 class="intro-title">Emiliano Pizzuti</h1>
-        <p class="intro-subtitle">Web & Game Developer con una mente Creativa</p>
-        <button id="enter-btn">Entra nel Futuro</button>
-    </div>
-  </div>
   
   <!-- Contenuto dinamico -->
   <main>
@@ -91,7 +88,7 @@
     </section>
 
     <section id="education" class="content-section">
-      <h2 class="section-title">Educazione</h2>
+      <h2 class="section-title">Formazione</h2>
       <div id="education-container"></div>
     </section>
 
@@ -125,6 +122,8 @@
       <div id="qualities-container"></div>
     </section>
   </main>
+
+  <!-- Top B-->
   <button id="TopBtn" ></button>
 
   <!-- Footer -->
