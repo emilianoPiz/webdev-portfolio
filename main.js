@@ -219,10 +219,6 @@ AOS.init({
 });
 
 // ============================================================
-// Skill Bar Animation (IntersectionObserver)
-// ============================================================
-
-// ============================================================
 // GSAP Animations for Cards and Timeline Items
 // ============================================================
 gsap.utils.toArray(".card-3d, .card-glow, .timeline-item").forEach((el) => {
