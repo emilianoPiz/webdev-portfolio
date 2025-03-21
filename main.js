@@ -433,6 +433,25 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+document.getElementById('contact-btn').addEventListener('click', () => {
+    const info = document.getElementById('contact-info');
+    if (info.style.display === 'flex') {
+      info.style.display = 'none';
+    } else {
+      info.style.display = 'flex';
+    }
+  });
+
+
+  document.getElementById('contact-btn').addEventListener('click', () => {
+    const info = document.getElementById('contact-info');
+    if (info.style.display === 'flex') {
+      info.style.display = 'none';
+    } else {
+      info.style.display = 'flex';
+    }
+  });
+  
 
 // Intro Overlay Animation (keeping existing functionality)
 document.getElementById('enter-btn').addEventListener('click', () => {
@@ -440,3 +459,15 @@ document.getElementById('enter-btn').addEventListener('click', () => {
   introOverlay.style.opacity = '0';
   setTimeout(() => introOverlay.style.display = 'none', 1200);
 });
+document.getElementById('contact-btn').addEventListener('click', () => {
+    const info = document.getElementById('contact-info');
+    info.style.display = info.style.display === 'flex' ? 'none' : 'flex';
+  });
+  
+  // Mostra il pulsante contatti dopo la intro
+  document.getElementById('enter-btn').addEventListener('click', () => {
+    setTimeout(() => {
+      document.getElementById('contact-btn').style.display = 'flex';
+    }, 1200);
+  });
+  
