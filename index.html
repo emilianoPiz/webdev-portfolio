@@ -1,477 +1,38 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV - Emiliano Pizzuti</title>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Particles.js -->
+  <!-- Librerie esterne -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-  <title>CV - Emiliano Pizzuti</title>
-  <style>
-    :root {
-  --primary: #2a7ae2;
-  --background: #ffffff;
-  --text-dark: #333;
-  --text-light: #fff;
-
-  /* Dark Theme Variables */
-  --primary-dark: #1d3557;
-  --background-dark: #121212;
-  --text-dark-theme: #ccc;
-}
-
-/* Basic Reset for Margin/Padding */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* HEADER WRAPPER */
-.header {
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
-  position: relative;
-}
-
-.brand a {
-  text-decoration: none;
-  color: var(--text-dark);
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-/* DYNAMIC ISLAND (DESKTOP) */
-.dynamic-island {
-  background-color: var(--primary);
-  border-radius: 30px; 
-  padding: 0.25rem 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
-}
-
-.dynamic-island ul {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.dynamic-island li a {
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.dynamic-island li a:hover {
-  color: #ffd700;
-}
-
-/* THEME SWITCHER */
-.theme-switch-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 1rem;
-}
-
-.theme-switch-input {
-  position: absolute;
-  opacity: 0;
-}
-
-.theme-switch-label {
-  display: inline-block;
-  width: 50px;
-  height: 25px;
-  background: var(--primary);
-  border-radius: 50px;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.4s;
-}
-
-.theme-switch-slider {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 19px;
-  height: 19px;
-  background: var(--text-light);
-  border-radius: 50%;
-  transition: transform 0.4s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.theme-switch-input:checked + .theme-switch-label {
-  background: var(--text-dark);
-}
-
-.theme-switch-input:checked + .theme-switch-label .theme-switch-slider {
-  transform: translateX(25px);
-}
-
-/* BURGER BUTTON */
-.menu-toggle {
-  display: none; /* hidden on desktop */
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 24px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  margin-left: 1rem;
-}
-
-.menu-toggle span {
-  width: 100%;
-  height: 3px;
-  background: var(--text-dark);
-  border-radius: 2px;
-}
-
-/* MOBILE MENU (COLLAPSIBLE) */
-.mobile-nav {
-  display: none; /* hidden on desktop */
-  background-color: var(--background);
-  width: 100%;
-  position: absolute;
-  top: 60px; /* below the header-container */
-  left: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.mobile-nav.open {
-  display: block;
-}
-
-.mobile-nav ul {
-  list-style: none;
-  padding: 1rem;
-}
-
-.mobile-nav li {
-  margin-bottom: 0.75rem;
-}
-
-.mobile-nav li a {
-  color: var(--text-dark);
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* MEDIA QUERIES */
-@media (max-width: 900px) {
-  /* Hide the dynamic island, show burger on mobile */
-  .dynamic-island {
-    display: none;
-  }
-  .menu-toggle {
-    display: flex;
-  }
-  /* Also optional: brand can be smaller if needed */
-  .brand a {
-    font-size: 1.1rem;
-  }
-}
-
-/* Dark Theme Example (Optional) */
-body.dark-theme {
-  --primary: var(--primary-dark);
-  --background: var(--background-dark);
-  --text-dark: var(--text-dark-theme);
-}
-
-body.dark-theme .header {
-  background-color: var(--primary-dark);
-}
-
-body.dark-theme .dynamic-island {
-  background-color: var(--primary);
-}
-
-    :root {
-      --primary: #2a7ae2;
-      --background: #ffffff;
-      --text-dark: #333;
-      --text-light: #fff;
-      --card-background-light: rgba(255, 255, 255, 0.8);
-      --footer-bg-light: #2a7ae2;
-      --transition-speed: 0.4s;
-
-      /* Dark Theme Variables */
-      --primary-dark: #1d3557;
-      --background-dark: #121212;
-      --text-dark-theme: #ccc;
-      --footer-bg-dark: #1d3557;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
-      color: var(--text-dark);
-      background-color: var(--background);
-      transition: background-color var(--transition-speed), color var(--transition-speed);
-    }
-
-    body.dark-theme {
-      --primary: var(--primary-dark);
-      --background: var(--background-dark);
-      --text-dark: var(--text-dark-theme);
-      --footer-bg-light: var(--footer-bg-dark);
-    }
-
-    /* Header / Navbar */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 10px 20px;
-      position: relative;
-    }
-
-    .navbar a {
-      color: var(--text-dark);
-      text-decoration: none;
-      font-weight: 500;
-      margin: 0 15px;
-      transition: color var(--transition-speed);
-    }
-
-    .navbar a:hover {
-      color: var(--primary);
-    }
-
-    /* Hamburger Menu (mobile) */
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      outline: none;
-    }
-    .menu-toggle span {
-      width: 100%;
-      height: 3px;
-      background: var(--text-dark);
-      margin: 4px 0;
-      transition: 0.3s;
-    }
-
-    /* Navbar List for mobile */
-    .navbar-list {
-      display: flex;
-      align-items: center;
-      transition: max-height 0.4s ease;
-    }
-    .navbar-list.mobile {
-      position: absolute;
-      top: 60px; /* Just below the header */
-      left: 0;
-      width: 100%;
-      background: var(--background);
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px 20px;
-      max-height: 0;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .navbar-list.mobile.open {
-      max-height: 500px; /* Arbitrary large value to show menu */
-    }
-    .navbar-list.mobile a {
-      margin: 10px 0;
-    }
-
-    /* Content sections */
-    .content-section {
-      padding: 100px 20px 60px;
-      max-width: 1200px;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity var(--transition-speed), transform var(--transition-speed);
-    }
-
-    .content-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    h2.section-title {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: var(--primary);
-    }
-
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--footer-bg-light);
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Theme Switcher */
-    .theme-switch-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .theme-switch-input {
-      position: absolute;
-      opacity: 0;
-    }
-
-    .theme-switch-label {
-      display: inline-block;
-      width: 50px;
-      height: 25px;
-      background: var(--primary);
-      border-radius: 50px;
-      position: relative;
-      cursor: pointer;
-      transition: background-color var(--transition-speed);
-    }
-
-    .theme-switch-slider {
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 19px;
-      height: 19px;
-      background: var(--text-light);
-      border-radius: 50%;
-      transition: transform var(--transition-speed);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .theme-switch-input:checked + .theme-switch-label {
-      background: var(--text-dark);
-    }
-
-    .theme-switch-input:checked + .theme-switch-label .theme-switch-slider {
-      transform: translateX(25px);
-    }
-
-    /* Header Styles for Dark Theme */
-    body.dark-theme header {
-      background: var(--primary-dark); /* Dark blue background */
-      color: var(--text-light);       /* Light text */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-    }
-
-    body.dark-theme .navbar a {
-      color: var(--text-light);       /* Light text for links */
-    }
-
-    body.dark-theme .navbar a:hover {
-      color: var(--primary);          /* Highlight on hover */
-    }
-
-    /* MEDIA QUERIES */
-    @media (max-width: 768px) {
-      /* Show hamburger icon, hide standard layout */
-      .menu-toggle {
-        display: flex;
-      }
-      .navbar-list {
-        display: none; /* hide in desktop style, because mobile uses absolute menu */
-      }
-      .navbar-list.mobile {
-        display: flex; /* show the mobile structure */
-      }
-
-      .navbar a {
-        margin: 0; /* we set margin to 0 for mobile layout */
-      }
-
-      .navbar {
-        padding: 10px 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h2.section-title {
-        font-size: 1.5rem;
-      }
-
-      .content-section {
-        padding: 80px 10px 40px;
-      }
-    }
-  </style>
+  <!-- CSS personalizzato -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Particle Background -->
-  <div id="particles-js"></div>
+<body></body>
 
-  <!-- Navbar -->
+  <!-- Background interattivo -->
+  <div id="cube-canvas"></div>
+
+  <!-- Navbar responsive -->
   <header class="header">
     <div class="header-container">
-      <!-- Optional brand/logo -->
       <div class="brand">
-        <a href="#">Emiliano Pizzuti</a>
+        <a href="#" class="logo-text">Emiliano Pizzuti</a>
       </div>
-      
-      <!-- Dynamic Island (desktop) -->
+
       <nav class="dynamic-island" id="desktopMenu">
         <ul>
           <li><a href="#profile">Profilo</a></li>
@@ -484,16 +45,14 @@ body.dark-theme .dynamic-island {
           <li><a href="#qualities">Qualità</a></li>
         </ul>
       </nav>
-      
-      <!-- Theme Switcher -->
+
       <div class="theme-switch-wrapper">
-        <input type="checkbox" id="theme-switch" class="theme-switch-input" />
+        <input type="checkbox" id="theme-switch" class="theme-switch-input">
         <label for="theme-switch" class="theme-switch-label">
           <span class="theme-switch-slider"></span>
         </label>
       </div>
-  
-      <!-- Burger (mobile) -->
+
       <button class="menu-toggle" id="menuToggle">
         <span></span>
         <span></span>
@@ -501,12 +60,11 @@ body.dark-theme .dynamic-island {
       </button>
     </div>
     
-    <!-- Collapsible Mobile Menu -->
     <nav class="mobile-nav" id="mobileMenu">
       <ul>
-        <li><a href="#profile">Profilo</a></li>
-        <li><a href="#education">Educazione</a></li>
-        <li><a href="#certifications">Certificazioni</a></li>
+          <li><a href="#profile">Profilo</a></li>
+          <li><a href="#education">Educazione</a></li>
+          <li><a href="#certifications">Certificazioni</a></li>
         <li><a href="#experience">Esperienza</a></li>
         <li><a href="#projects">Progetti</a></li>
         <li><a href="#skills">Competenze</a></li>
@@ -514,313 +72,66 @@ body.dark-theme .dynamic-island {
         <li><a href="#qualities">Qualità</a></li>
       </ul>
     </nav>
-  </header>
+</header>
+<div id="intro-overlay">
+    <canvas id="intro-canvas"></canvas>
+    <div class="intro-content">
+        <h1 class="intro-title">Emiliano Pizzuti</h1>
+        <p class="intro-subtitle">Web & Game Developer con una mente Creativa</p>
+        <button id="enter-btn">Entra nel Futuro</button>
+    </div>
+  </div>
   
+  <!-- Contenuto dinamico -->
+  <main>
+    <section id="profile" class="content-section">
+      <h2 class="section-title">Profilo Professionale</h2>
+      <p id="profile-text"></p>
+    </section>
 
-  <!-- Sections dynamically filled with JSON data -->
-  <section id="profile" class="content-section">
-    <h2 class="section-title">Profilo Professionale</h2>
-    <p id="profile-text"></p>
-  </section>
+    <section id="education" class="content-section">
+      <h2 class="section-title">Educazione</h2>
+      <div id="education-container"></div>
+    </section>
 
-  <section id="education" class="content-section">
-    <h2 class="section-title">Educazione</h2>
-    <div id="education-container"></div>
-  </section>
+    <section id="certifications" class="content-section">
+      <h2 class="section-title">Certificazioni</h2>
+      <div id="certifications-container"></div>
+    </section>
 
-  <section id="certifications" class="content-section">
-    <h2 class="section-title">Certificazioni</h2>
-    <div id="certifications-container"></div>
-  </section>
+    <section id="projects" class="content-section">
+      <h2 class="section-title">Progetti</h2>
+      <div id="projects-container"></div>
+    </section>
 
-  <section id="experience" class="content-section">
-    <h2 class="section-title">Esperienza</h2>
-    <div id="experience-container"></div>
-  </section>
+    <section id="experience" class="content-section">
+      <h2 class="section-title">Esperienza</h2>
+      <div id="experience-container"></div>
+    </section>
 
-  <section id="projects" class="content-section">
-    <h2 class="section-title">Progetti</h2>
-    <div id="projects-container"></div>
-  </section>
+    <section id="skills" class="content-section">
+      <h2 class="section-title">Competenze Tecniche</h2>
+      <div id="skills-container"></div>
+    </section>
 
-  <section id="skills" class="content-section">
-    <h2 class="section-title">Competenze Tecniche</h2>
-    <div id="skills-container"></div>
-  </section>
+    <section id="languages" class="content-section">
+      <h2 class="section-title">Lingue</h2>
+      <div id="languages-container"></div>
+    </section>
 
-  <section id="languages" class="content-section">
-    <h2 class="section-title">Lingue</h2>
-    <div id="languages-container"></div>
-  </section>
+    <section id="qualities" class="content-section">
+      <h2 class="section-title">Qualità Personali</h2>
+      <div id="qualities-container"></div>
+    </section>
+  </main>
+  <button id="TopBtn" ></button>
 
-  <section id="qualities" class="content-section">
-    <h2 class="section-title">Qualità Personali</h2>
-    <div id="qualities-container"></div>
-  </section>
-
+  <!-- Footer -->
   <footer>
     &copy; 2024 - Curriculum di Emiliano Pizzuti
   </footer>
 
-  <script>
-    // JSON data object
-    const data = {
-      "name": "Emiliano Pizzuti",
-      "title": "Web Developer",
-      "contacts": {
-        "linkedin": "https://www.linkedin.com/in/emiliano-pizzuti-879715247",
-        "phone_number": "+39 366 973 90 30",
-        "Github":"https://github.com/emilianoPiz"
-      },
-      "professional_profile": "Sviluppatore con solida esperienza nell’ambito web, con un orientamento verso lo sviluppo front-end e un forte interesse per l’innovazione tecnologica. Attualmente studente di Informatica presso La Sapienza di Roma, possiedo una visione completa del ciclo di vita del software, dalla progettazione iniziale fino alla manutenzione e all’ottimizzazione continua. Desidero contribuire a progetti nati da zero, lavorando all’interno di un team coeso e strutturato, per migliorare costantemente le mie competenze e generare valore tangibile per l’azienda.",
-      "education": {
-        "diploma": {
-          "istituto": "Istituto tecnico professionale G. Falcone, Colleferro (RM)",
-          "indirizzo": "Indirizzo Informatico",
-          "votazione": "83/100"
-        },
-        "universita": "Attualmente iscritto alla facoltà di Informatica presso La Sapienza di Roma, con competenze sviluppate in Python e analisi di strutture dati"
-      },
-      "certifications": [
-        {
-          "name": "Angular Developer Certificate",
-          "provider": "Udemy",
-          "course_title": "Maximilian Schwarzmueller 'The Complete Angular Course'",
-          "skills":"ho imparato come utilizzare angular nelle versioni 8-14 e 14+ con un corso da più di 560 ore, imparando con successo la libreria rxjs, la comunicazione tra componenti, l'integrazione di librerie esterne in ambiente angular, l'uso della CLI di angular, l'uso dello state manager NgRx, il lifecycle dei componenti, lo sviluppo di applicazioni SSR e SPA, l'uso di Less e Sass per rendere il sito themizabile, il testing con cypress, il deploy in produzione di un'applicazione angular "
-        }
-      ],
-      "experience": [
-        {
-          "title": "Frontend Developer",
-          "company": "Jeyweb Solutions (ora Sport-Tech srl)",
-          "start_date": "01/2024",
-          "responsibilities": [
-            "Progettazione e manutenzione di funzionalità client-side utilizzando Symfony e Twig",
-            "Allineamento del codice tramite Git flow, per una gestione strutturata dei branch e delle nuove feature",
-            "Sviluppo e gestione di API RESTful per l’integrazione con backend, servizi di terze parti e librerie esterne",
-            "Creazione di tabelle dinamiche, card interattive e pagine moderne, ottimizzando i tempi di caricamento con tecniche come la pagination lazy loading",
-            "Introduzione di filtri interattivi e animati per migliorare l’esperienza utente e la fruizione dei contenuti",
-            "Sviluppo parziale di un sito di scommesse in Angular, allineandosi con un senior developer (successivamente ritiratosi), gestendo i flussi di lavoro mediante Git flow"
-          ],
-          "note": "L’esperienza ha consentito di affrontare problematiche di performance e UX, fornendo un contributo al refactoring del codice CSS e all’isolamento degli stili cromatici del progetto"
-        },
-        {
-          "title": "Help Desk Support",
-          "company": "Skysoft Provider",
-          "date_range": "05/2018 - 12/2023",
-          "responsibilities": [
-            "Gestione di oltre 75 ticket al mese, collaborando con il team di sviluppo per identificare e risolvere bug",
-            "Supervisione dei ticket, garantendo un servizio clienti di alto livello",
-            "Formazione dei nuovi membri del team e analisi preventiva dei casi per evitare problemi futuri",
-            "Coordinazione delle attività in remoto e gestione delle comunicazioni con fornitori esterni per l’integrazione e l’ottimizzazione dei servizi",
-            "Operatività in contesti internazionali e multilingue, comunicando prevalentemente in inglese"
-          ]
-        },
-        {
-          "title": "Customer Care",
-          "company": "Puma Shot srl",
-          "date_range": "06/2014 - 03/2018",
-          "responsibilities": [
-            "Assistenza software di primo livello, migliorando l’esperienza cliente e l’efficienza del supporto",
-            "Creazione e mantenimento della documentazione per le applicazioni aziendali, consentendo ai clienti di risolvere autonomamente alcune problematiche",
-            "Sessioni esplicative per formare l’utenza sull’uso ottimale delle applicazioni esistenti"
-          ]
-        }
-      ],
-      "projects": [
-        {
-          "name": "Betagioco.it",
-          "description": "Sito di scommesse sviluppato e manutenuto in Symfony, con flussi di lavoro basati su Git Flow. È il progetto migliore al quale ho contribuito attivamente per un anno, fornendomi un’importante esperienza nello sviluppo web di siti complessi e dinamici, oltre a una grande conoscenza dei flussi di lavoro in team.",
-          "url":"https://betagioco.it"
-        },
-        {
-          "name": "SocialGaming.com",
-          "description": "Piattaforma social gaming con un sistema di amicizie e messaggistica istantanea (basato su WebSocket), interazioni dirette tramite commenti e post sui videogiochi, personalizzazione completa del sito con temi multipli, possibilità di modificare password e avatar, sistema di guard per limitare l’accesso a determinate sezioni, oltre all’integrazione con le API di Free-to-Game per offrire un’ampia lista di titoli free-to-play da giocare e commentare.",
-          "url":"https://socialgamingfrontend.onrender.com/"
-        }
-      ],
-      "skills": {
-        "technical": [
-          "JavaScript/TypeScript",
-          "Angular",
-          "Node.js",
-          "Express",
-          "PHP",
-          "Symfony",
-          "Git Flow Workflow",
-          "Single Page Applications",
-          "SQL/noSQL DB",
-          "jQuery",
-          "Docker per lo sviluppo e debugging in ambienti containerizzati",
-          "Conoscenze di base in Python (acquisite all’università)"
-        ],
-        "methodologies": [
-          "Agile/Scrum",
-          "Utilizzo di Confluence e Infinity per la pianificazione dei task",
-          "Allineamenti periodici (call settimanali) per garantire una comunicazione efficace"
-        ]
-      },
-      "languages": {
-        "italiano": "Madrelingua",
-        "inglese": "B2",
-        "spagnolo": "Conoscenza colloquiale",
-        "rumeno": "Conoscenza colloquiale"
-      },
-      "personal_qualities": [
-        "Puntualità",
-        "Precisione",
-        "Affidabilità",
-        "Capacità di iniziativa",
-        "Esperienza decennale in help desk e customer care, utile per comprendere a 360° le esigenze del cliente e le dinamiche interne ai team di sviluppo"
-      ]
-    };
-
-    // Populate sections
-    document.getElementById('profile-text').textContent = data.professional_profile;
-
-    // Populate education
-    const educationContainer = document.getElementById('education-container');
-    const education = data.education;
-    const uniDiv = document.createElement('div');
-    uniDiv.innerHTML = `
-      <h3>Università</h3>
-      <p>${education.universita}</p>`;
-    educationContainer.appendChild(uniDiv);
-
-    const diplomaDiv = document.createElement('div');
-    diplomaDiv.innerHTML = `
-      <h3>Diploma</h3>
-      <p>${education.diploma.istituto}</p>
-      <p>${education.diploma.indirizzo}, ${education.diploma.votazione}</p>`;
-    educationContainer.appendChild(diplomaDiv);
-
-    // Populate certifications
-    const certificationsContainer = document.getElementById('certifications-container');
-    data.certifications.forEach(cert => {
-      const div = document.createElement('div');
-      div.innerHTML = `<h3>${cert.name}</h3><p>${cert.provider}</p><p>${cert.skills}</p>`;
-      certificationsContainer.appendChild(div);
-    });
-
-    // Populate experience
-    const experienceContainer = document.getElementById('experience-container');
-    data.experience.forEach(exp => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-        <h3>${exp.title}</h3>
-        <p>${exp.company} (${exp.start_date || exp.date_range})</p>
-        <ul>${exp.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>
-      `;
-      experienceContainer.appendChild(div);
-    });
-
-    // Populate projects
-    const projectsContainer = document.getElementById('projects-container');
-    data.projects.forEach(proj => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-        <h3><a href="${proj.url}" target="_blank">${proj.name}</a></h3>
-        <p>${proj.description}</p>
-      `;
-      projectsContainer.appendChild(div);
-    });
-
-    // Populate skills
-    const skillsContainer = document.getElementById('skills-container');
-    Object.entries(data.skills).forEach(([category, skills]) => {
-      const div = document.createElement('div');
-      div.innerHTML = `<h3>${category}</h3><ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>`;
-      skillsContainer.appendChild(div);
-    });
-
-    // Populate languages
-    const languagesContainer = document.getElementById('languages-container');
-    Object.entries(data.languages).forEach(([lang, level]) => {
-      const div = document.createElement('div');
-      div.innerHTML = `<p>${lang}: ${level}</p>`;
-      languagesContainer.appendChild(div);
-    });
-
-    // Populate personal qualities
-    const qualitiesContainer = document.getElementById('qualities-container');
-    data.personal_qualities.forEach(quality => {
-      const div = document.createElement('div');
-      div.textContent = quality;
-      qualitiesContainer.appendChild(div);
-    });
-
-    // Particles.js configuration
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#2a7ae2" },
-        shape: { type: "circle", polygon: { nb_sides: 5 } },
-        opacity: { value: 0.5, anim: { enable: false } },
-        size: { value: 3, random: true, anim: { enable: false } },
-        line_linked: { enable: true, distance: 150, color: "#2a7ae2", opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 3, random: false, straight: false, out_mode: "out" }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" },
-          onclick: { enable: true, mode: "push" },
-          resize: true
-        },
-        modes: {
-          grab: { distance: 140, line_linked: { opacity: 1 } },
-          bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-          repulse: { distance: 200, duration: 0.4 },
-          push: { particles_nb: 4 },
-          remove: { particles_nb: 2 }
-        }
-      },
-      retina_detect: true
-    });
-
-    const sections = document.querySelectorAll('.content-section');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    sections.forEach((section) => observer.observe(section));
-
-    const themeSwitch = document.getElementById('theme-switch');
-    themeSwitch.addEventListener('change', () => {
-      const isDark = themeSwitch.checked;
-      document.body.classList.toggle('dark-theme', isDark);
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-theme');
-      themeSwitch.checked = true;
-    }
-
-
-    
-  </script>
-
-<script>
-  const menuToggle = document.getElementById('menuToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
-
-  menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
-  });
-  
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-    });
-  });
-</script>
+  <!-- Script JS personalizzato -->
+  <script src="main.js" defer></script>
 </body>
 </html>
