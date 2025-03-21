@@ -335,30 +335,23 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================
-// Three.js Starfield Background with Interactive Glow
+// Three.js Starfield Background with Interactive Glow and Enhanced Impact Effects
 // ============================================================
+
+// ORIGINAL THREE.JS STARFIELD SETUP (DO NOT MODIFY)
+const canvas = document.getElementById("intro-canvas");
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById("intro-canvas"),
+  canvas: canvas,
   alpha: true,
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
+camera.position.z = 30;
 
-// Star Geometry & Material
+// Create starfield particles
 const starGeometry = new THREE.SphereGeometry(0.05, 24, 24);
-const starMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffffff,
-  transparent: true,
-  opacity: 0.8,
-});
-
-// Star creation function
+const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
 function createStar() {
   const star = new THREE.Mesh(starGeometry, starMaterial.clone());
   star.position.set(
@@ -370,22 +363,123 @@ function createStar() {
   return star;
 }
 const stars = Array.from({ length: 1200 }, createStar);
-camera.position.z = 30;
 
-// Mouse movement tracking for interaction
+// Mouse and Raycaster for interactive glow on stars
 const mouse = new THREE.Vector2();
 window.addEventListener("mousemove", (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 });
-
-// Raycaster for star interaction
 const raycaster = new THREE.Raycaster();
 
+// ============================================================
+// MINI GAME CODE (ADDED WITHOUT CHANGING ORIGINAL PARTICLES)
+// ============================================================
+let rocket;
+const bullets = [];
+const fallingObjects = [];
+const explosions = []; // Array to hold explosion debris
+
+// Create a rocket that will be controlled by the mouse
+function createRocket() {
+  const rocketGroup = new THREE.Group();
+  // Rocket body
+  const bodyGeo = new THREE.CylinderGeometry(0.2, 0.2, 1, 32);
+  const bodyMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  rocketGroup.add(body);
+  // Rocket nose
+  const noseGeo = new THREE.ConeGeometry(0.2, 0.5, 32);
+  const noseMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  const nose = new THREE.Mesh(noseGeo, noseMat);
+  nose.position.y = 0.75;
+  rocketGroup.add(nose);
+  // Start at the bottom center of the viewport
+  rocketGroup.position.set(0, -10, 0);
+  scene.add(rocketGroup);
+  return rocketGroup;
+}
+rocket = createRocket();
+
+// Function to shoot a bullet from the rocket
+function shootBullet() {
+  const bulletGeo = new THREE.SphereGeometry(0.05, 8, 8);
+  const bulletMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const bullet = new THREE.Mesh(bulletGeo, bulletMat);
+  bullet.position.set(rocket.position.x, rocket.position.y + 0.75, rocket.position.z);
+  scene.add(bullet);
+  bullets.push(bullet);
+}
+
+// Create a falling geometric shape (cube, tetrahedron, or dodecahedron)
+function createFallingObject() {
+    const types = ["cube", "tetrahedron", "dodecahedron"];
+    const type = types[Math.floor(Math.random() * types.length)];
+    let geometry;
+    if (type === "cube") {
+      geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    } else if (type === "tetrahedron") {
+      geometry = new THREE.TetrahedronGeometry(0.4);
+    } else {
+      geometry = new THREE.DodecahedronGeometry(0.5);
+    }
+    const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+    const shape = new THREE.Mesh(geometry, material);
+    // Set z to 0 to match bullet's plane
+    shape.position.set((Math.random() - 0.5) * 20, 10, 0);
+    scene.add(shape);
+    fallingObjects.push(shape);
+  }
+  
+
+// Spawn initial falling objects
+for (let i = 0; i < 10; i++) {
+  createFallingObject();
+}
+
+// Control the rocket's horizontal movement using mouse position
+window.addEventListener("mousemove", (e) => {
+  const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  rocket.position.x = mouseX * 10;
+});
+
+// Shoot bullet on mouse click (in addition to any existing click events)
+window.addEventListener("click", () => {
+  shootBullet();
+});
+
+// ============================================================
+// EXPLOSION FUNCTION: Create debris pieces that simulate the object breaking apart
+// ============================================================
+function createExplosion(position, color) {
+  const debrisCount = 10; // Number of debris pieces per explosion
+  for (let i = 0; i < debrisCount; i++) {
+    const debrisGeo = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+    const debrisMat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 1,
+    });
+    const debris = new THREE.Mesh(debrisGeo, debrisMat);
+    debris.position.copy(position);
+    // Assign a random velocity vector to simulate an explosive spread
+    debris.userData.velocity = new THREE.Vector3(
+      (Math.random() - 0.5) * 0.5,
+      (Math.random() - 0.5) * 0.5,
+      (Math.random() - 0.5) * 0.5
+    );
+    scene.add(debris);
+    explosions.push(debris);
+  }
+}
+
+// ============================================================
+// ANIMATE LOOP: COMBINING ORIGINAL & MINI GAME UPDATES
+// ============================================================
 function animate() {
   requestAnimationFrame(animate);
 
-  // Animate stars: rotation, movement, scaling, and opacity
+  // ----- Original Starfield Animation -----
   stars.forEach((star) => {
     star.rotation.x += 0.001;
     star.rotation.y += 0.001;
@@ -397,20 +491,70 @@ function animate() {
     star.material.opacity += (0.8 - star.material.opacity) * 0.02;
   });
 
-  // Interactive glow effect
+  // Interactive glow effect on stars
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(stars, false);
   intersects.forEach((intersect) => {
     intersect.object.scale.lerp(new THREE.Vector3(3, 3, 3), 0.1);
-    intersect.object.material.opacity +=
-      (1 - intersect.object.material.opacity) * 0.1;
+    intersect.object.material.opacity += (1 - intersect.object.material.opacity) * 0.1;
   });
+
+  // ----- Mini Game Updates -----
+  // Update falling objects: let them fall and reset when off-screen
+  fallingObjects.forEach((obj) => {
+    obj.position.y -= 0.05; // Falling speed
+    if (obj.position.y < -12) {
+      obj.position.y = 10;
+      obj.position.x = (Math.random() - 0.5) * 20;
+      obj.position.z = (Math.random() - 0.5) * 20;
+    }
+  });
+
+  // Update bullets: move them upward and remove if off-screen
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    bullets[i].position.y += 0.1;
+    if (bullets[i].position.y > 12) {
+      scene.remove(bullets[i]);
+      bullets.splice(i, 1);
+    }
+  }
+
+  // Collision detection: if a bullet hits a falling object, create explosion and remove both
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    for (let j = fallingObjects.length - 1; j >= 0; j--) {
+        if (bullets[i].position.distanceTo(fallingObjects[j].position) < 0.7) {
+            // Create explosion effect and remove objects
+            createExplosion(fallingObjects[j].position, fallingObjects[j].material.color.getHex());
+            scene.remove(bullets[i]);
+            scene.remove(fallingObjects[j]);
+            bullets.splice(i, 1);
+            fallingObjects.splice(j, 1);
+            createFallingObject();
+            break;
+          }
+          
+    }
+  }
+
+  // Update explosion debris: apply velocity, gravity, fade out, and remove when invisible
+  for (let i = explosions.length - 1; i >= 0; i--) {
+    const debris = explosions[i];
+    debris.userData.velocity.y -= 0.005; // gravity effect
+    debris.position.add(debris.userData.velocity);
+    debris.material.opacity -= 0.01;
+    if (debris.material.opacity <= 0) {
+      scene.remove(debris);
+      explosions.splice(i, 1);
+    }
+  }
 
   renderer.render(scene, camera);
 }
 animate();
 
-// Handle window resize for Three.js
+// ============================================================
+// Handle Window Resize
+// ============================================================
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -418,25 +562,13 @@ window.addEventListener("resize", () => {
 });
 
 // ============================================================
-// Intro Overlay & Contact Button Functionality
+// Intro Overlay: Remove overlay on Enter button click
 // ============================================================
 const enterBtn = document.getElementById("enter-btn");
 const introOverlay = document.getElementById("intro-overlay");
-const contactBtn = document.getElementById("contact-btn");
-const contactInfo = document.getElementById("contact-info");
-
-// Toggle Intro Overlay on Enter Button click
 enterBtn.addEventListener("click", () => {
   introOverlay.style.opacity = "0";
   setTimeout(() => {
     introOverlay.style.display = "none";
-    // Show contact button after intro
-    contactBtn.style.display = "flex";
-  }, 1200);
-});
-
-// Toggle Contact Information on Contact Button click
-contactBtn.addEventListener("click", () => {
-  contactInfo.style.display =
-    contactInfo.style.display === "flex" ? "none" : "flex";
+  }, 1000);
 });
