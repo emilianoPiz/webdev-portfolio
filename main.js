@@ -482,7 +482,7 @@ const data = {
     document.body.classList.toggle('dark-theme');
   
     // Force iOS Safari to repaint without removing the body from layout:
-    document.body.style.transform = 'translateZ(0)';
+    document.body.style.transform = 'none';
     // Accessing offsetWidth or offsetHeight triggers the reflow
     void document.body.offsetWidth;
     // Revert the transform
