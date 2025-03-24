@@ -188,7 +188,10 @@ themeSwitch.addEventListener("change", () => {
     void document.body.offsetHeight;
     document.body.style.opacity = "1";
   });
-  
+  setTimeout(() => {
+    window.scrollBy(0, 1);
+    window.scrollBy(0, -1);
+  }, 50);
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
   document.body.classList.add("dark-theme");
