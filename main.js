@@ -184,14 +184,25 @@ themeSwitch.addEventListener("change", () => {
     const isDark = themeSwitch.checked;
     document.body.classList.toggle("dark-theme", isDark);
     localStorage.setItem("theme", isDark ? "dark" : "light");
-      document.body.style.opacity = "0.99";
-    void document.body.offsetHeight;
-    document.body.style.opacity = "1";
-    setTimeout(() => {
-        window.scrollBy(0, 1);
-        window.scrollBy(0, -1);
-      }, 50);
+  
+    // Only run this on iOS devices
+    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isiOS) {
+      // Save the current scroll position
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  
+      // Force a repaint by temporarily toggling the display property
+      document.body.style.display = "none";
+      setTimeout(() => {
+        document.body.style.display = "";
+        // Restore the scroll position
+        window.scrollTo(0, currentScroll);
+      }, 0);
+    }
   });
+  
+  
+  
   
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
