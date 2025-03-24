@@ -181,10 +181,14 @@ year.innerHTML = d.getFullYear();
 // ============================================================
 const themeSwitch = document.getElementById("theme-switch");
 themeSwitch.addEventListener("change", () => {
-  const isDark = themeSwitch.checked;
-  document.body.classList.toggle("dark-theme", isDark);
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-});
+    const isDark = themeSwitch.checked;
+    document.body.classList.toggle("dark-theme", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+      document.body.style.opacity = "0.99";
+    void document.body.offsetHeight;
+    document.body.style.opacity = "1";
+  });
+  
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
   document.body.classList.add("dark-theme");
@@ -582,14 +586,3 @@ contactBtn.addEventListener("click", () => {
     contactInfo.style.display =
       contactInfo.style.display === "flex" ? "none" : "flex";
   });
-
-document.body.style.transform = 'translateZ(0)'; 
-// or document.body.style.webkitTransform = 'scale(1)';
-document.body.offsetHeight; // force reflow (optional)
-document.body.style.transform = ''; 
-document.body.classList.add('force-repaint');
-requestAnimationFrame(() => {
-  document.body.classList.remove('force-repaint');
-});
-document.body.classList.add('dark-theme');
-document.body.offsetHeight; // read to force layout calc
