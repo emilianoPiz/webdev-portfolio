@@ -183,7 +183,7 @@ const themeSwitch = document.getElementById("theme-switch");
 themeSwitch.addEventListener("change", () => {
   const isDark = themeSwitch.checked;
   document.body.classList.toggle("dark-theme", isDark);
-  //localStorage.setItem("theme", isDark ? "dark" : "light");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 });
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
@@ -395,7 +395,7 @@ function createRocket() {
   nose.position.y = 0.75;
   rocketGroup.add(nose);
   // Start at the bottom center of the viewport
-  rocketGroup.position.set(0, -10, 0);
+  rocketGroup.position.set(0, -10, 10);
   scene.add(rocketGroup);
   return rocketGroup;
 }
@@ -425,11 +425,12 @@ function createFallingObject() {
     }
     const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
     const shape = new THREE.Mesh(geometry, material);
-    // Set z to 0 to match bullet's plane
-    shape.position.set((Math.random() - 0.5) * 20, 10, 0);
+    // Fix: Set z to 10 to match the bullet's plane.
+    shape.position.set((Math.random() - 0.5) * 20, 10, 10);
     scene.add(shape);
     fallingObjects.push(shape);
   }
+  
   
 
 // Spawn initial falling objects
@@ -506,7 +507,8 @@ function animate() {
     if (obj.position.y < -12) {
       obj.position.y = 10;
       obj.position.x = (Math.random() - 0.5) * 20;
-      obj.position.z = (Math.random() - 0.5) * 20;
+      // Fix: Reset z to 10 so it remains in the bullet's plane
+      obj.position.z = 10;
     }
   });
 
@@ -566,9 +568,28 @@ window.addEventListener("resize", () => {
 // ============================================================
 const enterBtn = document.getElementById("enter-btn");
 const introOverlay = document.getElementById("intro-overlay");
+const contactBtn = document.getElementById("contact-btn");
+const contactInfo = document.getElementById("contact-info");
+
 enterBtn.addEventListener("click", () => {
   introOverlay.style.opacity = "0";
+  contactBtn.removeAttribute("style")
   setTimeout(() => {
     introOverlay.style.display = "none";
   }, 1000);
 });
+contactBtn.addEventListener("click", () => {
+    contactInfo.style.display =
+      contactInfo.style.display === "flex" ? "none" : "flex";
+  });
+
+document.body.style.transform = 'translateZ(0)'; 
+// or document.body.style.webkitTransform = 'scale(1)';
+document.body.offsetHeight; // force reflow (optional)
+document.body.style.transform = ''; 
+document.body.classList.add('force-repaint');
+requestAnimationFrame(() => {
+  document.body.classList.remove('force-repaint');
+});
+document.body.classList.add('dark-theme');
+document.body.offsetHeight; // read to force layout calc

@@ -99,6 +99,8 @@ body.dark-theme::before {
     background: radial-gradient(circle at top right, var(--secondary), transparent 50%),
         radial-gradient(circle at bottom left, rgba(131, 56, 236, 0.2), transparent 50%);
 }
+.force-repaint { will-change: transform; }
+
 
 /* 3. Scrollbar Styling */
 ::-webkit-scrollbar {
