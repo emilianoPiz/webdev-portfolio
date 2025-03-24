@@ -187,11 +187,12 @@ themeSwitch.addEventListener("change", () => {
       document.body.style.opacity = "0.99";
     void document.body.offsetHeight;
     document.body.style.opacity = "1";
+    setTimeout(() => {
+        window.scrollBy(0, 1);
+        window.scrollBy(0, -1);
+      }, 50);
   });
-  setTimeout(() => {
-    window.scrollBy(0, 1);
-    window.scrollBy(0, -1);
-  }, 50);
+  
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
   document.body.classList.add("dark-theme");
