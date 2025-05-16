@@ -4,54 +4,69 @@
    1. Imports & Root Variables
    2. Global Reset & Base Styles
    3. Scrollbar Styling
-   4. Header & Navigation
-   5. Theme Switcher
-   6. Mobile Menu
-   7. Content Sections & Animations
-   8. Cards & Skill Bars
-   9. Responsive Media Queries
-   10. Footer, Contact Button & Intro Overlay
+   4. Main Background Canvas
+   5. Header & Navigation (Desktop & Mobile)
+   6. Theme Switcher
+   7. Intro Overlay & Game Canvas
+   8. Content Sections & Cards
+   9. Specific Section Styling (Experience, Skills, etc.)
+   10. Footer
+   11. Floating Action Buttons (Top, Contact) & Contact Popup
+   12. Utility & Animation Classes (Glitch, FadeIn)
+   13. Responsive Media Queries
    =========================================================== */
 
 /* 1. Imports & Root Variables */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&family=VT323&display=swap');
 
 :root {
-    /* Core Colors & Fonts */
-    --primary: #2a7ae2;
-    --primary-light: #5a9aea;
-    --primary-dark: #1d5cbf;
-    --secondary: #7209b7;
-    --secondary-light: #9d4eda;
-    --accent: #4cc9f0;
-    --background: #ffffff;
-    --light-bg: radial-gradient(circle at top right, var(--primary), transparent 50%),
-        radial-gradient(circle at bottom left, var(--secondary-light), transparent 50%);
-    --dark-bg: radial-gradient(circle at top right, var(--secondary), transparent 50%),
-        radial-gradient(circle at bottom left, rgba(131, 56, 236, 0.2), transparent 50%);
-    --card-bg: rgba(255, 255, 255, 0.8);
-    --card-bg-dark: rgba(25, 25, 40, 0.85);
-    --text-dark: #333;
-    --text-medium: #555;
-    --text-light: #fff;
-    --success: #4CAF50;
-    --warning: #FF9800;
-    --danger: #f44336;
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --transition-speed: 0.4s;
+    /* Light Theme (Default fallback, but we'll default to dark via JS) */
+    --primary-color: #2a7ae2; /* Bright Blue */
+    --secondary-color: #7209b7; /* Purple */
+    --accent-color: #4cc9f0;   /* Cyan */
+    --background-color: #f4f7fc;
+    --text-color: #333;
+    --text-color-medium: #555;
+    --card-background: rgba(255, 255, 255, 0.85);
+    --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --header-bg: rgba(255, 255, 255, 0.9);
+    --border-color: #e0e0e0;
+
+    /* Matrix Dark Theme (Activated by .dark-theme class on body) */
+    --matrix-green-bright: #00FF00;
+    --matrix-green-medium: #00DD00;
+    --matrix-green-dark: #00AA00;
+    --matrix-bg-dark: #050505; /* Very dark, near black */
+    --matrix-bg-medium: #0a0a0a;
+    --matrix-text-primary: var(--matrix-green-bright);
+    --matrix-text-secondary: var(--matrix-green-medium);
+    --matrix-card-bg: rgba(10, 20, 10, 0.7); /* Dark green tint */
+    --matrix-card-border: rgba(0, 255, 0, 0.3);
+    --matrix-header-bg: rgba(5, 5, 5, 0.85);
+
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Montserrat', sans-serif;
+    --font-matrix: 'VT323', monospace;
+
+    --transition-speed: 0.3s;
+    --transition-speed-fast: 0.2s;
     --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
-    --gradient-dark: linear-gradient(225deg, var(--primary), #f2f2f2);
-
-    /* Dark Theme Variables */
-    --primary-dark-theme: #3a86ff;
-    --secondary-dark-theme: #8338ec;
-    --background-dark: #121212;
-    --text-dark-theme: #e0e0e0;
-    --text-medium-dark: #aaa;
-    --gradient-dark-theme: linear-gradient(225deg, #121212, #2a2a3c);
-
 }
+
+/* Apply Matrix theme variables when .dark-theme is active */
+body.dark-theme {
+    --primary-color: var(--matrix-green-bright);
+    --secondary-color: var(--matrix-green-medium);
+    --accent-color: var(--matrix-green-bright);
+    --background-color: var(--matrix-bg-dark);
+    --text-color: var(--matrix-text-primary);
+    --text-color-medium: var(--matrix-text-secondary);
+    --card-background: var(--matrix-card-bg);
+    --card-shadow: 0 5px 20px rgba(0, 255, 0, 0.15);
+    --header-bg: var(--matrix-header-bg);
+    --border-color: var(--matrix-card-border);
+}
+
 
 /* 2. Global Reset & Base Styles */
 * {
@@ -60,845 +75,977 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--background);
-    color: var(--text-dark);
+    font-family: var(--font-primary);
+    background-color: var(--background-color);
+    color: var(--text-color);
     transition: background-color var(--transition-speed), color var(--transition-speed);
     overflow-x: hidden;
+    line-height: 1.7;
+}
+
+body.dark-theme {
+    font-family: var(--font-matrix); /* Main font for dark theme */
+}
+body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme .logo-text {
+    font-family: var(--font-matrix); /* Ensure headings also use it */
+    font-weight: normal; /* VT323 is often bold by default */
+}
+body.dark-theme p, body.dark-theme li, body.dark-theme a, body.dark-theme span, body.dark-theme button {
+    font-family: var(--font-matrix);
+    font-weight: normal;
+}
+
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed-fast);
+}
+a:hover {
+    color: var(--secondary-color);
+}
+
+ul {
+    list-style: none;
+}
+/* Style for lists within cards, e.g., responsibilities, skills */
+.card-3d ul, .card-glow ul {
+    padding-left: 20px;
+}
+.card-3d li, .card-glow li {
+    margin-bottom: 8px;
     position: relative;
 }
-
-/* Background overlays via pseudo-element */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    z-index: -2;
-    opacity: 0.8;
-    transition: opacity var(--transition-speed);
+body.dark-theme .card-3d li::before, 
+body.dark-theme .card-glow li::before {
+    content: ">"; /* Matrix-style list bullet */
+    position: absolute;
+    left: -18px;
+    color: var(--matrix-green-bright);
+}
+body:not(.dark-theme) .card-3d li, 
+body:not(.dark-theme) .card-glow li {
+    list-style-type: disc; /* Default bullets for light theme */
+    margin-left: 15px; /* Adjust if needed for disc alignment */
 }
 
-/* Dark Theme Overrides */
-body.dark-theme {
-    --primary: var(--primary-dark-theme);
-    --secondary: var(--secondary-dark-theme);
-    --background: var(--background-dark);
-    --text-dark: var(--text-dark-theme);
-    --text-medium: var(--text-medium-dark);
-    --card-bg: var(--card-bg-dark);
-    --gradient-dark: var(--gradient-dark-theme);
-}
 
-body.dark-theme::before {
-    opacity: 0.3;
-    background: radial-gradient(circle at top right, var(--secondary), transparent 50%),
-        radial-gradient(circle at bottom left, rgba(131, 56, 236, 0.2), transparent 50%);
+img {
+    max-width: 100%;
+    height: auto;
 }
-.force-repaint { will-change: transform; }
-
+.visually-hidden { /* For accessibility */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.force-repaint { will-change: transform; } /* For iOS theme switch hack */
 
 /* 3. Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 10px;
 }
-
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.1);
 }
-
+body.dark-theme ::-webkit-scrollbar-track {
+    background: rgba(0, 20, 0, 0.5);
+}
 ::-webkit-scrollbar-thumb {
-    background: var(--primary);
+    background: var(--primary-color);
     border-radius: 5px;
+    border: 2px solid var(--background-color); /* Creates a small gap */
 }
-
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+    background: var(--secondary-color);
 }
 
-/* 4. Header & Navigation */
-/* Header Container */
+/* 4. Main Background Canvas */
+#main-background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Behind everything */
+    pointer-events: none; /* Allow clicks through */
+}
+
+/* 5. Header & Navigation */
 .header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 999;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    transition: all var(--transition-speed);
+    background-color: var(--header-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 900; /* Below intro overlay, above content */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
-
 body.dark-theme .header {
-    background: rgba(18, 18, 18, 0.95);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 15px rgba(0, 255, 0, 0.1);
 }
 
 .header-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.5rem;
-    position: relative;
+    padding: 0 20px;
 }
 
-/* Brand Logo */
-.brand {
-    position: relative;
-    overflow: hidden;
+.brand .logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: var(--font-secondary); /* Or var(--font-matrix) for dark theme */
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+body.dark-theme .brand .logo-text {
+    font-family: var(--font-matrix);
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
-.brand a {
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.3rem;
-    letter-spacing: 0.5px;
-    color: var(--primary);
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-    padding: 5px 10px;
-}
 
-.brand a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gradient-primary);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s ease-out;
-}
-
-.brand a:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-/* Dynamic Island Navigation */
+/* Desktop Navigation: Dynamic Island */
 .dynamic-island {
-    background: var(--gradient-primary);
-    border-radius: 25px;
-    padding: 5px 20px;
-    box-shadow: 0 8px 20px rgba(42, 122, 226, 0.3);
+    background: var(--primary-color);
+    padding: 8px 15px;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
-    transition: all 0.5s var(--transition-bounce);
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
-
-.dynamic-island:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 25px rgba(42, 122, 226, 0.4);
+body:not(.dark-theme) .dynamic-island {
+     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+body.dark-theme .dynamic-island {
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--matrix-green-medium);
+    box-shadow: 0 0 10px var(--matrix-green-dark);
 }
 
 .dynamic-island ul {
     display: flex;
-    gap: 1.5rem;
-    list-style: none;
+    gap: 20px;
 }
-
 .dynamic-island li a {
-    color: var(--text-light);
-    text-decoration: none;
+    color: #fff; /* Default for light theme gradient */
     font-weight: 500;
-    position: relative;
-    padding: 5px 0;
-    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
 }
-
-.dynamic-island li a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--text-light);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
+body.dark-theme .dynamic-island li a {
+    color: var(--matrix-text-primary);
+    font-size: 1.2rem; /* VT323 might need larger size */
 }
 
 .dynamic-island li a:hover {
-    color: rgba(255, 255, 255, 0.9);
-    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.2); /* Light theme hover */
 }
-
-.dynamic-island li a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-/* 5. Theme Switcher */
-.theme-switch-wrapper {
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-}
-
-.theme-switch-input {
-    position: absolute;
-    opacity: 0;
-}
-
-.theme-switch-label {
-    display: inline-block;
-    width: 60px;
-    height: 30px;
-    background: var(--gradient-primary);
-    border-radius: 50px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.theme-switch-slider {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 24px;
-    height: 24px;
-    background: var(--text-light);
-    border-radius: 50%;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.theme-switch-slider::before {
-    content: '☀️';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 12px;
-}
-
-.theme-switch-input:checked+.theme-switch-label {
-    background: var(--gradient-dark);
-}
-
-.theme-switch-input:checked+.theme-switch-label .theme-switch-slider {
-    transform: translateX(30px);
-}
-
-.theme-switch-input:checked+.theme-switch-label .theme-switch-slider::before {
-    content: '🌙';
-}
-
-.theme-switch-slider {
-    -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.theme-switch-input:checked+.theme-switch-label .theme-switch-slider {
-    -webkit-transform: translateX(30px);
-    transform: translateX(30px);
+body.dark-theme .dynamic-island li a:hover {
+    background-color: var(--matrix-green-dark);
+    color: var(--matrix-bg-dark);
+    text-shadow: none;
 }
 
 
-/* 6. Mobile Menu */
+/* Mobile Menu Toggle */
 .menu-toggle {
-    display: none;
+    display: none; /* Hidden by default, shown in media query */
     flex-direction: column;
     justify-content: space-around;
-    width: 30px;
-    height: 24px;
-    cursor: pointer;
-    background: none;
+    width: 28px;
+    height: 22px;
+    background: transparent;
     border: none;
-    margin-left: 1rem;
-    position: relative;
-    z-index: 10;
+    cursor: pointer;
+    padding: 0;
+    z-index: 999; /* Above mobile nav panel before it opens */
+    margin-left: 15px;
 }
-
 .menu-toggle span {
     width: 100%;
     height: 3px;
-    background: var(--text-dark);
+    background-color: var(--text-color);
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); /* Smoother easing */
 }
-
 .menu-toggle.active span:nth-child(1) {
-    transform: translateY(10px) rotate(45deg);
+    transform: translateY(9.5px) rotate(45deg);
 }
-
 .menu-toggle.active span:nth-child(2) {
     opacity: 0;
+    transform: translateX(-10px);
 }
-
 .menu-toggle.active span:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
+    transform: translateY(-9.5px) rotate(-45deg);
 }
 
 /* Mobile Navigation Panel */
 .mobile-nav {
     position: absolute;
-    width: 100%;
-    top: 70px;
+    top: 70px; /* Below header */
     left: 0;
-    background: var(--gradient-dark);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transform: translateY(-20px);
+    width: 100%;
+    background-color: var(--header-bg); /* Match header */
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
-    /* When closing, use a slower, smooth ease-out and delay hiding visibility */
-    transition: transform 0.6s cubic-bezier(0.4, 0, 1, 1),
-        opacity 0.6s cubic-bezier(0.4, 0, 1, 1),
-        visibility 0s linear 0.6s;
-    border-radius: 0 0 15px 15px;
-    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, visibility 0s linear 0.4s;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden; /* Important for child animations */
+}
+body.dark-theme .mobile-nav {
+    border: 1px solid var(--matrix-card-border);
+    border-top: none;
+    box-shadow: 0 5px 20px rgba(0,255,0,0.1);
 }
 
-
-/* When opened, the panel animates quickly and becomes interactive immediately */
 .mobile-nav.open {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
-    transition: transform 0.5s cubic-bezier(0.0, 0, 0.2, 1),
-        opacity 0.5s cubic-bezier(0.0, 0, 0.2, 1),
-        visibility 0s;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, visibility 0s;
 }
 
-/* Mobile Navigation List */
 .mobile-nav ul {
-    list-style: none;
-    padding: 1.5rem;
-    margin: 0;
+    padding: 15px 20px;
 }
-
-/* Mobile Navigation List Items */
 .mobile-nav li {
-    margin-bottom: 1rem;
-    transform: translateX(-20px);
+    margin-bottom: 5px;
     opacity: 0;
-    /* Use a smooth ease-out transition for disappearing */
-    transition: transform 0.4s cubic-bezier(0.4, 0, 1, 1),
-        opacity 0.4s cubic-bezier(0.4, 0, 1, 1);
-    transition-delay: calc(0.05s * var(--i));
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition-delay: calc(0.05s * var(--i, 1)); /* Stagger, default to 1 if --i not set */
 }
-
 .mobile-nav.open li {
-    transform: translateX(0);
     opacity: 1;
+    transform: translateX(0);
 }
-
-/* Mobile Navigation Links */
+.mobile-nav li:last-child {
+    margin-bottom: 0;
+}
 .mobile-nav li a {
-    color: var(--text-dark);
-    text-decoration: none;
+    display: block;
+    padding: 12px 15px;
+    color: var(--text-color);
     font-size: 1.1rem;
     font-weight: 500;
-    display: block;
-    padding: 8px 10px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+    transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
+}
+body.dark-theme .mobile-nav li a {
+    font-size: 1.4rem; /* VT323 */
 }
 
 .mobile-nav li a:hover {
-    background-color: rgba(42, 122, 226, 0.1);
-    color: var(--primary);
+    background-color: var(--primary-color);
+    color: white; /* For light theme */
+}
+body.dark-theme .mobile-nav li a:hover {
+    background-color: var(--matrix-green-medium);
+    color: var(--matrix-bg-dark);
 }
 
 
-/* 7. Content Sections & Animations */
-.content-section {
-    padding: 120px 30px 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity var(--transition-speed), transform var(--transition-speed);
-    position: relative;
-}
-
-.content-section.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-h2.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    color: var(--primary);
-    position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-bottom: 10px;
-}
-
-h2.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 3px;
-    background: var(--gradient-primary);
-    transform: translateX(-50%);
-    transition: width 0.6s ease;
-}
-
-.content-section.visible h2.section-title::after {
-    width: 40%;
-}
-
-/* Floating Animation */
-.floating {
-    animation: floating 3s ease-in-out infinite;
-}
-
-@keyframes floating {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-
-    100% {
-        transform: translateY(0px);
-    }
-}
-
-/* 8. Cards & Skill Bars */
-/* Card 3D */
-.card-3d {
-    background: var(--card-bg);
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: var(--card-shadow);
-    position: relative;
-    transition: transform 0.5s var(--transition-bounce), box-shadow 0.5s ease-out, background-color var(--transition-speed);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-.card-3d::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
-    border-radius: 15px;
-    opacity: 0.4;
-    transition: opacity var(--transition-speed);
-    transform: translateZ(10px);
-    pointer-events: none;
-}
-
-.card-3d:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-body.dark-theme .card-3d::before {
-    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
-    opacity: 0.2;
-}
-
-/* Card Glow */
-.card-glow {
-    position: relative;
-    border-radius: 15px;
-    padding: 20px;
-    background: var(--card-bg);
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    z-index: 1;
-}
-
-.card-glow::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    z-index: -1;
-    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
-    background-size: 400%;
-    border-radius: 15px;
-    animation: glowing 20s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.card-glow:hover::before {
-    opacity: 1;
-}
-
-@keyframes glowing {
-    0% {
-        background-position: 0 0;
-    }
-
-    50% {
-        background-position: 400% 0;
-    }
-
-    100% {
-        background-position: 0 0;
-    }
-}
-
-/* Skill Bar */
-.skill-bar {
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    overflow: hidden;
-}
-
-.skill-progress {
-    height: 100%;
-    border-radius: 5px;
-    background: var(--gradient-primary);
-    width: 0;
-    position: relative;
-    transition: width 1.5s ease-out;
-}
-
-.skill-progress::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-image: linear-gradient(-45deg,
-            rgba(255, 255, 255, 0.2) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 0.2) 50%,
-            rgba(255, 255, 255, 0.2) 75%,
-            transparent 75%,
-            transparent);
-    background-size: 50px 50px;
-    animation: move 2s linear infinite;
-    overflow: hidden;
-}
-
-@keyframes move {
-    0% {
-        background-position: 0 0;
-    }
-
-    100% {
-        background-position: 50px 50px;
-    }
-}
-
-/* 9. Responsive Media Queries */
-@media (max-width: 1060px) {
-    .dynamic-island {
-        display: none;
-    }
-
-    .menu-toggle {
-        display: flex;
-    }
-}
-
-@media (max-width: 480px) {
-    .section-title {
-        font-size: 1.7rem;
-    }
-
-    .content-section {
-        padding: 90px 20px 50px;
-    }
-}
-
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .footer-links,
-    .footer-social {
-        margin: 10px 0;
-    }
-}
-
-/* 10. Footer, Contact Button & Intro Overlay */
-/* Combined Footer Rules – final (later rules override earlier ones) */
-.footer {
-    background: var(--gradient-primary);
-    color: var(--text-light);
-    padding: 40px 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* 6. Theme Switcher */
+.theme-switch-wrapper {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    margin-left: 15px;
+}
+.theme-switch-input {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    position: absolute;
+}
+.theme-switch-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px; /* Smaller */
+    height: 26px; /* Smaller */
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    transition: background-color var(--transition-speed);
+}
+body:not(.dark-theme) .theme-switch-label {
+    background-color: #e2e2e2;
+}
+body.dark-theme .theme-switch-label {
+    background-color: var(--matrix-green-dark);
 }
 
-.footer-brand h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 5px;
+.theme-switch-label:after { /* The toggle */
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px; /* Adjusted */
+    height: 22px; /* Adjusted */
+    background: #fff; /* White toggle */
+    border-radius: 90px;
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.theme-switch-input:checked + .theme-switch-label {
+    background: var(--primary-color); /* Active color */
+}
+body.dark-theme .theme-switch-input:checked + .theme-switch-label {
+    background: var(--matrix-green-bright);
+}
+.theme-switch-input:checked + .theme-switch-label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+/* Adding icons to theme switcher */
+.theme-switch-slider::before { /* Old CSS, this is for a different structure. Let's adapt the new one. */
+    /* This part was for the old slider. We'll use the :after pseudo-element on the label */
+}
+.theme-switch-label:active:after {
+    width: 28px; /* Slight grow on click */
 }
 
-.footer-brand p {
-    font-size: 1rem;
-    opacity: 0.9;
-}
-
-.footer-links a {
-    color: var(--text-light);
-    text-decoration: none;
-    margin: 0 10px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.footer-links a:hover {
-    transform: translateY(-5px);
-    opacity: 0.8;
-}
-
-.footer-social a {
-    color: var(--text-light);
-    font-size: 1.4rem;
-    margin: 0 10px;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.footer-social a:hover {
-    transform: scale(1.3);
-    color: var(--accent);
-}
-
-.footer-copyright {
-    margin-top: 30px;
-    font-size: 0.9rem;
-    opacity: 0.7;
-}
-
-/* Contact Button & Info (merged duplicates) */
-.contact-btn {
-    position: fixed;
-    bottom: 45px;
-    left: 40px;
-    background: #7209b7;
-    color: #fff;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+/* Adding icons (sun/moon) to the new theme-switch-label:after */
+.theme-switch-label:after {
+    /* Existing styles */
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    z-index: 1000;
+    font-size: 14px; /* Adjust as needed */
 }
-
-/* Only apply hover effects on devices that support hover */
-@media (hover: hover) and (pointer: fine) {
-    .contact-btn:hover {
-        background: #4cc9f0;
-        transform: scale(1.1);
-    }
+/* Sun icon for light mode (default state of :after) */
+body:not(.dark-theme) .theme-switch-label:after {
+    content: '☀️';
+    color: #f39c12; /* Orange for sun */
 }
-
-body.dark-theme .contact-btn {
-    background: var(--primary-dark);
+/* Moon icon for dark mode (when input is checked) */
+body.dark-theme .theme-switch-label:after {
+    content: '🌙';
+    color: var(--matrix-bg-dark); /* Dark color for moon on bright green bg */
 }
-
-@media (hover: hover) and (pointer: fine) {
-    body.dark-theme .contact-btn:hover {
-        background: var(--secondary);
-    }
+/* When theme switch input is NOT checked (light mode active), but body IS .dark-theme (JS default) */
+body.dark-theme .theme-switch-input:not(:checked) + .theme-switch-label:after {
+    content: '☀️'; /* Sun should show if light theme is selected */
+    color: #f39c12;
 }
-
-.contact-info {
-    position: fixed;
-    bottom: 160px;
-    left: 40px;
-    background: black;
-    color: #fff !important;
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 999;
-}
-
-.contact-info a {
-    color: #7209b7;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .contact-info a:hover {
-        text-decoration: underline;
-    }
-}
-
-/* Top Button */
-#TopBtn {
-    position: fixed;
-    bottom: 45px;
-    right: 40px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--primary-light);
-    border: none;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-#TopBtn::before {
-    content: '↑';
-    font-size: 24px;
-    transition: transform 0.3s ease;
-}
-
-/* Only apply hover effects on devices that support hover */
-@media (hover: hover) and (pointer: fine) {
-    #TopBtn:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px var(--primary);
-    }
-
-    #TopBtn:hover::before {
-        transform: translateY(-3px);
-    }
-}
-
-#TopBtn:active {
-    transform: scale(0.9);
+/* When theme switch input IS checked (dark mode active), but body IS NOT .dark-theme (user switched to dark) */
+body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
+    content: '🌙';
+    color: #fff; /* White moon on blue bg */
 }
 
 
-/* Intro Canvas & Overlay */
-#intro-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
+/* 7. Intro Overlay & Game Canvas */
 #intro-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--background-dark);
+    background-color: var(--matrix-bg-dark); /* Always dark for intro */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    color: var(--text-light);
-    z-index: 1000;
-    overflow: hidden;
+    color: var(--matrix-text-primary);
+    z-index: 1000; /* Highest */
     opacity: 1;
-    transition: opacity 1.2s ease;
+    transition: opacity 1s ease-out 0.2s; /* Delay fade out slightly */
+    font-family: var(--font-matrix);
 }
-
+#intro-canvas { /* 3D game canvas */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Behind intro content */
+}
 .intro-content {
     position: relative;
     text-align: center;
-    animation: fadeSlideIn 4s ease;
+    padding: 20px;
+    animation: textAppear 2s ease-out forwards;
+}
+@keyframes textAppear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .intro-title {
-    font-size: 4.5rem;
-    font-weight: 700;
+    font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
     margin-bottom: 15px;
-    font-family: 'Montserrat', sans-serif;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px var(--matrix-green-bright), 0 0 20px var(--matrix-green-bright);
+    font-weight: normal;
 }
-
 .intro-subtitle {
-    font-size: 2rem;
-    font-weight: 400;
-    margin-bottom: 50px;
-    letter-spacing: 2px;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin-bottom: 40px;
+    color: var(--matrix-text-secondary);
+    letter-spacing: 1px;
+    opacity: 0.9;
 }
 
-#enter-btn {
-    padding: 14px 30px;
-    font-size: 1.3rem;
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    color: var(--text-light);
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    box-shadow: 0 0 40px var(--secondary);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Cyberpunk Button Style for Enter Button */
+#enter-btn.cybr-btn {
+  font-family: var(--font-matrix);
+  --primary: hsl(var(--primary-hue), 85%, calc(var(--primary-lightness, 50) * 1%));
+  --shadow-primary: hsl(var(--shadow-primary-hue), 90%, 50%);
+  --primary-hue: 180; /* Greenish-cyan base for Matrix */
+  --primary-lightness: 40;
+  --color: hsl(0, 0%, 100%);
+  --font-size: clamp(1.2rem, 3vw, 1.5rem);
+  --shadow-primary-hue: 120; /* Green for shadow */
+  --label-size: 0.8rem;
+  --shadow-secondary-hue: 60;
+  --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%);
+  --border: 2px; /* Thinner border for Matrix */
+  text-decoration: none;
+  color: var(--color);
+  cursor: pointer;
+  outline: transparent;
+  border: 0;
+  background-color: transparent;
+  padding: 1em 2em;
+  position: relative;
+  line-height: 1.5;
+  letter-spacing: 1px;
 }
 
-#enter-btn:hover {
-    transform: scale(1.15);
-    box-shadow: 0 0 60px var(--primary);
+#enter-btn.cybr-btn:focus-visible {
+  outline: 2px solid var(--matrix-green-bright);
+  outline-offset: 2px;
 }
 
-@keyframes fadeSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(60px);
+#enter-btn.cybr-btn:after,
+#enter-btn.cybr-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  clip-path: var(--clip);
+  z-index: -1;
+}
+
+#enter-btn.cybr-btn:before {
+  background: var(--shadow-primary);
+  transform: translate(var(--border), var(--border));
+}
+
+#enter-btn.cybr-btn:after {
+  background: var(--primary);
+}
+
+.cybr-btn__tag {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  font-size: var(--label-size);
+  color: hsl(var(--shadow-secondary-hue), 100%, 70%);
+}
+
+.cybr-btn__glitch {
+  position: absolute;
+  top: calc(var(--border) * -1);
+  left: calc(var(--border) * -1);
+  right: calc(var(--border) * -1);
+  bottom: calc(var(--border) * -1);
+  background: var(--shadow-primary);
+  text-shadow: 2px 2px var(--shadow-primary), -2px -2px hsl(var(--shadow-secondary-hue), 100%, 70%);
+  clip-path: var(--clip);
+  animation: glitch 2s infinite;
+  display: none; /* Can be enabled for more intense effect */
+}
+#enter-btn.cybr-btn:hover .cybr-btn__glitch {
+  display: block;
+}
+
+/* Main Content Sections */
+main {
+    padding-top: 70px; /* Space for fixed header */
+}
+.content-section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    opacity: 0; /* For IntersectionObserver fade-in */
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.content-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h2.section-title {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700; /* Poppins needs this */
+    font-family: var(--font-secondary);
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--primary-color);
+    position: relative;
+}
+body.dark-theme h2.section-title {
+    font-family: var(--font-matrix);
+    font-weight: normal; /* VT323 default */
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+h2.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    transition: width 0.5s ease-in-out;
+}
+.content-section.visible h2.section-title::after {
+    width: 100px;
+}
+
+
+/* 8. Cards */
+.card-3d, .card-glow {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease-out, 
+                box-shadow var(--transition-speed) ease-out,
+                background-color var(--transition-speed),
+                border-color var(--transition-speed);
+}
+body.dark-theme .card-3d, body.dark-theme .card-glow {
+    box-shadow: 0 0 15px rgba(0,255,0,0.1), 0 0 5px rgba(0,255,0,0.2) inset;
+}
+
+.card-3d:hover, .card-glow:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+body.dark-theme .card-3d:hover, body.dark-theme .card-glow:hover {
+    border-color: var(--matrix-green-bright);
+    box-shadow: 0 0 25px var(--matrix-green-medium), 0 0 10px var(--matrix-green-bright) inset;
+}
+
+.card-3d h3, .card-glow h3 {
+    font-size: 1.5rem;
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+body.dark-theme .card-3d h3, body.dark-theme .card-glow h3 {
+    font-family: var(--font-matrix);
+    font-weight: normal;
+    font-size: 1.8rem; /* VT323 often needs to be larger */
+}
+
+.card-glow {
+    position: relative;
+    overflow: hidden; /* For pseudo-elements */
+}
+.card-glow::before { /* Animated border effect for dark theme */
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+body.dark-theme .card-glow::before {
+    background: linear-gradient(45deg, var(--matrix-green-dark), var(--matrix-green-bright), var(--matrix-green-dark));
+    background-size: 300% 300%;
+    animation: glowingBorder 8s linear infinite;
+}
+body.dark-theme .card-glow:hover::before {
+    opacity: 1;
+}
+
+@keyframes glowingBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Grid layout for card containers */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* 9. Specific Section Styling */
+#experience-container .experience-item .company-info {
+    font-size: 0.9rem;
+    color: var(--text-color-medium);
+    margin-bottom: 10px;
+    font-style: italic;
+}
+#experience-container .experience-item h4 { /* Responsabilità heading */
+    font-size: 1.1rem;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+body.dark-theme #experience-container .experience-item h4 {
+    color: var(--matrix-text-secondary);
+}
+#experience-container .experience-item .note {
+    margin-top: 15px;
+    font-size: 0.9em;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.03);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 0 4px 4px 0;
+}
+body.dark-theme #experience-container .experience-item .note {
+    background-color: rgba(0,255,0,0.05);
+    border-left-color: var(--matrix-green-medium);
+}
+
+#projects-container .project-item h3 a {
+    text-decoration: underline;
+    text-decoration-color: var(--secondary-color);
+}
+body.dark-theme #projects-container .project-item h3 a {
+    text-decoration-color: var(--matrix-green-bright);
+    text-shadow: 0 0 3px var(--matrix-green-bright);
+}
+#projects-container .project-item h3 a:hover {
+    text-decoration-color: var(--primary-color);
+}
+
+
+#skills-container.skills-grid { /* Specific grid for skills */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+#skills-container .skill-category ul {
+    columns: 2; /* Multi-column layout for skills list */
+    column-gap: 20px;
+}
+@media (max-width: 480px) { /* Single column on very small screens */
+    #skills-container .skill-category ul {
+        columns: 1;
     }
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+/* 10. Footer */
+.footer {
+    background-color: var(--header-bg); /* Match header for consistency */
+    color: var(--text-color);
+    padding: 40px 20px 20px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px; /* Space above footer */
+}
+body.dark-theme .footer {
+    border-top: 1px solid var(--matrix-card-border);
+    box-shadow: 0 -5px 20px rgba(0,255,0,0.05);
+}
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+.footer-brand h2 {
+    font-size: 1.8rem;
+    font-family: var(--font-secondary); /* Or var(--font-matrix) */
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+body.dark-theme .footer-brand h2 {
+    font-family: var(--font-matrix);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+.footer-brand p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.footer-links a {
+    font-weight: 500;
+}
+.footer-social a {
+    font-size: 1.5rem;
+    margin: 0 10px;
+    transition: transform var(--transition-speed-fast), color var(--transition-speed-fast);
+}
+.footer-social a:hover {
+    transform: scale(1.2) translateY(-2px);
+    color: var(--secondary-color); /* Or primary-color for dark theme */
+}
+.footer-copyright {
+    margin-top: 25px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* 11. Floating Action Buttons & Contact Popup */
+#TopBtn, .contact-btn {
+    position: fixed;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease-out, background-color 0.2s, box-shadow 0.2s;
+    z-index: 800; /* Below header */
+    border: none;
+}
+body.dark-theme #TopBtn, body.dark-theme .contact-btn {
+    background-color: var(--matrix-green-dark);
+    color: var(--matrix-bg-dark);
+    box-shadow: 0 0 10px var(--matrix-green-medium);
+    border: 1px solid var(--matrix-green-bright);
+}
+body:not(.dark-theme) #TopBtn, body:not(.dark-theme) .contact-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+#TopBtn {
+    bottom: 30px;
+    right: 30px;
+    font-size: 1.5rem; /* For the arrow */
+}
+.contact-btn {
+    bottom: 30px;
+    left: 30px;
+    font-size: 1.2rem; /* For the icon */
+}
+
+#TopBtn:hover, .contact-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+body.dark-theme #TopBtn:hover, body.dark-theme .contact-btn:hover {
+    background-color: var(--matrix-green-bright);
+    box-shadow: 0 0 15px var(--matrix-green-bright);
+}
+
+
+.contact-info-popup { /* Renamed from .contact-info for clarity */
+    position: fixed;
+    bottom: 90px; /* Above contact button */
+    left: 30px;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    z-index: 799; /* Just below FABs */
+    width: clamp(280px, 80vw, 350px); /* Responsive width */
+    display: none; /* Toggled by JS */
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeInScaleUp 0.3s ease-out forwards;
+}
+body.dark-theme .contact-info-popup {
+    box-shadow: 0 0 20px rgba(0,255,0,0.15);
+}
+
+.contact-info-popup p {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+body.dark-theme .contact-info-popup p {
+    font-size: 1.1rem; /* VT323 */
+}
+.contact-info-popup a {
+    font-weight: 500;
+    word-break: break-all; /* Prevent overflow for long links */
+}
+
+@keyframes fadeInScaleUp {
+    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* 12. Utility & Animation Classes */
+.glitch {
+    position: relative;
+    /* animation: glitch-skew 1s infinite linear alternate-reverse; */ /* Optional overall skew */
+}
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-color); /* Match body background */
+    overflow: hidden;
+}
+.glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--matrix-green-medium); /* Greenish for dark theme */
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+.glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--accent-color), 1px 1px var(--matrix-green-dark); /* Bluish/Greenish */
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+body:not(.dark-theme) .glitch::before { text-shadow: -1px 0 blue; }
+body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
+
+
+@keyframes glitch-anim-1 {
+    0% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.3deg); }
+    5% { clip: rect(27px, 9999px, 94px, 0); }
+    /* ... more steps ... */
+    100% { clip: rect(30px, 9999px, 100px, 0); transform: skew(-0.2deg); }
+}
+@keyframes glitch-anim-2 {
+    0% { clip: rect(45px, 9999px, 102px, 0); transform: skew(0.2deg); }
+    /* ... more steps ... */
+    100% { clip: rect(10px, 9999px, 75px, 0); transform: skew(-0.3deg); }
+}
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  100% { transform: skew(0.5deg); }
+}
+
+.fade-in { /* Simple fade in for profile text */
+    animation: fadeInElement 1s ease-out 0.5s forwards;
+    opacity: 0;
+}
+@keyframes fadeInElement {
+    to { opacity: 1; }
+}
+
+
+/* 13. Responsive Media Queries */
+@media (max-width: 1024px) {
+    .dynamic-island {
+        display: none; /* Hide desktop nav */
+    }
+    .menu-toggle {
+        display: flex; /* Show hamburger */
+    }
+    /* Add specific style for mobile menu items stagger using JS if possible */
+    .mobile-nav.open li:nth-child(1) { --i: 1; }
+    .mobile-nav.open li:nth-child(2) { --i: 2; }
+    .mobile-nav.open li:nth-child(3) { --i: 3; }
+    .mobile-nav.open li:nth-child(4) { --i: 4; }
+    .mobile-nav.open li:nth-child(5) { --i: 5; }
+    .mobile-nav.open li:nth-child(6) { --i: 6; }
+    .mobile-nav.open li:nth-child(7) { --i: 7; }
+    .mobile-nav.open li:nth-child(8) { --i: 8; }
+
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 15px;
+    }
+    .content-section {
+        padding: 50px 15px;
+    }
+    h2.section-title {
+        margin-bottom: 30px;
+    }
+    .grid-layout, #skills-container.skills-grid {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+        gap: 20px;
+    }
+    .footer-container {
+        gap: 20px;
+    }
+    .footer-links {
+        gap: 15px;
+    }
+    #TopBtn, .contact-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem; /* Smaller icons/arrow */
+        bottom: 20px;
+    }
+    #TopBtn { right: 20px; }
+    .contact-btn { left: 20px; }
+    .contact-info-popup {
+        bottom: 70px; /* Adjust for smaller FAB */
+        left: 20px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        line-height: 1.6;
+    }
+    .brand .logo-text {
+        font-size: 1.5rem;
+    }
+    h2.section-title {
+        font-size: 1.6rem; /* Further reduce title size */
+    }
+    h2.section-title::after {
+        width: 50px;
+        height: 2px;
+    }
+    .content-section.visible h2.section-title::after {
+        width: 80px;
+    }
+    .card-3d, .card-glow {
+        padding: 20px;
+    }
+    .card-3d h3, .card-glow h3 {
+        font-size: 1.3rem; /* Or 1.6rem for VT323 */
+    }
+    body.dark-theme .card-3d h3, body.dark-theme .card-glow h3 {
+        font-size: 1.6rem;
+    }
+    .footer-social a {
+        font-size: 1.3rem;
+        margin: 0 8px;
+    }
+     #skills-container .skill-category ul { /* Ensure single column for skills */
+        columns: 1;
     }
 }
