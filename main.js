@@ -160,6 +160,12 @@ const enterBtn = document.getElementById("enter-btn");
 const contactBtn = document.getElementById("contact-btn");       
 const contactInfoPopup = document.getElementById("contact-info"); 
 
+// Elements for Transition Animation
+const transitionOverlay = document.getElementById("transition-overlay");
+const hexRainContainer = document.getElementById("hex-rain-container");
+const terminalTextOutput = document.getElementById("terminal-text-output");
+const mainContentElement = document.querySelector('main');
+
 // ============================================================
 // Top Button Functionality
 // ============================================================
@@ -702,24 +708,161 @@ window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
 });
+// ============================================================
+// Transition Animation Logic
+// ============================================================
+const delay = ms => new Promise(res => setTimeout(res, ms));
+let hexRainInterval = null;
 
+function generateHexLine() {
+    const chars = "0123456789ABCDEF";
+    let line = "";
+    // Approximate based on common screen widths; adjust if needed
+    const lineLength = Math.floor(window.innerWidth / (14 * 0.6)); // 14px font, ~0.6 char width
+    for (let i = 0; i < lineLength; i++) {
+        line += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return line;
+}
+
+function startHexRainEffect() {
+    if (!hexRainContainer) return;
+    hexRainContainer.innerHTML = ''; // Clear previous
+    const lines = [];
+    const maxLines = Math.floor(window.innerHeight / 16); // ~16px line height
+
+    for(let i = 0; i < maxLines; i++) {
+        lines.push(generateHexLine());
+    }
+    hexRainContainer.textContent = lines.join('\n');
+
+    hexRainInterval = setInterval(() => {
+        lines.shift();
+        lines.push(generateHexLine());
+        hexRainContainer.textContent = lines.join('\n');
+    }, 100); // Speed of rain
+}
+
+function stopHexRainEffect() {
+    if (hexRainInterval) clearInterval(hexRainInterval);
+    hexRainInterval = null;
+    if (hexRainContainer) hexRainContainer.textContent = '';
+}
+
+async function typeTerminalMessage(message, speed = 75, clear = false) {
+    if (!terminalTextOutput) return;
+    if (clear) {
+        terminalTextOutput.innerHTML = ''; // Use innerHTML to clear cursor if it was part of text
+    } else if (terminalTextOutput.innerHTML !== '') {
+        terminalTextOutput.innerHTML += '\n'; // Add newline before new message
+    }
+
+    // Temporarily remove cursor for typing, then re-add
+    terminalTextOutput.classList.remove('cursor-active');
+
+
+    let currentText = terminalTextOutput.innerHTML; // Get existing content
+    for (let i = 0; i < message.length; i++) {
+        currentText += message[i];
+        terminalTextOutput.innerHTML = currentText;
+        await delay(speed);
+    }
+     terminalTextOutput.innerHTML = currentText; // Ensure full message is set
+}
+
+
+async function runIntermediateTransition() {
+    if (!transitionOverlay || !mainContentElement) {
+        console.error("Transition or main content elements not found!");
+        // Fallback: directly show main content
+        if (mainContentElement) mainContentElement.classList.add('visible');
+        if (contactBtn) contactBtn.style.display = "flex";
+        document.body.style.overflow = ''; // Restore scroll
+        return;
+    }
+
+    transitionOverlay.style.display = "flex";
+    await delay(50); // Allow display to apply before opacity transition
+    transitionOverlay.style.opacity = "1";
+
+    startHexRainEffect();
+    if (terminalTextOutput) terminalTextOutput.innerHTML = ''; // Clear terminal
+
+    await delay(1000);
+    transitionOverlay.classList.add('glitching');
+    await typeTerminalMessage("SYSTEM_CHECK::INITIATED", 50, true);
+    await delay(1500);
+    await typeTerminalMessage("HEX_STREAM::ACTIVE", 50);
+    await delay(1500);
+    transitionOverlay.classList.remove('glitching');
+    await typeTerminalMessage("ACCESSING_MAINFRAME::ENCRYPTED_LAYER_7", 60);
+    await delay(2000);
+    await typeTerminalMessage("DECRYPTION_SUCCESSFUL...", 40);
+    await delay(1000);
+    await typeTerminalMessage("LOADING_CV_INTERFACE_V3.0...", 70);
+    
+    stopHexRainEffect();
+    await delay(1500);
+
+    transitionOverlay.classList.add('disappearing');
+
+    // Wait for disappearing animation to complete
+    setTimeout(() => {
+        transitionOverlay.style.display = "none";
+        transitionOverlay.classList.remove('disappearing');
+        transitionOverlay.style.opacity = "0"; // Reset opacity
+
+        // Reveal main content
+        mainContentElement.classList.add('visible');
+        
+        if (contactBtn) contactBtn.style.display = "flex";
+        // Show ToTopBtn only if already scrolled down (unlikely right after intro)
+        if (toTopBtn && window.pageYOffset > 300) {
+            toTopBtn.style.display = "flex";
+        } else if (toTopBtn) {
+            toTopBtn.style.display = "none"; // Explicitly hide if not scrolled
+        }
+        
+        if (mainContentElement) {
+             mainContentElement.setAttribute('tabindex', '-1');
+             mainContentElement.focus({ preventScroll: true }); // Prevent scroll on focus
+        }
+
+        if (typeof AOS !== 'undefined') {
+            AOS.refreshHard(); // Crucial for AOS to pick up newly visible elements
+        }
+        document.body.style.overflow = ''; // Restore scrolling
+    }, 700); // Matches digital-dissolve animation duration
+}
 // ============================================================
 // Intro Overlay: Remove overlay on Enter button click
 // ============================================================
 if (enterBtn && introOverlay) {
   enterBtn.addEventListener("click", () => {
-    introOverlay.style.opacity = "0";
-    setTimeout(() => {
-      introOverlay.style.display = "none";
-      if (contactBtn) contactBtn.style.display = "flex";
-      if (toTopBtn && window.pageYOffset > 300) {
-        toTopBtn.style.display = "flex";
-      }
-      const mainContent = document.querySelector('main');
-      if (mainContent) mainContent.setAttribute('tabindex', '-1'); 
-      if (mainContent) mainContent.focus();
+    document.body.style.overflow = 'hidden'; // Prevent scrolling during transitions
+    
+    // Optionally, stop or fade out the Three.js game elements more gracefully
+    // For example, you could make the rocket and falling objects fade or shrink.
+    // This example just hides the overlay.
+    if (introOverlay) introOverlay.style.opacity = "0";
 
-    }, 1200); 
+    // Stop game logic if it's still running aggressively
+    // (e.g., clear intervals for creating new falling objects if any are still active)
+    // This depends on how your Three.js game loop is structured.
+    // For this example, we assume the visual fade out of introOverlay is enough.
+
+    setTimeout(() => {
+      if (introOverlay) introOverlay.style.display = "none";
+      
+      // Clean up Three.js resources if possible to free memory,
+      // though if the canvas is just hidden, it might not be strictly necessary
+      // unless it's resource-intensive.
+      // scene.remove(rocket); rocket.geometry.dispose(); rocket.material.dispose(); etc. for all objects.
+      // renderer.dispose(); // If you're completely done with it.
+
+      runIntermediateTransition(); // Start the new transition
+
+    }, 1200); // Time for intro overlay to fade out
   });
 }
 // ============================================================
@@ -728,10 +871,12 @@ if (contactBtn && contactInfoPopup) {
   contactBtn.addEventListener("click", () => {
     const isVisible = contactInfoPopup.style.display === "flex";
     contactInfoPopup.style.display = isVisible ? "none" : "flex";
-    contactBtn.setAttribute('aria-expanded', !isVisible);
+    contactBtn.setAttribute('aria-expanded', String(!isVisible));
   });
   document.addEventListener('click', function(event) {
-    if (contactInfoPopup.style.display === 'flex' && !contactBtn.contains(event.target) && !contactInfoPopup.contains(event.target)) {
+    if (contactInfoPopup.style.display === 'flex' && 
+        !contactBtn.contains(event.target) && 
+        !contactInfoPopup.contains(event.target)) {
         contactInfoPopup.style.display = 'none';
         contactBtn.setAttribute('aria-expanded', 'false');
     }
@@ -740,4 +885,4 @@ if (contactBtn && contactInfoPopup) {
 
 // Initial state for buttons that appear after intro
 if (contactBtn) contactBtn.style.display = "none";
-if (toTopBtn) toTopBtn.style.display = "none"; 
+if (toTopBtn) toTopBtn.style.display = "none";

@@ -429,6 +429,129 @@ img {
 #enter-btn.cybr-btn:hover .cybr-btn__glitch {
   display: block;
 }
+/* ============================================================
+   Transition Overlay Styles
+   ============================================================ */
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000500; /* Very dark green, almost black */
+    z-index: 9998; /* Below intro-overlay (if it was 9999+), above main content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #00ff00; /* Green text */
+    font-family: 'VT323', monospace; /* Monospace font for terminal look */
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+#hex-rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px; /* Adjust for density */
+    line-height: 1.1;
+    text-align: left;
+    word-break: break-all;
+    white-space: pre-wrap;
+    overflow: hidden;
+    z-index: 1;
+    /* Color will be set by JS, but a fallback */
+    color: #003300;
+    opacity: 0.7;
+}
+
+#terminal-text-output {
+    font-size: clamp(1.5em, 4vw, 2.2em); /* Responsive font size */
+    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0;
+    position: relative;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border: 1px solid #00cc00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5) inset, 0 0 10px rgba(0, 255, 0, 0.3);
+    white-space: pre-wrap; /* Allow newlines */
+    text-align: left;
+    min-width: 300px; /* Minimum width for the terminal box */
+    max-width: 80%;
+}
+
+#terminal-text-output::after { /* Typing cursor */
+    content: '_';
+    font-weight: bold;
+    animation: blink-cursor 1s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Glitch effect for the whole transition overlay during a phase */
+#transition-overlay.glitching {
+    animation: screen-glitch 150ms steps(2, end) infinite, color-glitch 200ms linear infinite;
+}
+
+@keyframes screen-glitch {
+    0% { clip-path: inset(9% 0 34% 0); }
+    20% { clip-path: inset(45% 0 9% 0); }
+    40% { clip-path: inset(23% 0 18% 0); }
+    60% { clip-path: inset(39% 0 48% 0); }
+    80% { clip-path: inset(12% 0 29% 0); }
+    100% { clip-path: inset(50% 0 5% 0); }
+}
+@keyframes color-glitch {
+  0% { filter: hue-rotate(0deg) contrast(1.2) brightness(1.1); }
+  25% { filter: hue-rotate(10deg) contrast(1.1) brightness(1.0); }
+  50% { filter: hue-rotate(-5deg) contrast(1.3) brightness(1.2); }
+  75% { filter: hue-rotate(5deg) contrast(1.0) brightness(1.0); }
+  100% { filter: hue-rotate(0deg) contrast(1.2) brightness(1.1); }
+}
+
+
+/* Final disappearing effect for transition-overlay */
+#transition-overlay.disappearing {
+    animation: digital-dissolve 0.7s ease-out forwards;
+}
+
+@keyframes digital-dissolve {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1) contrast(1);
+    }
+    50% {
+        opacity: 0.8;
+        filter: brightness(1.5) contrast(1.5) blur(1px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+        filter: brightness(2) contrast(2) blur(3px);
+    }
+}
+
+/* Ensure main content is hidden initially and fades in */
+main {
+    opacity: 0;
+    visibility: hidden; /* Important to prevent interaction/layout issues */
+    transition: opacity 0.8s ease-in 0.2s, visibility 0s linear 1s; /* Delay visibility until opaque */
+}
+
+main.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease-in, visibility 0s linear 0s;
+}
 /* ===========================================================
    Enhanced Matrix Timeline for Experience Section
    =========================================================== */
