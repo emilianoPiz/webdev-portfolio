@@ -6,65 +6,42 @@
    3. Scrollbar Styling
    4. Main Background Canvas
    5. Header & Navigation (Desktop & Mobile)
-   6. Theme Switcher
-   7. Intro Overlay & Game Canvas
-   8. Content Sections & Cards
-   9. Specific Section Styling (Experience, Skills, etc.)
-   10. Footer
-   11. Floating Action Buttons (Top, Contact) & Contact Popup
-   12. Utility & Animation Classes (Glitch, FadeIn)
-   13. Responsive Media Queries
+   6. Intro Overlay & Game Canvas
+   7. Content Sections & Cards
+   8. Specific Section Styling (Experience, Skills, etc.)
+   9. Footer
+   10. Floating Action Buttons (Top, Contact) & Contact Popup
+   11. Utility & Animation Classes (Glitch, FadeIn)
+   12. Responsive Media Queries
    =========================================================== */
 
 /* 1. Imports & Root Variables */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&family=VT323&display=swap');
 
 :root {
-    /* Light Theme (Default fallback, but we'll default to dark via JS) */
-    --primary-color: #2a7ae2; /* Bright Blue */
-    --secondary-color: #7209b7; /* Purple */
-    --accent-color: #4cc9f0;   /* Cyan */
-    --background-color: #f4f7fc;
-    --text-color: #333;
-    --text-color-medium: #555;
-    --card-background: rgba(255, 255, 255, 0.85);
-    --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    --header-bg: rgba(255, 255, 255, 0.9);
-    --border-color: #e0e0e0;
+    /* Matrix Dark Theme Variables */
+    --primary-color: #00FF00; /* matrix-green-bright */
+    --secondary-color: #00DD00; /* matrix-green-medium */
+    --accent-color: #00FF00; /* matrix-green-bright */
+    --background-color: #050505; /* matrix-bg-dark */
+    --text-color: var(--primary-color); 
+    --text-color-medium: var(--secondary-color); 
+    --card-background: rgba(10, 20, 10, 0.7); 
+    --card-border: rgba(0, 255, 0, 0.3);
+    --header-bg: rgba(5, 5, 5, 0.85);
+    --border-color: var(--card-border); /* General border color */
 
-    /* Matrix Dark Theme (Activated by .dark-theme class on body) */
-    --matrix-green-bright: #00FF00;
-    --matrix-green-medium: #00DD00;
-    --matrix-green-dark: #00AA00;
-    --matrix-bg-dark: #050505; /* Very dark, near black */
-    --matrix-bg-medium: #0a0a0a;
-    --matrix-text-primary: var(--matrix-green-bright);
-    --matrix-text-secondary: var(--matrix-green-medium);
-    --matrix-card-bg: rgba(10, 20, 10, 0.7); /* Dark green tint */
-    --matrix-card-border: rgba(0, 255, 0, 0.3);
-    --matrix-header-bg: rgba(5, 5, 5, 0.85);
+    /* Card Shadows for Pulse Effect */
+    --card-shadow-base: 0 0 15px rgba(0,255,0,0.1), 0 0 5px rgba(0,255,0,0.15) inset;
+    --card-shadow-pulse-peak: 0 0 25px rgba(0,255,0,0.3), 0 0 10px rgba(0,255,0,0.25) inset;
 
-    --font-primary: 'Poppins', sans-serif;
-    --font-secondary: 'Montserrat', sans-serif;
-    --font-matrix: 'VT323', monospace;
+
+    --font-primary: 'VT323', monospace; /* Default to matrix font for body text */
+    --font-secondary: 'VT323', monospace; /* Default to matrix font for headings */
 
     --transition-speed: 0.3s;
     --transition-speed-fast: 0.2s;
     --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Apply Matrix theme variables when .dark-theme is active */
-body.dark-theme {
-    --primary-color: var(--matrix-green-bright);
-    --secondary-color: var(--matrix-green-medium);
-    --accent-color: var(--matrix-green-bright);
-    --background-color: var(--matrix-bg-dark);
-    --text-color: var(--matrix-text-primary);
-    --text-color-medium: var(--matrix-text-secondary);
-    --card-background: var(--matrix-card-bg);
-    --card-shadow: 0 5px 20px rgba(0, 255, 0, 0.15);
-    --header-bg: var(--matrix-header-bg);
-    --border-color: var(--matrix-card-border);
 }
 
 
@@ -80,23 +57,20 @@ html {
 }
 
 body {
-    font-family: var(--font-primary);
-    background-color: var(--background-color);
-    color: var(--text-color);
+    font-family: var(--font-primary); /* VT323 */
+    background-color: var(--background-color); /* matrix-bg-dark */
+    color: var(--text-color); /* matrix-text-primary */
     transition: background-color var(--transition-speed), color var(--transition-speed);
     overflow-x: hidden;
     line-height: 1.7;
 }
 
-body.dark-theme {
-    font-family: var(--font-matrix); /* Main font for dark theme */
-}
-body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme .logo-text {
-    font-family: var(--font-matrix); /* Ensure headings also use it */
+h1, h2, h3, .logo-text {
+    font-family: var(--font-secondary); /* VT323 */
     font-weight: normal; /* VT323 is often bold by default */
 }
-body.dark-theme p, body.dark-theme li, body.dark-theme a, body.dark-theme span, body.dark-theme button {
-    font-family: var(--font-matrix);
+p, li, a, span, button {
+    font-family: var(--font-primary); /* VT323 */
     font-weight: normal;
 }
 
@@ -121,17 +95,12 @@ ul {
     margin-bottom: 8px;
     position: relative;
 }
-body.dark-theme .card-3d li::before, 
-body.dark-theme .card-glow li::before {
+.card-3d li::before, 
+.card-glow li::before {
     content: ">"; /* Matrix-style list bullet */
     position: absolute;
     left: -18px;
-    color: var(--matrix-green-bright);
-}
-body:not(.dark-theme) .card-3d li, 
-body:not(.dark-theme) .card-glow li {
-    list-style-type: disc; /* Default bullets for light theme */
-    margin-left: 15px; /* Adjust if needed for disc alignment */
+    color: var(--primary-color); /* Was matrix-green-bright */
 }
 
 
@@ -149,22 +118,19 @@ img {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
-.force-repaint { will-change: transform; } /* For iOS theme switch hack */
+.force-repaint { will-change: transform; } 
 
 /* 3. Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-}
-body.dark-theme ::-webkit-scrollbar-track {
-    background: rgba(0, 20, 0, 0.5);
+    background: rgba(0, 20, 0, 0.5); /* Dark theme track */
 }
 ::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 5px;
-    border: 2px solid var(--background-color); /* Creates a small gap */
+    border: 2px solid var(--background-color); 
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
@@ -177,8 +143,8 @@ body.dark-theme ::-webkit-scrollbar-track {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2; /* Behind everything */
-    pointer-events: none; /* Allow clicks through */
+    z-index: -2; 
+    pointer-events: none; 
 }
 
 /* 5. Header & Navigation */
@@ -190,12 +156,9 @@ body.dark-theme ::-webkit-scrollbar-track {
     background-color: var(--header-bg);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 900; /* Below intro overlay, above content */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 900; 
+    box-shadow: 0 2px 15px rgba(0, 255, 0, 0.1); /* Dark theme shadow */
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
-}
-body.dark-theme .header {
-    box-shadow: 0 2px 15px rgba(0, 255, 0, 0.1);
 }
 
 .header-container {
@@ -210,33 +173,23 @@ body.dark-theme .header {
 
 .brand .logo-text {
     font-size: 1.8rem;
-    font-weight: 700;
-    font-family: var(--font-secondary); /* Or var(--font-matrix) for dark theme */
+    /* font-weight: 700; */ /* VT323 is normal */
+    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     color: var(--primary-color);
     letter-spacing: 1px;
-}
-body.dark-theme .brand .logo-text {
-    font-family: var(--font-matrix);
-    text-shadow: 0 0 5px var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
 }
 
 
 /* Desktop Navigation: Dynamic Island */
 .dynamic-island {
-    background: var(--primary-color);
+    background-color: rgba(0, 255, 0, 0.1); /* Dark theme background */
+    border: 1px solid var(--secondary-color); /* Was matrix-green-medium */
+    box-shadow: 0 0 10px var(--secondary-color); /* Was matrix-green-dark, using secondary for medium glow */
     padding: 8px 15px;
     border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
-}
-body:not(.dark-theme) .dynamic-island {
-     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-}
-body.dark-theme .dynamic-island {
-    background-color: rgba(0, 255, 0, 0.1);
-    border: 1px solid var(--matrix-green-medium);
-    box-shadow: 0 0 10px var(--matrix-green-dark);
 }
 
 .dynamic-island ul {
@@ -244,31 +197,24 @@ body.dark-theme .dynamic-island {
     gap: 20px;
 }
 .dynamic-island li a {
-    color: #fff; /* Default for light theme gradient */
-    font-weight: 500;
-    font-size: 0.95rem;
+    color: var(--text-color); /* Was matrix-text-primary */
+    font-weight: 500; /* VT323 usually normal, but 500 is ok */
+    font-size: 1.2rem; /* VT323 might need larger size */
     padding: 8px 12px;
     border-radius: 20px;
     transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
 }
-body.dark-theme .dynamic-island li a {
-    color: var(--matrix-text-primary);
-    font-size: 1.2rem; /* VT323 might need larger size */
-}
 
 .dynamic-island li a:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Light theme hover */
-}
-body.dark-theme .dynamic-island li a:hover {
-    background-color: var(--matrix-green-dark);
-    color: var(--matrix-bg-dark);
+    background-color: var(--secondary-color); /* Was matrix-green-dark */
+    color: var(--background-color); /* Was matrix-bg-dark */
     text-shadow: none;
 }
 
 
 /* Mobile Menu Toggle */
 .menu-toggle {
-    display: none; /* Hidden by default, shown in media query */
+    display: none; 
     flex-direction: column;
     justify-content: space-around;
     width: 28px;
@@ -277,7 +223,7 @@ body.dark-theme .dynamic-island li a:hover {
     border: none;
     cursor: pointer;
     padding: 0;
-    z-index: 999; /* Above mobile nav panel before it opens */
+    z-index: 999; 
     margin-left: 15px;
 }
 .menu-toggle span {
@@ -285,7 +231,7 @@ body.dark-theme .dynamic-island li a:hover {
     height: 3px;
     background-color: var(--text-color);
     border-radius: 10px;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); /* Smoother easing */
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); 
 }
 .menu-toggle.active span:nth-child(1) {
     transform: translateY(9.5px) rotate(45deg);
@@ -301,23 +247,20 @@ body.dark-theme .dynamic-island li a:hover {
 /* Mobile Navigation Panel */
 .mobile-nav {
     position: absolute;
-    top: 70px; /* Below header */
+    top: 70px; 
     left: 0;
     width: 100%;
-    background-color: var(--header-bg); /* Match header */
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    background-color: var(--header-bg); 
+    box-shadow: 0 5px 20px rgba(0,255,0,0.1); /* Dark theme shadow */
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, visibility 0s linear 0.4s;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    overflow: hidden; /* Important for child animations */
-}
-body.dark-theme .mobile-nav {
-    border: 1px solid var(--matrix-card-border);
+    overflow: hidden; 
+    border: 1px solid var(--card-border); /* Dark theme border */
     border-top: none;
-    box-shadow: 0 5px 20px rgba(0,255,0,0.1);
 }
 
 .mobile-nav.open {
@@ -335,7 +278,7 @@ body.dark-theme .mobile-nav {
     opacity: 0;
     transform: translateX(-20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transition-delay: calc(0.05s * var(--i, 1)); /* Stagger, default to 1 if --i not set */
+    transition-delay: calc(0.05s * var(--i, 1)); 
 }
 .mobile-nav.open li {
     opacity: 1;
@@ -348,111 +291,15 @@ body.dark-theme .mobile-nav {
     display: block;
     padding: 12px 15px;
     color: var(--text-color);
-    font-size: 1.1rem;
+    font-size: 1.4rem; /* VT323 */
     font-weight: 500;
     border-radius: 5px;
     transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
 }
-body.dark-theme .mobile-nav li a {
-    font-size: 1.4rem; /* VT323 */
-}
 
 .mobile-nav li a:hover {
-    background-color: var(--primary-color);
-    color: white; /* For light theme */
-}
-body.dark-theme .mobile-nav li a:hover {
-    background-color: var(--matrix-green-medium);
-    color: var(--matrix-bg-dark);
-}
-
-
-/* 6. Theme Switcher */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    margin-left: 15px;
-}
-.theme-switch-input {
-    height: 0;
-    width: 0;
-    visibility: hidden;
-    position: absolute;
-}
-.theme-switch-label {
-    cursor: pointer;
-    text-indent: -9999px;
-    width: 50px; /* Smaller */
-    height: 26px; /* Smaller */
-    background: grey;
-    display: block;
-    border-radius: 100px;
-    position: relative;
-    transition: background-color var(--transition-speed);
-}
-body:not(.dark-theme) .theme-switch-label {
-    background-color: #e2e2e2;
-}
-body.dark-theme .theme-switch-label {
-    background-color: var(--matrix-green-dark);
-}
-
-.theme-switch-label:after { /* The toggle */
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 22px; /* Adjusted */
-    height: 22px; /* Adjusted */
-    background: #fff; /* White toggle */
-    border-radius: 90px;
-    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-.theme-switch-input:checked + .theme-switch-label {
-    background: var(--primary-color); /* Active color */
-}
-body.dark-theme .theme-switch-input:checked + .theme-switch-label {
-    background: var(--matrix-green-bright);
-}
-.theme-switch-input:checked + .theme-switch-label:after {
-    left: calc(100% - 2px);
-    transform: translateX(-100%);
-}
-/* Adding icons to theme switcher */
-.theme-switch-slider::before { /* Old CSS, this is for a different structure. Let's adapt the new one. */
-    /* This part was for the old slider. We'll use the :after pseudo-element on the label */
-}
-.theme-switch-label:active:after {
-    width: 28px; /* Slight grow on click */
-}
-
-/* Adding icons (sun/moon) to the new theme-switch-label:after */
-.theme-switch-label:after {
-    /* Existing styles */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px; /* Adjust as needed */
-}
-/* Sun icon for light mode (default state of :after) */
-body:not(.dark-theme) .theme-switch-label:after {
-    content: '☀️';
-    color: #f39c12; /* Orange for sun */
-}
-/* Moon icon for dark mode (when input is checked) */
-body.dark-theme .theme-switch-label:after {
-    content: '🌙';
-    color: var(--matrix-bg-dark); /* Dark color for moon on bright green bg */
-}
-/* When theme switch input is NOT checked (light mode active), but body IS .dark-theme (JS default) */
-body.dark-theme .theme-switch-input:not(:checked) + .theme-switch-label:after {
-    content: '☀️'; /* Sun should show if light theme is selected */
-    color: #f39c12;
-}
-/* When theme switch input IS checked (dark mode active), but body IS NOT .dark-theme (user switched to dark) */
-body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
-    content: '🌙';
-    color: #fff; /* White moon on blue bg */
+    background-color: var(--secondary-color); /* Was matrix-green-medium */
+    color: var(--background-color); /* Was matrix-bg-dark */
 }
 
 
@@ -463,24 +310,24 @@ body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--matrix-bg-dark); /* Always dark for intro */
+    background-color: var(--background-color); /* Always dark (matrix-bg-dark) */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    color: var(--matrix-text-primary);
-    z-index: 1000; /* Highest */
+    color: var(--text-color); /* Was matrix-text-primary */
+    z-index: 1000; 
     opacity: 1;
-    transition: opacity 1s ease-out 0.2s; /* Delay fade out slightly */
-    font-family: var(--font-matrix);
+    transition: opacity 1s ease-out 0.2s; 
+    font-family: var(--font-primary); /* Was font-matrix */
 }
-#intro-canvas { /* 3D game canvas */
+#intro-canvas { 
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Behind intro content */
+    z-index: -1; 
 }
 .intro-content {
     position: relative;
@@ -494,33 +341,33 @@ body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
 }
 
 .intro-title {
-    font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
+    font-size: clamp(2.5rem, 8vw, 5rem); 
     margin-bottom: 15px;
-    text-shadow: 0 0 10px var(--matrix-green-bright), 0 0 20px var(--matrix-green-bright);
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); /* Was matrix-green-bright */
     font-weight: normal;
 }
 .intro-subtitle {
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     margin-bottom: 40px;
-    color: var(--matrix-text-secondary);
+    color: var(--text-color-medium); /* Was matrix-text-secondary */
     letter-spacing: 1px;
     opacity: 0.9;
 }
 
 /* Cyberpunk Button Style for Enter Button */
 #enter-btn.cybr-btn {
-  font-family: var(--font-matrix);
+  font-family: var(--font-primary); /* Was font-matrix */
   --primary: hsl(var(--primary-hue), 85%, calc(var(--primary-lightness, 50) * 1%));
   --shadow-primary: hsl(var(--shadow-primary-hue), 90%, 50%);
-  --primary-hue: 180; /* Greenish-cyan base for Matrix */
+  --primary-hue: 120; /* Green base for Matrix (was 180) */
   --primary-lightness: 40;
   --color: hsl(0, 0%, 100%);
   --font-size: clamp(1.2rem, 3vw, 1.5rem);
-  --shadow-primary-hue: 120; /* Green for shadow */
+  --shadow-primary-hue: 120; 
   --label-size: 0.8rem;
-  --shadow-secondary-hue: 60;
+  --shadow-secondary-hue: 100; /* Adjusted from 60 for a greener range */
   --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%);
-  --border: 2px; /* Thinner border for Matrix */
+  --border: 2px; 
   text-decoration: none;
   color: var(--color);
   cursor: pointer;
@@ -534,7 +381,7 @@ body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
 }
 
 #enter-btn.cybr-btn:focus-visible {
-  outline: 2px solid var(--matrix-green-bright);
+  outline: 2px solid var(--primary-color); /* Was matrix-green-bright */
   outline-offset: 2px;
 }
 
@@ -577,21 +424,137 @@ body:not(.dark-theme) .theme-switch-input:checked + .theme-switch-label:after {
   text-shadow: 2px 2px var(--shadow-primary), -2px -2px hsl(var(--shadow-secondary-hue), 100%, 70%);
   clip-path: var(--clip);
   animation: glitch 2s infinite;
-  display: none; /* Can be enabled for more intense effect */
+  display: none; 
 }
 #enter-btn.cybr-btn:hover .cybr-btn__glitch {
   display: block;
 }
+/* ===========================================================
+   Enhanced Matrix Timeline for Experience Section
+   =========================================================== */
+
+/* Container: vertical neon timeline */
+#experience-container {
+    position: relative;
+    padding-left: 60px;
+    margin: 60px 0;
+}
+#experience-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+    border-radius: 2px;
+}
+
+/* Each experience node */
+.experience-item {
+    position: relative;
+    margin-bottom: 50px;
+    padding: 20px 20px 20px 40px;
+    background-color: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed);
+}
+.experience-item::before {
+    /* Year marker */
+    content: attr(data-year);
+    position: absolute;
+    left: -120px;
+    top: 20px;
+    font-family: var(--font-secondary);
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+.experience-item::after {
+    /* Timeline dot */
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 28px;
+    width: 16px;
+    height: 16px;
+    background: var(--accent-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-color), inset 0 0 4px var(--secondary-color);
+}
+.experience-item:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+/* Headings & company glitch effect */
+.experience-item h3 {
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+}
+.experience-item h3 .company-name {
+    display: inline-block;
+    position: relative;
+}
+.experience-item h3 .company-name::before,
+.experience-item h3 .company-name::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.experience-item h3 .company-name::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--secondary-color);
+    clip: rect(0, 9999px, 10px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+.experience-item h3 .company-name::after {
+    left: -2px;
+    text-shadow: 1px 1px var(--accent-color);
+    clip: rect(20px, 9999px, 40px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+/* Role title */
+.experience-item h4 {
+    color: var(--text-color-medium);
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+/* Bullet list style remains inherited */
+.experience-item ul {
+    margin-top: 10px;
+}
+
+/* Optional note box */
+.experience-item .note {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: rgba(0,255,0,0.05);
+    border-left: 3px solid var(--secondary-color);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+}
 
 /* Main Content Sections */
 main {
-    padding-top: 70px; /* Space for fixed header */
+    padding-top: 70px; 
 }
 .content-section {
     padding: 60px 20px;
     max-width: 1100px;
     margin: 0 auto;
-    opacity: 0; /* For IntersectionObserver fade-in */
+    opacity: 0; 
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
@@ -602,17 +565,13 @@ main {
 
 h2.section-title {
     font-size: clamp(1.8rem, 5vw, 2.8rem);
-    font-weight: 700; /* Poppins needs this */
-    font-family: var(--font-secondary);
+    /* font-weight: 700; */ /* VT323 is normal */
+    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     text-align: center;
     margin-bottom: 40px;
     color: var(--primary-color);
     position: relative;
-}
-body.dark-theme h2.section-title {
-    font-family: var(--font-matrix);
-    font-weight: normal; /* VT323 default */
-    text-shadow: 0 0 5px var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
 }
 
 h2.section-title::after {
@@ -636,55 +595,54 @@ h2.section-title::after {
     border-radius: 10px;
     padding: 25px;
     margin-bottom: 25px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--card-shadow-base); /* Use base shadow for pulse */
     transition: transform var(--transition-speed) ease-out, 
-                box-shadow var(--transition-speed) ease-out,
-                background-color var(--transition-speed),
-                border-color var(--transition-speed);
-}
-body.dark-theme .card-3d, body.dark-theme .card-glow {
-    box-shadow: 0 0 15px rgba(0,255,0,0.1), 0 0 5px rgba(0,255,0,0.2) inset;
+                border-color var(--transition-speed),
+                background-color var(--transition-speed);
 }
 
 .card-3d:hover, .card-glow:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    border-color: var(--primary-color); /* Was matrix-green-bright */
+    animation: pulseCardShadow 1.5s infinite ease-in-out;
 }
-body.dark-theme .card-3d:hover, body.dark-theme .card-glow:hover {
-    border-color: var(--matrix-green-bright);
-    box-shadow: 0 0 25px var(--matrix-green-medium), 0 0 10px var(--matrix-green-bright) inset;
+
+@keyframes pulseCardShadow {
+    0% {
+        box-shadow: var(--card-shadow-base);
+    }
+    50% {
+        box-shadow: var(--card-shadow-pulse-peak);
+    }
+    100% {
+        box-shadow: var(--card-shadow-base);
+    }
 }
 
 .card-3d h3, .card-glow h3 {
-    font-size: 1.5rem;
-    font-family: var(--font-secondary);
+    /* font-size: 1.5rem; */ /* Set in global h tags */
+    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     color: var(--primary-color);
     margin-bottom: 15px;
-}
-body.dark-theme .card-3d h3, body.dark-theme .card-glow h3 {
-    font-family: var(--font-matrix);
-    font-weight: normal;
     font-size: 1.8rem; /* VT323 often needs to be larger */
 }
 
 .card-glow {
     position: relative;
-    overflow: hidden; /* For pseudo-elements */
+    overflow: hidden; 
 }
-.card-glow::before { /* Animated border effect for dark theme */
+.card-glow::before { 
     content: '';
     position: absolute;
     top: -2px; left: -2px; right: -2px; bottom: -2px;
     z-index: -1;
     opacity: 0;
     transition: opacity 0.4s ease;
-}
-body.dark-theme .card-glow::before {
-    background: linear-gradient(45deg, var(--matrix-green-dark), var(--matrix-green-bright), var(--matrix-green-dark));
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color), var(--secondary-color)); /* Was matrix-green-dark, bright */
     background-size: 300% 300%;
     animation: glowingBorder 8s linear infinite;
 }
-body.dark-theme .card-glow:hover::before {
+.card-glow:hover::before {
     opacity: 1;
 }
 
@@ -708,49 +666,39 @@ body.dark-theme .card-glow:hover::before {
     margin-bottom: 10px;
     font-style: italic;
 }
-#experience-container .experience-item h4 { /* Responsabilità heading */
+#experience-container .experience-item h4 { 
     font-size: 1.1rem;
     margin-top: 15px;
     margin-bottom: 8px;
-    color: var(--text-color);
-}
-body.dark-theme #experience-container .experience-item h4 {
-    color: var(--matrix-text-secondary);
+    color: var(--text-color-medium); /* Was text-color, then matrix-text-secondary */
 }
 #experience-container .experience-item .note {
     margin-top: 15px;
     font-size: 0.9em;
     padding: 10px;
-    background-color: rgba(0,0,0,0.03);
-    border-left: 3px solid var(--primary-color);
+    background-color: rgba(0,255,0,0.05); /* Dark theme background */
+    border-left: 3px solid var(--secondary-color); /* Was matrix-green-medium */
     border-radius: 0 4px 4px 0;
-}
-body.dark-theme #experience-container .experience-item .note {
-    background-color: rgba(0,255,0,0.05);
-    border-left-color: var(--matrix-green-medium);
 }
 
 #projects-container .project-item h3 a {
     text-decoration: underline;
-    text-decoration-color: var(--secondary-color);
-}
-body.dark-theme #projects-container .project-item h3 a {
-    text-decoration-color: var(--matrix-green-bright);
-    text-shadow: 0 0 3px var(--matrix-green-bright);
+    text-decoration-color: var(--primary-color); /* Was matrix-green-bright / secondary-color */
+    text-shadow: 0 0 3px var(--primary-color); /* Dark theme shadow */
 }
 #projects-container .project-item h3 a:hover {
-    text-decoration-color: var(--primary-color);
+    text-decoration-color: var(--secondary-color); /* Was primary-color */
 }
 
 
-#skills-container.skills-grid { /* Specific grid for skills */
+#skills-container.skills-grid { 
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 #skills-container .skill-category ul {
-    columns: 2; /* Multi-column layout for skills list */
+    columns: 2; 
     column-gap: 20px;
 }
-@media (max-width: 480px) { /* Single column on very small screens */
+@media (max-width: 480px) { 
     #skills-container .skill-category ul {
         columns: 1;
     }
@@ -759,16 +707,13 @@ body.dark-theme #projects-container .project-item h3 a {
 
 /* 10. Footer */
 .footer {
-    background-color: var(--header-bg); /* Match header for consistency */
+    background-color: var(--header-bg); 
     color: var(--text-color);
     padding: 40px 20px 20px;
     text-align: center;
-    border-top: 1px solid var(--border-color);
-    margin-top: 50px; /* Space above footer */
-}
-body.dark-theme .footer {
-    border-top: 1px solid var(--matrix-card-border);
-    box-shadow: 0 -5px 20px rgba(0,255,0,0.05);
+    border-top: 1px solid var(--card-border); /* Dark theme border */
+    margin-top: 50px; 
+    box-shadow: 0 -5px 20px rgba(0,255,0,0.05); /* Dark theme shadow */
 }
 .footer-container {
     max-width: 1100px;
@@ -780,13 +725,10 @@ body.dark-theme .footer {
 }
 .footer-brand h2 {
     font-size: 1.8rem;
-    font-family: var(--font-secondary); /* Or var(--font-matrix) */
+    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     color: var(--primary-color);
     margin-bottom: 5px;
-}
-body.dark-theme .footer-brand h2 {
-    font-family: var(--font-matrix);
-    text-shadow: 0 0 5px var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
 }
 .footer-brand p {
     font-size: 0.9rem;
@@ -808,7 +750,7 @@ body.dark-theme .footer-brand h2 {
 }
 .footer-social a:hover {
     transform: scale(1.2) translateY(-2px);
-    color: var(--secondary-color); /* Or primary-color for dark theme */
+    color: var(--secondary-color); 
 }
 .footer-copyright {
     margin-top: 25px;
@@ -826,75 +768,58 @@ body.dark-theme .footer-brand h2 {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 0 10px var(--secondary-color); /* Was matrix-green-medium */
     transition: transform 0.2s ease-out, background-color 0.2s, box-shadow 0.2s;
-    z-index: 800; /* Below header */
-    border: none;
-}
-body.dark-theme #TopBtn, body.dark-theme .contact-btn {
-    background-color: var(--matrix-green-dark);
-    color: var(--matrix-bg-dark);
-    box-shadow: 0 0 10px var(--matrix-green-medium);
-    border: 1px solid var(--matrix-green-bright);
-}
-body:not(.dark-theme) #TopBtn, body:not(.dark-theme) .contact-btn {
-    background-color: var(--primary-color);
-    color: white;
+    z-index: 800; 
+    border: 1px solid var(--primary-color); /* Was matrix-green-bright */
+    background-color: var(--secondary-color); /* Was matrix-green-dark */
+    color: var(--background-color); /* Was matrix-bg-dark */
 }
 
 
 #TopBtn {
     bottom: 30px;
     right: 30px;
-    font-size: 1.5rem; /* For the arrow */
+    font-size: 1.5rem; 
 }
 .contact-btn {
     bottom: 30px;
     left: 30px;
-    font-size: 1.2rem; /* For the icon */
+    font-size: 1.2rem; 
 }
 
 #TopBtn:hover, .contact-btn:hover {
     transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-body.dark-theme #TopBtn:hover, body.dark-theme .contact-btn:hover {
-    background-color: var(--matrix-green-bright);
-    box-shadow: 0 0 15px var(--matrix-green-bright);
+    box-shadow: 0 0 15px var(--primary-color); /* Was matrix-green-bright */
+    background-color: var(--primary-color); /* Was matrix-green-bright */
 }
 
 
-.contact-info-popup { /* Renamed from .contact-info for clarity */
+.contact-info-popup { 
     position: fixed;
-    bottom: 90px; /* Above contact button */
+    bottom: 90px; 
     left: 30px;
     background-color: var(--card-background);
     color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    z-index: 799; /* Just below FABs */
-    width: clamp(280px, 80vw, 350px); /* Responsive width */
-    display: none; /* Toggled by JS */
+    box-shadow: 0 0 20px rgba(0,255,0,0.15); /* Dark theme shadow */
+    z-index: 799; 
+    width: clamp(280px, 80vw, 350px); 
+    display: none; 
     flex-direction: column;
     gap: 12px;
     animation: fadeInScaleUp 0.3s ease-out forwards;
 }
-body.dark-theme .contact-info-popup {
-    box-shadow: 0 0 20px rgba(0,255,0,0.15);
-}
 
 .contact-info-popup p {
     margin-bottom: 5px;
-    font-size: 0.95rem;
-}
-body.dark-theme .contact-info-popup p {
     font-size: 1.1rem; /* VT323 */
 }
 .contact-info-popup a {
     font-weight: 500;
-    word-break: break-all; /* Prevent overflow for long links */
+    word-break: break-all; 
 }
 
 @keyframes fadeInScaleUp {
@@ -906,7 +831,6 @@ body.dark-theme .contact-info-popup p {
 /* 12. Utility & Animation Classes */
 .glitch {
     position: relative;
-    /* animation: glitch-skew 1s infinite linear alternate-reverse; */ /* Optional overall skew */
 }
 .glitch::before,
 .glitch::after {
@@ -916,34 +840,67 @@ body.dark-theme .contact-info-popup p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--background-color); /* Match body background */
+    background: var(--background-color); 
     overflow: hidden;
 }
 .glitch::before {
     left: 2px;
-    text-shadow: -1px 0 var(--matrix-green-medium); /* Greenish for dark theme */
+    text-shadow: -1px 0 var(--secondary-color); /* Was matrix-green-medium */
     clip: rect(24px, 550px, 90px, 0);
     animation: glitch-anim-1 2s infinite linear alternate-reverse;
 }
 .glitch::after {
     left: -2px;
-    text-shadow: -1px 0 var(--accent-color), 1px 1px var(--matrix-green-dark); /* Bluish/Greenish */
+    text-shadow: -1px 0 var(--accent-color), 1px 1px var(--secondary-color); /* Was matrix-green-dark */
     clip: rect(85px, 550px, 140px, 0);
     animation: glitch-anim-2 3s infinite linear alternate-reverse;
 }
-body:not(.dark-theme) .glitch::before { text-shadow: -1px 0 blue; }
-body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
 
 
 @keyframes glitch-anim-1 {
     0% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.3deg); }
     5% { clip: rect(27px, 9999px, 94px, 0); }
-    /* ... more steps ... */
+    10% { clip: rect(13px, 9999px, 62px, 0); }
+    15% { clip: rect(18px, 9999px, 90px, 0); }
+    20% { clip: rect(40px, 9999px, 130px, 0); }
+    25% { clip: rect(33px, 9999px, 50px, 0); }
+    30% { clip: rect(60px, 9999px, 122px, 0); }
+    35% { clip: rect(22px, 9999px, 69px, 0); }
+    40% { clip: rect(71px, 9999px, 110px, 0); }
+    45% { clip: rect(10px, 9999px, 82px, 0); }
+    50% { clip: rect(55px, 9999px, 95px, 0); }
+    55% { clip: rect(5px, 9999px, 75px, 0); }
+    60% { clip: rect(50px, 9999px, 140px, 0); }
+    65% { clip: rect(70px, 9999px, 100px, 0); }
+    70% { clip: rect(35px, 9999px, 78px, 0); }
+    75% { clip: rect(65px, 9999px, 115px, 0); }
+    80% { clip: rect(20px, 9999px, 92px, 0); }
+    85% { clip: rect(80px, 9999px, 125px, 0); }
+    90% { clip: rect(15px, 9999px, 88px, 0); }
+    95% { clip: rect(75px, 9999px, 135px, 0); }
     100% { clip: rect(30px, 9999px, 100px, 0); transform: skew(-0.2deg); }
 }
 @keyframes glitch-anim-2 {
     0% { clip: rect(45px, 9999px, 102px, 0); transform: skew(0.2deg); }
-    /* ... more steps ... */
+    5% { clip: rect(5px, 9999px, 80px, 0); }
+    10% { clip: rect(50px, 9999px, 120px, 0); }
+    15% { clip: rect(25px, 9999px, 70px, 0); }
+    20% { clip: rect(60px, 9999px, 105px, 0); }
+    25% { clip: rect(10px, 9999px, 95px, 0); }
+    30% { clip: rect(75px, 9999px, 130px, 0); }
+    35% { clip: rect(40px, 9999px, 85px, 0); }
+    40% { clip: rect(5px, 9999px, 110px, 0); }
+    45% { clip: rect(65px, 9999px, 90px, 0); }
+    50% { clip: rect(30px, 9999px, 125px, 0); }
+    55% { clip: rect(55px, 9999px, 70px, 0); }
+    60% { clip: rect(15px, 9999px, 100px, 0); }
+    65% { clip: rect(70px, 9999px, 135px, 0); }
+    70% { clip: rect(20px, 9999px, 80px, 0); }
+    75% { clip: rect(85px, 9999px, 115px, 0); }
+    80% { clip: rect(45px, 9999px, 95px, 0); }
+    85% { clip: rect(5px, 9999px, 120px, 0); }
+    90% { clip: rect(60px, 9999px, 100px, 0); }
+    95% { clip: rect(35px, 9999px, 130px, 0); }
     100% { clip: rect(10px, 9999px, 75px, 0); transform: skew(-0.3deg); }
 }
 @keyframes glitch-skew {
@@ -951,7 +908,7 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
   100% { transform: skew(0.5deg); }
 }
 
-.fade-in { /* Simple fade in for profile text */
+.fade-in { 
     animation: fadeInElement 1s ease-out 0.5s forwards;
     opacity: 0;
 }
@@ -963,12 +920,11 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
 /* 13. Responsive Media Queries */
 @media (max-width: 1024px) {
     .dynamic-island {
-        display: none; /* Hide desktop nav */
+        display: none; 
     }
     .menu-toggle {
-        display: flex; /* Show hamburger */
+        display: flex; 
     }
-    /* Add specific style for mobile menu items stagger using JS if possible */
     .mobile-nav.open li:nth-child(1) { --i: 1; }
     .mobile-nav.open li:nth-child(2) { --i: 2; }
     .mobile-nav.open li:nth-child(3) { --i: 3; }
@@ -991,7 +947,7 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
         margin-bottom: 30px;
     }
     .grid-layout, #skills-container.skills-grid {
-        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+        grid-template-columns: 1fr; 
         gap: 20px;
     }
     .footer-container {
@@ -1003,13 +959,13 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
     #TopBtn, .contact-btn {
         width: 40px;
         height: 40px;
-        font-size: 1.2rem; /* Smaller icons/arrow */
+        font-size: 1.2rem; 
         bottom: 20px;
     }
     #TopBtn { right: 20px; }
     .contact-btn { left: 20px; }
     .contact-info-popup {
-        bottom: 70px; /* Adjust for smaller FAB */
+        bottom: 70px; 
         left: 20px;
         padding: 15px;
     }
@@ -1023,7 +979,7 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
         font-size: 1.5rem;
     }
     h2.section-title {
-        font-size: 1.6rem; /* Further reduce title size */
+        font-size: 1.6rem; 
     }
     h2.section-title::after {
         width: 50px;
@@ -1036,16 +992,13 @@ body:not(.dark-theme) .glitch::after { text-shadow: -1px 0 red, 1px 1px green; }
         padding: 20px;
     }
     .card-3d h3, .card-glow h3 {
-        font-size: 1.3rem; /* Or 1.6rem for VT323 */
-    }
-    body.dark-theme .card-3d h3, body.dark-theme .card-glow h3 {
-        font-size: 1.6rem;
+        font-size: 1.6rem; /* VT323 */
     }
     .footer-social a {
         font-size: 1.3rem;
         margin: 0 8px;
     }
-     #skills-container .skill-category ul { /* Ensure single column for skills */
+     #skills-container .skill-category ul { 
         columns: 1;
     }
 }

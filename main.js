@@ -1,4 +1,3 @@
-// main.js
 // ============================================================
 // CV Data & Configuration
 // ============================================================
@@ -35,14 +34,14 @@ const data = {
     {
       title: "Game Developer Junior",
       company: "Nemesis Games Studio",
-      start_date: "01/2024",
+      start_date: "11/2024",
       responsibilities: [
-        "Supporto allo sviluppo e porting di slot machine web con PixiJS.",
-        "Progettazione object oriented e strutture dati per game loop e stato di gioco.",
-        "Gestione memoria, rendering ottimizzato, sprite sheets, transizioni ed effetti particellari.",
+        "Sviluppo e porting di slot-machine web con PixiJS: implementando logiche di game loop e gestione avanzata dello stato di gioco tramite OOP.",
+        "Ottimizzazione performance: gestione della memoria, rendering efficiente con sprite sheet, transizioni ed effetti particellari per realizzare grafiche interattive e garantire performance stabili su browser.",
+        "Versioning & pair programming: adozione di Git Flow per controllo di versione e sessioni collaborative, favorendo condivisione delle conoscenze e qualita' del codice.",
         "Versioning con Git Flow e sessioni di pair programming.",
-        "Formazione continua su game development e best practice PixiJS.",
-        "Organizzazione per obiettivi e call settimanali di allineamento.",
+        "Formazione continua: approfondimento di best practice su PixiJS, design pattern OOP e strumenti di profiling, per migliorare continuamente l’efficienza e la scalabilità dei giochi.",
+        "Object Oriented Analysis and Design: studio preventivo dell’architettura software, definizione di classi, pattern e diagrammi UML per garantire un’implementazione scalabile e manutenibile.",
       ],
       note: "L’esperienza ha consentito di affrontare problematiche di performance e gestione della memoria, fornendo una solida base sulla programmazione e l'analisi orientata agli oggetti.",
     },
@@ -51,14 +50,13 @@ const data = {
       company: "Sport-Tech S.R.L.",
       start_date: "01/2024", // Assuming current or you might want an end_date or "Present"
       responsibilities: [
-        "Sviluppo e manutenzione di web app scalabili con Angular-Ionic (v17).",
-        "Creazione e gestione di siti modulari con Twig e Symfony.",
-        "Expertise in CSS moderno, TypeScript e JavaScript per UI reactive e performanti.",
-        "Integrazione API interne/esterne, gestione stato e architetture component-based.",
-        "Adozione di librerie esterne, versionamento avanzato con GitFlow e code review.",
+        "TypeScript avanzato: progettazione di componenti riutilizzabili e moduli organizzati in Angular, con tipizzazione approfondita tramite interfacce per garantire robustezza e manutenibilita'.",
+        "Sviluppo client-side: realizzazione di interfacce con Symfony e Twig, focalizzate su performance, accessibilita' e UX, incluse pagine moderne con pagination e lazy loading.",
+        "Sviluppo di API RESTful e integrazione con backend Spring.",
+        "Componenti dinamici & filtri interattivi: creazione di tabelle dinamiche, card animate e filtri di ricerca con animazioni fluide, aumentando l’engagement e semplificando la navigazione.",
         "Esperienza con Docker: creazione immagini, gestione container e ambienti isolati.",
         "Implementazione di responsive design, unit testing e ottimizzazione delle performance.",
-        "Focus su CI/CD pipelines, qualità del codice e collaborazione cross-team.",
+        "Workflow & project management: utilizzo di Git per branch strategici, sessioni di code review e call settimanali di allineamento (lunedì per definire obiettivi, venerdì per verificare risultati), assicurando consegne puntuali e comunicazione costante.",
       ],
       note: "L’esperienza ha consentito di affrontare problematiche di performance e UX, fornendo un contributo al refactoring del codice CSS e all’isolamento degli stili cromatici del progetto.",
     },
@@ -67,10 +65,10 @@ const data = {
       company: "Skysoft Provider",
       date_range: "05/2018 - 12/2023",
       responsibilities: [
-        "Creazione, gestione e chiusura di ticket in piattaforma Jira (infinity).",
+        "Gestione di oltre 75 ticket mensili.",
         "Formazione dei nuovi assunti.",
         "Assistenza tecnica e amministrativa B2B e B2C.",
-        "Assistenza via chat in diverse lingue (italiano, inglese, rumeno).",
+        "Operato in un contesto internazionale e multilingue"
       ],
     },
     {
@@ -78,10 +76,10 @@ const data = {
       company: "Puma Slot srl",
       date_range: "06/2014 - 03/2018",
       responsibilities: [
-        "Fornito supporto di primo livello per problemi software, hardware e contabili, migliorando l’efficienza del servizio.",
-        "Creato e mantenuto documentazione tecnica per favorire la risoluzione autonoma dei problemi da parte degli utenti.",
-        "Facilitato la comunicazione tra cliente e reparto tecnico, ottimizzando tempi e garantendo trasparenza.",
-        "Supportato clienti nell’attivazione di infrastrutture di rete e nell’introduzione ai prodotti aziendali.",
+        "Assistenza software di primo livello.",
+        "Documentazione tecnica.",
+        "Fromazione Utenti e Commerciali.",
+        "Comunicazione con il cliente ",
       ],
     },
   ],
@@ -126,8 +124,8 @@ const data = {
       "Object Oriented Analysis, Design and Programming (OOAD/OOP)",
       "Progettazione mediante diagrammi UML",
       "Agile/Scrum",
-      "Utilizzo di Confluence e Jira (Infinity) per la pianificazione dei task",
-      "Allineamenti periodici (call settimanali) per garantire una comunicazione efficace",
+      "Utilizzo di Confluence e Jira ",
+      "Allineamenti periodici",
     ],
   },
   languages: {
@@ -152,15 +150,15 @@ const toTopBtn = document.getElementById("TopBtn");
 const menuToggle = document.getElementById("menuToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 const yearEl = document.getElementById("year");
-const themeSwitch = document.getElementById("theme-switch");
+// const themeSwitch = document.getElementById("theme-switch"); // Removed
 const sections = document.querySelectorAll(".content-section");
 
 // Elements for Intro, Game, and Post-Intro UI
 const introCanvas = document.getElementById("intro-canvas");
-const introOverlay = document.getElementById("intro-overlay"); // MOVED UP
-const enterBtn = document.getElementById("enter-btn");         // MOVED UP
-const contactBtn = document.getElementById("contact-btn");       // MOVED UP (Floating action button)
-const contactInfoPopup = document.getElementById("contact-info"); // MOVED UP (The popup div)
+const introOverlay = document.getElementById("intro-overlay"); 
+const enterBtn = document.getElementById("enter-btn");         
+const contactBtn = document.getElementById("contact-btn");       
+const contactInfoPopup = document.getElementById("contact-info"); 
 
 // ============================================================
 // Top Button Functionality
@@ -168,7 +166,7 @@ const contactInfoPopup = document.getElementById("contact-info"); // MOVED UP (T
 if (toTopBtn) {
   window.addEventListener("scroll", () => {
     if (window.pageYOffset > 300) {
-      toTopBtn.style.display = "flex"; // Changed to flex to match CSS
+      toTopBtn.style.display = "flex"; 
     } else {
       toTopBtn.style.display = "none";
     }
@@ -185,7 +183,6 @@ if (menuToggle && mobileMenu) {
   menuToggle.addEventListener("click", () => {
     mobileMenu.classList.toggle("open");
     menuToggle.classList.toggle("active");
-    // Add ARIA attributes for accessibility
     const isExpanded = mobileMenu.classList.contains("open");
     menuToggle.setAttribute("aria-expanded", isExpanded);
   });
@@ -205,42 +202,9 @@ if (yearEl) {
 }
 
 // ============================================================
-// Theme Switcher
+// Theme Switcher Logic REMOVED
 // ============================================================
-if (themeSwitch) {
-  themeSwitch.addEventListener("change", () => {
-    const isDark = themeSwitch.checked;
-    document.body.classList.toggle("dark-theme", isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-
-    // iOS repaint hack
-    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (isiOS) {
-      document.body.classList.add('force-repaint'); // Add class to trigger will-change
-      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-      document.body.style.display = "none";
-      //offsetHeight is a hack to force repaint
-      // eslint-disable-next-line no-unused-vars
-      const oh = document.body.offsetHeight;
-      setTimeout(() => {
-        document.body.style.display = "";
-        window.scrollTo(0, currentScroll);
-        document.body.classList.remove('force-repaint');
-      }, 0);
-    }
-  });
-
-  // Set initial theme based on localStorage or default to dark
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
-    document.body.classList.remove("dark-theme");
-    themeSwitch.checked = false;
-  } else {
-    // Default to dark if no theme saved or if 'dark' is saved
-    document.body.classList.add("dark-theme");
-    themeSwitch.checked = true;
-  }
-}
+// Site will default to dark-theme via class on <body> in HTML
 
 
 // ============================================================
@@ -282,12 +246,12 @@ if (typeof gsap !== 'undefined') {
       {
         opacity: 1,
         y: 0,
-        duration: 1, // Slightly faster for better perceived performance
+        duration: 1, 
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
           start: "top 85%",
-          toggleActions: "play none none none", // Play once when it enters
+          toggleActions: "play none none none", 
         },
       }
     );
@@ -300,7 +264,8 @@ if (typeof gsap !== 'undefined') {
 window.addEventListener("DOMContentLoaded", () => {
   const profileTextEl = document.getElementById("profile-text");
   if (profileTextEl) {
-    profileTextEl.textContent = data.professional_profile;
+    profileTextEl.innerHTML =`
+      <div class="card-3d">${ data.professional_profile}  </div>`;
   }
 
   const educationContainer = document.getElementById("education-container");
@@ -323,7 +288,7 @@ window.addEventListener("DOMContentLoaded", () => {
     certContainer.innerHTML = data.certifications
       .map(
         (cert) => `
-      <div class="card-glow">
+      <div class="card-3d">
         <h3>${cert.name}</h3>
         <p><strong>Provider:</strong> ${cert.provider}</p>
         <p><strong>Corso:</strong> ${cert.course_title}</p>
@@ -338,7 +303,7 @@ window.addEventListener("DOMContentLoaded", () => {
     expContainer.innerHTML = data.experience
       .map(
         (exp) => `
-      <div class="card-glow experience-item">
+      <div class="card-3d experience-item">
         <h3>${exp.title}</h3>
         <p class="company-info"><strong>${exp.company}</strong> | ${
           exp.start_date && exp.date_range ? `${exp.start_date} (parte di ${exp.date_range})` : exp.start_date || exp.date_range || 'Date N/A'
@@ -362,7 +327,7 @@ window.addEventListener("DOMContentLoaded", () => {
     projectsContainer.innerHTML = data.projects
       .map(
         (proj) => `
-      <div class="card-glow project-item">
+      <div class="card-3d project-item">
         <h3><a href="${proj.url}" target="_blank" rel="noopener noreferrer">${
           proj.name
         }</a></h3>
@@ -411,9 +376,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
     // Populate Contact Info in the popup
-    const contactInfoPopup = document.getElementById("contact-info-details");
-    if (contactInfoPopup) {
-        contactInfoPopup.innerHTML = `
+    const contactInfoDetails = document.getElementById("contact-info-details"); // Renamed variable for clarity
+    if (contactInfoDetails) { // Changed from contactInfoPopup to contactInfoDetails
+        contactInfoDetails.innerHTML = `
             <p><strong>Email:</strong> <a href="mailto:${data.contacts.email}">${data.contacts.email}</a></p>
             <p><strong>Telefono:</strong> <a href="tel:${data.contacts.phone_number.replace(/\s/g, '')}">${data.contacts.phone_number}</a></p>
             <p><strong>LinkedIn:</strong> <a href="${data.contacts.linkedin}" target="_blank" rel="noopener noreferrer">Profilo LinkedIn</a></p>
@@ -449,18 +414,18 @@ if (introCanvas && typeof THREE !== 'undefined') {
     const material = new THREE.MeshBasicMaterial({
       color: 0x00ff00,
       transparent: true,
-      opacity: Math.random() * 0.5 + 0.1, // Slightly more subtle background
+      opacity: Math.random() * 0.5 + 0.1, 
     });
     const bit = new THREE.Mesh(bitGeometry, material);
 
     bit.position.set(
-      THREE.MathUtils.randFloatSpread(120), // Wider spread for full background
-      THREE.MathUtils.randFloat(40, 70),   // Start further above
+      THREE.MathUtils.randFloatSpread(120), 
+      THREE.MathUtils.randFloat(40, 70),   
       THREE.MathUtils.randFloatSpread(60)
     );
     bit.userData.velocity = new THREE.Vector3(
       0,
-      THREE.MathUtils.randFloat(-0.08, -0.3), // Adjusted speed
+      THREE.MathUtils.randFloat(-0.08, -0.3), 
       0
     );
     scene.add(bit);
@@ -492,15 +457,14 @@ if (introCanvas && typeof THREE !== 'undefined') {
     rocketGroup.add(rocketLight);
 
 
-    rocketGroup.position.set(0, -camera.position.z / 2 + 3, 10); // Start position
-    rocketGroup.rotation.x = Math.PI / 16; // Slight tilt
+    rocketGroup.position.set(0, -camera.position.z / 2 + 3, 10); 
+    rocketGroup.rotation.x = Math.PI / 16; 
     scene.add(rocketGroup);
     return rocketGroup;
   }
   rocket = createRocket();
   
-  // Add subtle ambient light and a directional light for the rocket
-  const ambientLight = new THREE.AmbientLight(0x001800); // Dark green ambient
+  const ambientLight = new THREE.AmbientLight(0x001800); 
   scene.add(ambientLight);
   const directionalLight = new THREE.DirectionalLight(0x00ff00, 0.2);
   directionalLight.position.set(5, 10, 7);
@@ -508,9 +472,9 @@ if (introCanvas && typeof THREE !== 'undefined') {
 
 
   function shootBullet() {
-    if (introOverlay && introOverlay.style.opacity !== "0" && rocket) { // Check if intro is active
+    if (introOverlay && introOverlay.style.opacity !== "0" && rocket) { 
       const bulletGeo = new THREE.SphereGeometry(0.12, 10, 10);
-      const bulletMat = new THREE.MeshBasicMaterial({ color: 0x66ff66 }); // Brighter green
+      const bulletMat = new THREE.MeshBasicMaterial({ color: 0x66ff66 }); 
       const bullet = new THREE.Mesh(bulletGeo, bulletMat);
 
       const bulletLight = new THREE.PointLight(0x66ff66, 1, 3);
@@ -521,14 +485,14 @@ if (introCanvas && typeof THREE !== 'undefined') {
         rocket.position.y + 0.8,
         rocket.position.z
       );
-      bullet.userData.velocity = new THREE.Vector3(0, 0.4, 0); // Bullet speed
+      bullet.userData.velocity = new THREE.Vector3(0, 0.4, 0); 
       scene.add(bullet);
       bullets.push(bullet);
     }
   }
 
   function createFallingObject() {
-    const types = ["cube", "tetrahedron", "icosahedron"]; // Using standard geometries
+    const types = ["cube", "tetrahedron", "icosahedron"]; 
     const type = types[Math.floor(Math.random() * types.length)];
     let geometry;
     const size = THREE.MathUtils.randFloat(0.4, 0.8);
@@ -537,14 +501,13 @@ if (introCanvas && typeof THREE !== 'undefined') {
       geometry = new THREE.BoxGeometry(size, size, size);
     } else if (type === "tetrahedron") {
       geometry = new THREE.TetrahedronGeometry(size);
-    } else { // icosahedron
+    } else { 
       geometry = new THREE.IcosahedronGeometry(size, 0);
     }
     
-    // Make falling objects a bit more distinct
     const material = new THREE.MeshStandardMaterial({ 
         color: Math.random() > 0.5 ? 0x00AA00 : 0x00CC00, 
-        wireframe: Math.random() > 0.3, // Mix wireframe and solid
+        wireframe: Math.random() > 0.3, 
         emissive: 0x001000,
         metalness: 0.2,
         roughness: 0.8
@@ -552,9 +515,9 @@ if (introCanvas && typeof THREE !== 'undefined') {
     
     const shape = new THREE.Mesh(geometry, material);
     shape.position.set(
-      THREE.MathUtils.randFloatSpread(camera.position.z * 0.7 * camera.aspect), // Within view
-      camera.position.z / 2 + 5, // Start above top of view
-      10 // Game plane
+      THREE.MathUtils.randFloatSpread(camera.position.z * 0.7 * camera.aspect), 
+      camera.position.z / 2 + 5, 
+      10 
     );
     shape.rotation.set(
       Math.random() * Math.PI,
@@ -563,7 +526,7 @@ if (introCanvas && typeof THREE !== 'undefined') {
     );
     shape.userData.velocity = new THREE.Vector3(
         0, 
-        THREE.MathUtils.randFloat(-0.03, -0.06), // Falling speed
+        THREE.MathUtils.randFloat(-0.03, -0.06), 
         0
     );
     shape.userData.rotationSpeed = new THREE.Vector3(
@@ -579,20 +542,18 @@ if (introCanvas && typeof THREE !== 'undefined') {
     createFallingObject();
   }
   
-  // Spawn new objects periodically
   setInterval(() => {
-    if (introOverlay && introOverlay.style.opacity !== "0" && fallingObjects.length < 15) { // Only if intro is active
+    if (introOverlay && introOverlay.style.opacity !== "0" && fallingObjects.length < 15) { 
         createFallingObject();
     }
-  }, 2000); // Spawn every 2 seconds if count is low
+  }, 2000); 
 
 
   window.addEventListener("mousemove", (e) => {
-    if (!rocket || !introOverlay || introOverlay.style.opacity === "0") return; // Only if intro is active
+    if (!rocket || !introOverlay || introOverlay.style.opacity === "0") return; 
     const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    // Constrain rocket movement within a reasonable range of the screen width
     const frustumWidthAtRocketZ = 2 * Math.tan(camera.fov * Math.PI / 360) * (camera.position.z - rocket.position.z);
-    const maxX = frustumWidthAtRocketZ * camera.aspect / 2 * 0.85; // 85% of visible width
+    const maxX = frustumWidthAtRocketZ * camera.aspect / 2 * 0.85; 
     const targetX = THREE.MathUtils.clamp(mouseX * maxX, -maxX, maxX);
     rocket.position.x = THREE.MathUtils.lerp(rocket.position.x, targetX, 0.1);
   });
@@ -603,7 +564,7 @@ if (introCanvas && typeof THREE !== 'undefined') {
     const debrisCount = THREE.MathUtils.randInt(15, 25);
     for (let i = 0; i < debrisCount; i++) {
       const debrisGeo = new THREE.BoxGeometry(
-        THREE.MathUtils.randFloat(0.03, 0.08), // varied size
+        THREE.MathUtils.randFloat(0.03, 0.08), 
         THREE.MathUtils.randFloat(0.1, 0.3),
         THREE.MathUtils.randFloat(0.03, 0.08)
       );
@@ -619,7 +580,7 @@ if (introCanvas && typeof THREE !== 'undefined') {
         THREE.MathUtils.randFloatSpread(0.35),
         THREE.MathUtils.randFloatSpread(0.35)
       );
-      debris.userData.life = THREE.MathUtils.randFloat(0.8, 1.5); // seconds
+      debris.userData.life = THREE.MathUtils.randFloat(0.8, 1.5); 
       debris.userData.rotationSpeed = new THREE.Vector3(
         THREE.MathUtils.randFloatSpread(0.1),
         THREE.MathUtils.randFloatSpread(0.1),
@@ -632,22 +593,17 @@ if (introCanvas && typeof THREE !== 'undefined') {
   const clock = new THREE.Clock();
 
   function animateIntro() {
-    if (!introCanvas || !renderer) return; // Stop if canvas removed or renderer not init
+    if (!introCanvas || !renderer) return; 
     
-    // Only animate if intro is visible or just started fading
     if (introOverlay && introOverlay.style.opacity < 0.1 && introOverlay.style.display === 'none') {
-        // Optionally, you could stop the animation completely or significantly reduce its processing
-        // For now, we let it run but game interactions are disabled.
-        // To fully stop:
-        // cancelAnimationFrame(animationFrameId);
-        // return;
+        // Animation continues for background effect even if game elements are not updated
     }
     requestAnimationFrame(animateIntro);
     const delta = clock.getDelta();
 
 
     dataBits.forEach((bit) => {
-      bit.position.addScaledVector(bit.userData.velocity, delta * 60); // Make speed consistent
+      bit.position.addScaledVector(bit.userData.velocity, delta * 60); 
       bit.material.opacity -= 0.0015;
 
       if (bit.position.y < -camera.position.z / 2 - 10 || bit.material.opacity <= 0) {
@@ -657,7 +613,6 @@ if (introCanvas && typeof THREE !== 'undefined') {
       }
     });
 
-    // Only update game elements if intro is active
     if (introOverlay && introOverlay.style.opacity !== "0") {
         fallingObjects.forEach((obj, index) => {
             obj.position.addScaledVector(obj.userData.velocity, delta * 60);
@@ -670,7 +625,6 @@ if (introCanvas && typeof THREE !== 'undefined') {
                 obj.geometry.dispose();
                 obj.material.dispose();
                 fallingObjects.splice(index, 1);
-                // No immediate respawn, rely on interval spawner
             }
         });
 
@@ -680,7 +634,7 @@ if (introCanvas && typeof THREE !== 'undefined') {
                 scene.remove(bullet);
                 bullet.geometry.dispose();
                 bullet.material.dispose();
-                if (bullet.children.length > 0) bullet.children[0].dispose(); // light
+                if (bullet.children.length > 0) bullet.children[0].dispose(); 
                 bullets.splice(index, 1);
             }
         });
@@ -691,13 +645,13 @@ if (introCanvas && typeof THREE !== 'undefined') {
             for (let j = fallingObjects.length - 1; j >= 0; j--) {
                 const obj = fallingObjects[j];
                 if (!obj) continue;
-                if (bullet.position.distanceTo(obj.position) < 1.0) { // Collision radius
+                if (bullet.position.distanceTo(obj.position) < 1.0) { 
                     createExplosion(obj.position.clone(), obj.material.color.getHex());
                     
                     scene.remove(bullet);
                     bullet.geometry.dispose();
                     bullet.material.dispose();
-                    if (bullet.children.length > 0) bullet.children[0].dispose(); // light
+                    if (bullet.children.length > 0) bullet.children[0].dispose(); 
                     bullets.splice(i, 1);
 
                     scene.remove(obj);
@@ -712,14 +666,14 @@ if (introCanvas && typeof THREE !== 'undefined') {
 
 
     explosions.forEach((debris, index) => {
-      debris.userData.velocity.y -= 0.01 * delta * 60; // Gravity
+      debris.userData.velocity.y -= 0.01 * delta * 60; 
       debris.position.addScaledVector(debris.userData.velocity, delta * 60);
       debris.rotation.x += debris.userData.rotationSpeed.x * delta * 60;
       debris.rotation.y += debris.userData.rotationSpeed.y * delta * 60;
       debris.rotation.z += debris.userData.rotationSpeed.z * delta * 60;
 
       debris.userData.life -= delta;
-      debris.material.opacity = THREE.MathUtils.clamp(debris.userData.life / 1.0, 0, 1); // Fade out based on life
+      debris.material.opacity = THREE.MathUtils.clamp(debris.userData.life / 1.0, 0, 1); 
 
       if (debris.userData.life <= 0) {
         scene.remove(debris);
@@ -732,7 +686,7 @@ if (introCanvas && typeof THREE !== 'undefined') {
     renderer.render(scene, camera);
   }
   
-  if (introCanvas && renderer) { // Ensure renderer is initialized
+  if (introCanvas && renderer) { 
     animateIntro();
   }
 }
@@ -747,7 +701,6 @@ window.addEventListener("resize", () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
-  // digitalRain.js handles its own resize via its event listener
 });
 
 // ============================================================
@@ -762,12 +715,11 @@ if (enterBtn && introOverlay) {
       if (toTopBtn && window.pageYOffset > 300) {
         toTopBtn.style.display = "flex";
       }
-      // Make main content focusable after intro
       const mainContent = document.querySelector('main');
-      if (mainContent) mainContent.setAttribute('tabindex', '-1'); // Make it programmatically focusable
+      if (mainContent) mainContent.setAttribute('tabindex', '-1'); 
       if (mainContent) mainContent.focus();
 
-    }, 1200); // Match CSS transition duration in #intro-overlay
+    }, 1200); 
   });
 }
 // ============================================================
@@ -778,7 +730,6 @@ if (contactBtn && contactInfoPopup) {
     contactInfoPopup.style.display = isVisible ? "none" : "flex";
     contactBtn.setAttribute('aria-expanded', !isVisible);
   });
-  // Hide popup if clicked outside
   document.addEventListener('click', function(event) {
     if (contactInfoPopup.style.display === 'flex' && !contactBtn.contains(event.target) && !contactInfoPopup.contains(event.target)) {
         contactInfoPopup.style.display = 'none';
@@ -789,7 +740,4 @@ if (contactBtn && contactInfoPopup) {
 
 // Initial state for buttons that appear after intro
 if (contactBtn) contactBtn.style.display = "none";
-if (toTopBtn) toTopBtn.style.display = "none"; // Hide initially
-
-
-alert("CHE SFORTUNA SEI CAPITATA/O IN UN MOMENTO DI LAVORI IN CORSO! \n\nMA NON TEMERE, IL SITO E' IN FASE DI SVILUPPO E PRESTO SARA' COMPLETAMENTE FUNZIONANTE!\n\nSE HAI DOMANDE O RICHIESTE, NON ESITARE A CONTATTARMI! PS NON USARE LA LIGHT MODE SE CAPITI :(");
+if (toTopBtn) toTopBtn.style.display = "none"; 
