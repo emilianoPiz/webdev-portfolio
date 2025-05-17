@@ -4,48 +4,55 @@
    1. Imports & Root Variables
    2. Global Reset & Base Styles
    3. Scrollbar Styling
-   4. Main Background Canvas
+   4. Main Background Canvas (Placeholder, actual canvas in JS)
    5. Header & Navigation (Desktop & Mobile)
-   6. Intro Overlay & Game Canvas
-   7. Content Sections & Cards
-   8. Specific Section Styling (Experience, Skills, etc.)
-   9. Footer
-   10. Floating Action Buttons (Top, Contact) & Contact Popup
-   11. Utility & Animation Classes (Glitch, FadeIn)
-   12. Responsive Media Queries
+   6. Intro Overlay, Game Canvas, & "Enter" Button
+   7. Transition Overlay (Terminal Animation)
+   8. Main Content Area & Sections
+   9. Card Styles (3D, Glow)
+   10. Specific Section Styling (Experience, Projects, Skills)
+   11. Footer
+   12. Floating Action Buttons (Scroll to Top, Contact) & Contact Popup
+   13. Utility & Animation Classes (Glitch, FadeIn, etc.)
+   14. Responsive Media Queries
    =========================================================== */
 
-/* 1. Imports & Root Variables */
+/* ===========================================================
+   1. Imports & Root Variables
+   =========================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&family=VT323&display=swap');
 
 :root {
-    /* Matrix Dark Theme Variables */
-    --primary-color: #00FF00; /* matrix-green-bright */
-    --secondary-color: #00DD00; /* matrix-green-medium */
-    --accent-color: #00FF00; /* matrix-green-bright */
-    --background-color: #050505; /* matrix-bg-dark */
-    --text-color: var(--primary-color); 
-    --text-color-medium: var(--secondary-color); 
-    --card-background: rgba(10, 20, 10, 0.7); 
-    --card-border: rgba(0, 255, 0, 0.3);
-    --header-bg: rgba(5, 5, 5, 0.85);
-    --border-color: var(--card-border); /* General border color */
+    /* --- Matrix Dark Theme Color Palette --- */
+    --primary-color: #00FF00;        /* Bright Matrix Green (for highlights, interactive elements) */
+    --secondary-color: #00DD00;      /* Medium Matrix Green (for secondary text, borders) */
+    --accent-color: #00FF00;         /* Accent Green (can be same as primary or slightly different) */
+    --background-color: #050505;     /* Very Dark Background (almost black) */
+    --text-color: var(--primary-color); /* Default text color */
+    --text-color-medium: var(--secondary-color); /* Secondary text color */
+    --card-background: rgba(10, 20, 10, 0.7); /* Semi-transparent dark green for cards */
+    --card-border: rgba(0, 255, 0, 0.3);  /* Subtle green border for cards */
+    --header-bg: rgba(5, 5, 5, 0.85);     /* Semi-transparent dark background for header */
+    --border-color: var(--card-border);   /* General border color, aliased to card border */
 
-    /* Card Shadows for Pulse Effect */
+    /* --- Card Shadow Variables for Pulse Effect --- */
     --card-shadow-base: 0 0 15px rgba(0,255,0,0.1), 0 0 5px rgba(0,255,0,0.15) inset;
     --card-shadow-pulse-peak: 0 0 25px rgba(0,255,0,0.3), 0 0 10px rgba(0,255,0,0.25) inset;
 
+    /* --- Typography --- */
+    --font-primary: 'VT323', monospace;   /* Primary font for body text, UI elements (Matrix style) */
+    --font-secondary: 'VT323', monospace; /* Secondary font for headings (Matrix style) */
+                                         /* Note: VT323 is a pixel font, often looks best at specific sizes or multiples thereof. */
 
-    --font-primary: 'VT323', monospace; /* Default to matrix font for body text */
-    --font-secondary: 'VT323', monospace; /* Default to matrix font for headings */
-
+    /* --- Transitions & Animations --- */
     --transition-speed: 0.3s;
     --transition-speed-fast: 0.2s;
-    --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Example bounce easing */
 }
 
-
-/* 2. Global Reset & Base Styles */
+/* ===========================================================
+   2. Global Reset & Base Styles
+   =========================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -53,27 +60,28 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
 }
 
 body {
-    font-family: var(--font-primary); /* VT323 */
-    background-color: var(--background-color); /* matrix-bg-dark */
-    color: var(--text-color); /* matrix-text-primary */
+    font-family: var(--font-primary);
+    background-color: var(--background-color);
+    color: var(--text-color);
     transition: background-color var(--transition-speed), color var(--transition-speed);
-    overflow-x: hidden;
-    line-height: 1.7;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+    line-height: 1.7;   /* Default line height for readability */
 }
 
-h1, h2, h3, .logo-text {
-    font-family: var(--font-secondary); /* VT323 */
-    font-weight: normal; /* VT323 is often bold by default */
+/* --- Headings & Text Elements --- */
+h1, h2, h3, .logo-text { /* Includes custom logo text class */
+    font-family: var(--font-secondary);
+    font-weight: normal; /* VT323 is often inherently bold; 'normal' can make it appear standard. */
 }
+
 p, li, a, span, button {
-    font-family: var(--font-primary); /* VT323 */
+    font-family: var(--font-primary);
     font-weight: normal;
 }
-
 
 a {
     color: var(--primary-color);
@@ -85,30 +93,32 @@ a:hover {
 }
 
 ul {
-    list-style: none;
+    list-style: none; /* Remove default bullet points */
 }
-/* Style for lists within cards, e.g., responsibilities, skills */
+
+/* Custom list style for elements within cards (e.g., responsibilities, skills) */
 .card-3d ul, .card-glow ul {
-    padding-left: 20px;
+    padding-left: 20px; /* Indentation for custom bullet */
 }
 .card-3d li, .card-glow li {
     margin-bottom: 8px;
     position: relative;
 }
-.card-3d li::before, 
+.card-3d li::before,
 .card-glow li::before {
-    content: ">"; /* Matrix-style list bullet */
+    content: ">"; /* Matrix-style list marker */
     position: absolute;
-    left: -18px;
-    color: var(--primary-color); /* Was matrix-green-bright */
+    left: -18px; /* Position to the left of the list item text */
+    color: var(--primary-color);
 }
-
 
 img {
-    max-width: 100%;
+    max-width: 100%; /* Responsive images */
     height: auto;
 }
-.visually-hidden { /* For accessibility */
+
+/* Accessibility helper: Hides content visually but keeps it accessible to screen readers */
+.visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -118,103 +128,110 @@ img {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
-.force-repaint { will-change: transform; } 
 
-/* 3. Scrollbar Styling */
+/* Utility to hint browser for repaint, can help with animation smoothness */
+.force-repaint {
+    will-change: transform;
+}
+
+/* ===========================================================
+   3. Scrollbar Styling (WebKit/Blink browsers)
+   =========================================================== */
 ::-webkit-scrollbar {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(0, 20, 0, 0.5); /* Dark theme track */
+    background: rgba(0, 20, 0, 0.5); /* Dark, slightly transparent track */
 }
 ::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 5px;
-    border: 2px solid var(--background-color); 
+    border: 2px solid var(--background-color); /* Creates a small gap around the thumb */
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
 }
 
-/* 4. Main Background Canvas */
+/* ===========================================================
+   4. Main Background Canvas (Placeholder Style)
+   Actual canvas content and behavior are managed by Three.js.
+   =========================================================== */
 #main-background-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2; 
-    pointer-events: none; 
+    z-index: -2; /* Position behind all other content */
+    pointer-events: none; /* Ensure canvas doesn't interfere with mouse events */
 }
 
-/* 5. Header & Navigation */
+/* ===========================================================
+   5. Header & Navigation (Desktop & Mobile)
+   =========================================================== */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: var(--header-bg);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 900; 
-    box-shadow: 0 2px 15px rgba(0, 255, 0, 0.1); /* Dark theme shadow */
+    background-color: var(--header-bg); /* Semi-transparent background */
+    backdrop-filter: blur(8px);         /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(8px); /* Safari support */
+    z-index: 900;                       /* High z-index to stay on top */
+    box-shadow: 0 2px 15px rgba(0, 255, 0, 0.1); /* Subtle green shadow */
     transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .header-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    height: 70px;
+    max-width: 1300px; /* Max width for content within header */
+    margin: 0 auto;    /* Center the container */
+    height: 70px;      /* Header height */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 20px;   /* Padding on sides */
 }
 
+/* --- Brand/Logo Styling --- */
 .brand .logo-text {
-    font-size: 1.8rem;
-    /* font-weight: 700; */ /* VT323 is normal */
-    /* font-family: var(--font-secondary); */ /* Set in global h tags */
+    font-size: 1.8rem; /* Adjust size as needed for VT323 */
     color: var(--primary-color);
     letter-spacing: 1px;
-    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
+    text-shadow: 0 0 5px var(--primary-color); /* Neon glow effect */
 }
 
-
-/* Desktop Navigation: Dynamic Island */
+/* --- Desktop Navigation: "Dynamic Island" Style --- */
 .dynamic-island {
-    background-color: rgba(0, 255, 0, 0.1); /* Dark theme background */
-    border: 1px solid var(--secondary-color); /* Was matrix-green-medium */
-    box-shadow: 0 0 10px var(--secondary-color); /* Was matrix-green-dark, using secondary for medium glow */
+    background-color: rgba(0, 255, 0, 0.1); /* Dark, slightly transparent green */
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color); /* Soft glow */
     padding: 8px 15px;
-    border-radius: 30px;
+    border-radius: 30px; /* Pill shape */
     display: flex;
     align-items: center;
 }
 
 .dynamic-island ul {
     display: flex;
-    gap: 20px;
+    gap: 20px; /* Space between navigation items */
 }
 .dynamic-island li a {
-    color: var(--text-color); /* Was matrix-text-primary */
-    font-weight: 500; /* VT323 usually normal, but 500 is ok */
-    font-size: 1.2rem; /* VT323 might need larger size */
+    color: var(--text-color);
+    font-weight: 500; /* VT323 is often normal, 500 can add slight emphasis if font supports it */
+    font-size: 1.2rem; /* Adjust for VT323 readability */
     padding: 8px 12px;
     border-radius: 20px;
     transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
 }
-
 .dynamic-island li a:hover {
-    background-color: var(--secondary-color); /* Was matrix-green-dark */
-    color: var(--background-color); /* Was matrix-bg-dark */
-    text-shadow: none;
+    background-color: var(--secondary-color);
+    color: var(--background-color); /* Contrast text on hover */
+    text-shadow: none; /* Remove any text shadow on hover for clarity */
 }
 
-
-/* Mobile Menu Toggle */
+/* --- Mobile Menu Toggle (Hamburger Icon) --- */
 .menu-toggle {
-    display: none; 
+    display: none; /* Hidden by default, shown in media queries */
     flex-direction: column;
     justify-content: space-around;
     width: 28px;
@@ -223,47 +240,47 @@ img {
     border: none;
     cursor: pointer;
     padding: 0;
-    z-index: 999; 
-    margin-left: 15px;
+    z-index: 999; /* Ensure toggle is above other header elements if overlapping */
+    margin-left: 15px; /* Space from other elements if any */
 }
-.menu-toggle span {
+.menu-toggle span { /* Hamburger bars */
     width: 100%;
     height: 3px;
     background-color: var(--text-color);
     border-radius: 10px;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); 
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); /* Smooth animation for bars */
 }
+/* Active state for hamburger (transforms into 'X') */
 .menu-toggle.active span:nth-child(1) {
     transform: translateY(9.5px) rotate(45deg);
 }
 .menu-toggle.active span:nth-child(2) {
     opacity: 0;
-    transform: translateX(-10px);
+    transform: translateX(-10px); /* Optional: slide out middle bar */
 }
 .menu-toggle.active span:nth-child(3) {
     transform: translateY(-9.5px) rotate(-45deg);
 }
 
-/* Mobile Navigation Panel */
+/* --- Mobile Navigation Panel --- */
 .mobile-nav {
     position: absolute;
-    top: 70px; 
+    top: 70px; /* Position below the header */
     left: 0;
     width: 100%;
-    background-color: var(--header-bg); 
-    box-shadow: 0 5px 20px rgba(0,255,0,0.1); /* Dark theme shadow */
-    transform: translateY(-100%);
+    background-color: var(--header-bg);
+    box-shadow: 0 5px 20px rgba(0,255,0,0.1);
+    transform: translateY(-100%); /* Start off-screen */
     opacity: 0;
     visibility: hidden;
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, visibility 0s linear 0.4s;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    overflow: hidden; 
-    border: 1px solid var(--card-border); /* Dark theme border */
-    border-top: none;
+    overflow: hidden; /* Ensures content doesn't spill during animation */
+    border: 1px solid var(--card-border);
+    border-top: none; /* No top border as it connects to header */
 }
-
-.mobile-nav.open {
+.mobile-nav.open { /* Active state for mobile menu */
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
@@ -275,12 +292,12 @@ img {
 }
 .mobile-nav li {
     margin-bottom: 5px;
-    opacity: 0;
+    opacity: 0; /* Stagger animation for list items */
     transform: translateX(-20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transition-delay: calc(0.05s * var(--i, 1)); 
+    transition-delay: calc(0.05s * var(--i, 1)); /* CSS variable for stagger index */
 }
-.mobile-nav.open li {
+.mobile-nav.open li { /* Animate items in when menu is open */
     opacity: 1;
     transform: translateX(0);
 }
@@ -288,52 +305,53 @@ img {
     margin-bottom: 0;
 }
 .mobile-nav li a {
-    display: block;
+    display: block; /* Make links take full width for easier tapping */
     padding: 12px 15px;
     color: var(--text-color);
-    font-size: 1.4rem; /* VT323 */
+    font-size: 1.4rem; /* Larger font size for VT323 on mobile */
     font-weight: 500;
     border-radius: 5px;
     transition: background-color var(--transition-speed-fast), color var(--transition-speed-fast);
 }
-
 .mobile-nav li a:hover {
-    background-color: var(--secondary-color); /* Was matrix-green-medium */
-    color: var(--background-color); /* Was matrix-bg-dark */
+    background-color: var(--secondary-color);
+    color: var(--background-color);
 }
 
-
-/* 7. Intro Overlay & Game Canvas */
+/* ===========================================================
+   6. Intro Overlay, Game Canvas, & "Enter" Button
+   =========================================================== */
 #intro-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color); /* Always dark (matrix-bg-dark) */
+    background-color: var(--background-color); /* Full-screen dark background */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    color: var(--text-color); /* Was matrix-text-primary */
-    z-index: 1000; 
+    color: var(--text-color);
+    z-index: 1000; /* Highest z-index to cover everything initially */
     opacity: 1;
-    transition: opacity 1s ease-out 0.2s; 
-    font-family: var(--font-primary); /* Was font-matrix */
+    transition: opacity 1s ease-out 0.2s; /* Fade out transition */
+    font-family: var(--font-primary);
 }
-#intro-canvas { 
+#intro-canvas { /* Canvas for Three.js background animation */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; 
+    z-index: -1; /* Behind the intro content but within the overlay */
 }
+
 .intro-content {
-    position: relative;
+    position: relative; /* For z-indexing if needed relative to canvas */
     text-align: center;
     padding: 20px;
-    animation: textAppear 2s ease-out forwards;
+    animation: textAppear 2s ease-out forwards; /* Fade-in animation for text */
 }
 @keyframes textAppear {
     from { opacity: 0; transform: translateY(20px); }
@@ -341,175 +359,157 @@ img {
 }
 
 .intro-title {
-    font-size: clamp(2.5rem, 8vw, 5rem); 
+    font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
     margin-bottom: 15px;
-    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); /* Was matrix-green-bright */
-    font-weight: normal;
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); /* Strong neon glow */
+    font-weight: normal; /* As per global VT323 styling */
 }
 .intro-subtitle {
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     margin-bottom: 40px;
-    color: var(--text-color-medium); /* Was matrix-text-secondary */
+    color: var(--text-color-medium);
     letter-spacing: 1px;
-    opacity: 0.9;
+    opacity: 0.9; /* Slightly less prominent than title */
 }
 
-/* Cyberpunk Button Style for Enter Button */
+/* --- Cyberpunk-style "Enter" Button --- */
 #enter-btn.cybr-btn {
-  font-family: var(--font-primary); /* Was font-matrix */
+  font-family: var(--font-primary);
+  /* CSS Variables for button customization (adapted for Matrix theme) */
+  --primary-hue: 120; /* Green hue for Matrix */
+  --primary-lightness: 40; /* Adjust lightness for desired green */
   --primary: hsl(var(--primary-hue), 85%, calc(var(--primary-lightness, 50) * 1%));
+  --shadow-primary-hue: 120;
   --shadow-primary: hsl(var(--shadow-primary-hue), 90%, 50%);
-  --primary-hue: 120; /* Green base for Matrix (was 180) */
-  --primary-lightness: 40;
-  --color: hsl(0, 0%, 100%);
-  --font-size: clamp(1.2rem, 3vw, 1.5rem);
-  --shadow-primary-hue: 120; 
-  --label-size: 0.8rem;
-  --shadow-secondary-hue: 100; /* Adjusted from 60 for a greener range */
-  --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%);
-  --border: 2px; 
+  --color: hsl(0, 0%, 100%); /* White text for contrast */
+  --font-size: clamp(1.2rem, 3vw, 1.5rem); /* Responsive font size */
+  --label-size: 0.8rem; /* Size for the small tag */
+  --shadow-secondary-hue: 100; /* Greener secondary shadow */
+  --clip: polygon(0 0, 100% 0, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 70%); /* Glitchy clip path */
+  --border: 2px; /* Border thickness for effect */
+
   text-decoration: none;
   color: var(--color);
   cursor: pointer;
   outline: transparent;
   border: 0;
-  background-color: transparent;
+  background-color: transparent; /* Button itself is transparent, effects are ::before/::after */
   padding: 1em 2em;
   position: relative;
   line-height: 1.5;
   letter-spacing: 1px;
 }
-
-#enter-btn.cybr-btn:focus-visible {
-  outline: 2px solid var(--primary-color); /* Was matrix-green-bright */
+#enter-btn.cybr-btn:focus-visible { /* Accessibility: focus outline */
+  outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
-
 #enter-btn.cybr-btn:after,
-#enter-btn.cybr-btn:before {
+#enter-btn.cybr-btn:before { /* Layers for the glitch effect */
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   clip-path: var(--clip);
   z-index: -1;
 }
-
-#enter-btn.cybr-btn:before {
+#enter-btn.cybr-btn:before { /* Shadow layer */
   background: var(--shadow-primary);
-  transform: translate(var(--border), var(--border));
+  transform: translate(var(--border), var(--border)); /* Offset for 3D effect */
 }
-
-#enter-btn.cybr-btn:after {
+#enter-btn.cybr-btn:after { /* Main color layer */
   background: var(--primary);
 }
-
-.cybr-btn__tag {
+.cybr-btn__tag { /* Small "tag" text on the button */
   position: absolute;
   bottom: -5%;
   right: -5%;
   font-size: var(--label-size);
   color: hsl(var(--shadow-secondary-hue), 100%, 70%);
 }
-
-.cybr-btn__glitch {
+.cybr-btn__glitch { /* Glitch overlay text, shown on hover */
   position: absolute;
-  top: calc(var(--border) * -1);
-  left: calc(var(--border) * -1);
-  right: calc(var(--border) * -1);
-  bottom: calc(var(--border) * -1);
+  top: calc(var(--border) * -1); left: calc(var(--border) * -1);
+  right: calc(var(--border) * -1); bottom: calc(var(--border) * -1);
   background: var(--shadow-primary);
   text-shadow: 2px 2px var(--shadow-primary), -2px -2px hsl(var(--shadow-secondary-hue), 100%, 70%);
   clip-path: var(--clip);
-  animation: glitch 2s infinite;
-  display: none; 
+  animation: glitch 2s infinite; /* Glitch text animation */
+  display: none; /* Hidden by default */
 }
 #enter-btn.cybr-btn:hover .cybr-btn__glitch {
-  display: block;
+  display: block; /* Show glitch text on hover */
 }
-/* ============================================================
-   Transition Overlay Styles
-   ============================================================ */
+
+/* ===========================================================
+   7. Transition Overlay (Terminal Animation)
+   =========================================================== */
 #transition-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000500; /* Very dark green, almost black */
-    z-index: 9998; /* Below intro-overlay (if it was 9999+), above main content */
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #000500; /* Very dark green, almost black base */
+    z-index: 9998; /* Below intro overlay (if it's >9998), above main content */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #00ff00; /* Green text */
-    font-family: 'VT323', monospace; /* Monospace font for terminal look */
-    opacity: 0; /* Start hidden */
+    color: #00ff00; /* Default green text for elements inside */
+    font-family: 'VT323', monospace;
+    opacity: 0; /* Start hidden, fade in with JS */
     transition: opacity 0.5s ease-in-out;
-    overflow: hidden;
+    overflow: hidden; /* Prevent scrollbars during transition */
 }
 
-#hex-rain-container {
+#hex-rain-container { /* Container for the falling hex code effect */
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-size: 14px; /* Adjust for density */
-    line-height: 1.1;
-    text-align: left;
-    word-break: break-all;
-    white-space: pre-wrap;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    font-size: 14px; /* Adjust for desired density of hex characters */
+    line-height: 1.1; /* Tight line height for rain effect */
+    text-align: left; /* Or center, depending on desired effect */
+    word-break: break-all; /* Prevent long lines from causing overflow */
+    white-space: pre-wrap; /* Respect newlines from JS */
     overflow: hidden;
-    z-index: 1;
-    /* Color will be set by JS, but a fallback */
-    color: #003300;
-    opacity: 0.7;
+    z-index: 1; /* Behind terminal text, but above base background */
+    color: #003300; /* Darker green for background rain, less prominent */
+    opacity: 0.7;   /* Make it somewhat transparent */
 }
 
-#terminal-text-output {
+#terminal-text-output { /* The "terminal" where messages are typed */
     font-size: clamp(1.5em, 4vw, 2.2em); /* Responsive font size */
-    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0;
+    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0; /* Green glow */
     position: relative;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2; /* Above hex rain */
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background for readability */
     padding: 20px;
-    border: 1px solid #00cc00;
+    border: 1px solid #00cc00; /* Green border */
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5) inset, 0 0 10px rgba(0, 255, 0, 0.3);
-    white-space: pre-wrap; /* Allow newlines */
+    white-space: pre-wrap; /* Preserve line breaks and spaces */
     text-align: left;
-    min-width: 300px; /* Minimum width for the terminal box */
-    max-width: 80%;
+    min-width: 300px; /* Ensure a minimum readable width */
+    max-width: 80%;   /* Prevent it from being too wide on large screens */
 }
 
-#terminal-text-output::after { /* Typing cursor */
+#terminal-text-output::after { /* Blinking cursor for the terminal */
     content: '_';
     font-weight: bold;
     animation: blink-cursor 1s step-end infinite;
     margin-left: 2px;
 }
-
-@keyframes blink-cursor {
+@keyframes blink-cursor { /* Cursor blinking animation */
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
-/* Glitch effect for the whole transition overlay during a phase */
+/* --- Glitch effect for the entire transition overlay during certain phases --- */
 #transition-overlay.glitching {
     animation: screen-glitch 150ms steps(2, end) infinite, color-glitch 200ms linear infinite;
 }
-
-@keyframes screen-glitch {
-    0% { clip-path: inset(9% 0 34% 0); }
-    20% { clip-path: inset(45% 0 9% 0); }
-    40% { clip-path: inset(23% 0 18% 0); }
-    60% { clip-path: inset(39% 0 48% 0); }
-    80% { clip-path: inset(12% 0 29% 0); }
-    100% { clip-path: inset(50% 0 5% 0); }
+@keyframes screen-glitch { /* Simulates screen tearing/jumping */
+    0% { clip-path: inset(9% 0 34% 0); } 20% { clip-path: inset(45% 0 9% 0); }
+    40% { clip-path: inset(23% 0 18% 0); } 60% { clip-path: inset(39% 0 48% 0); }
+    80% { clip-path: inset(12% 0 29% 0); } 100% { clip-path: inset(50% 0 5% 0); }
 }
-@keyframes color-glitch {
+@keyframes color-glitch { /* Simulates color shifts/aberrations */
   0% { filter: hue-rotate(0deg) contrast(1.2) brightness(1.1); }
   25% { filter: hue-rotate(10deg) contrast(1.1) brightness(1.0); }
   50% { filter: hue-rotate(-5deg) contrast(1.3) brightness(1.2); }
@@ -517,326 +517,280 @@ img {
   100% { filter: hue-rotate(0deg) contrast(1.2) brightness(1.1); }
 }
 
-
-/* Final disappearing effect for transition-overlay */
+/* --- Final disappearing effect for the transition overlay --- */
 #transition-overlay.disappearing {
     animation: digital-dissolve 0.7s ease-out forwards;
 }
-
-@keyframes digital-dissolve {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-        filter: brightness(1) contrast(1);
-    }
-    50% {
-        opacity: 0.8;
-        filter: brightness(1.5) contrast(1.5) blur(1px);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.2);
-        filter: brightness(2) contrast(2) blur(3px);
-    }
+@keyframes digital-dissolve { /* Simulates a digital/pixelated fade-out */
+    0% { opacity: 1; transform: scale(1); filter: brightness(1) contrast(1); }
+    50% { opacity: 0.8; filter: brightness(1.5) contrast(1.5) blur(1px); } /* Mid-dissolve effects */
+    100% { opacity: 0; transform: scale(1.2); filter: brightness(2) contrast(2) blur(3px); } /* Final state (gone) */
 }
 
-/* Ensure main content is hidden initially and fades in */
+/* --- Main Content Area: Initial State & Fade-In --- */
 main {
     opacity: 0;
-    visibility: hidden; /* Important to prevent interaction/layout issues */
-    transition: opacity 0.8s ease-in 0.2s, visibility 0s linear 1s; /* Delay visibility until opaque */
+    visibility: hidden; /* Prevent interaction/layout shifts while hidden */
+    /* Delay visibility until opacity transition is partly done to avoid flash of unstyled content */
+    transition: opacity 0.8s ease-in 0.2s, visibility 0s linear 1s;
 }
-
-main.visible {
+main.visible { /* Class added by JS when main content should appear */
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.8s ease-in, visibility 0s linear 0s;
+    transition: opacity 0.8s ease-in, visibility 0s linear 0s; /* No delay for visibility when becoming visible */
 }
+
 /* ===========================================================
-   Enhanced Matrix Timeline for Experience Section
+   8. Main Content Area & Sections
    =========================================================== */
-
-/* Container: vertical neon timeline */
-#experience-container {
-    position: relative;
-    padding-left: 60px;
-    margin: 60px 0;
-}
-#experience-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 30px;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-    box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-    border-radius: 2px;
-}
-
-/* Each experience node */
-.experience-item {
-    position: relative;
-    margin-bottom: 50px;
-    padding: 20px 20px 20px 40px;
-    background-color: var(--card-background);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed);
-}
-.experience-item::before {
-    /* Year marker */
-    content: attr(data-year);
-    position: absolute;
-    left: -120px;
-    top: 20px;
-    font-family: var(--font-secondary);
-    font-size: 1.2rem;
-    color: var(--secondary-color);
-    letter-spacing: 1px;
-    text-shadow: 0 0 5px var(--secondary-color);
-}
-.experience-item::after {
-    /* Timeline dot */
-    content: '';
-    position: absolute;
-    left: -38px;
-    top: 28px;
-    width: 16px;
-    height: 16px;
-    background: var(--accent-color);
-    border: 2px solid var(--secondary-color);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent-color), inset 0 0 4px var(--secondary-color);
-}
-.experience-item:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 0 15px var(--primary-color);
-}
-
-/* Headings & company glitch effect */
-.experience-item h3 {
-    font-family: var(--font-secondary);
-    color: var(--primary-color);
-    margin-bottom: 8px;
-    font-size: 1.6rem;
-}
-.experience-item h3 .company-name {
-    display: inline-block;
-    position: relative;
-}
-.experience-item h3 .company-name::before,
-.experience-item h3 .company-name::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-}
-.experience-item h3 .company-name::before {
-    left: 2px;
-    text-shadow: -1px 0 var(--secondary-color);
-    clip: rect(0, 9999px, 10px, 0);
-    animation: glitch-anim-1 2s infinite linear alternate-reverse;
-}
-.experience-item h3 .company-name::after {
-    left: -2px;
-    text-shadow: 1px 1px var(--accent-color);
-    clip: rect(20px, 9999px, 40px, 0);
-    animation: glitch-anim-2 3s infinite linear alternate-reverse;
-}
-
-/* Role title */
-.experience-item h4 {
-    color: var(--text-color-medium);
-    margin: 10px 0;
-    font-size: 1.2rem;
-}
-
-/* Bullet list style remains inherited */
-.experience-item ul {
-    margin-top: 10px;
-}
-
-/* Optional note box */
-.experience-item .note {
-    margin-top: 12px;
-    padding: 12px;
-    background-color: rgba(0,255,0,0.05);
-    border-left: 3px solid var(--secondary-color);
-    border-radius: 0 4px 4px 0;
-    font-size: 0.9rem;
-}
-
-/* Main Content Sections */
 main {
-    padding-top: 70px; 
+    padding-top: 70px; /* Account for fixed header height */
 }
+
 .content-section {
-    padding: 60px 20px;
-    max-width: 1100px;
-    margin: 0 auto;
-    opacity: 0; 
+    padding: 60px 20px; /* Vertical and horizontal padding */
+    max-width: 1100px;  /* Max width for content */
+    margin: 0 auto;     /* Center sections */
+    opacity: 0;         /* Initial state for Intersection Observer animation */
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-.content-section.visible {
+.content-section.visible { /* Class added by Intersection Observer */
     opacity: 1;
     transform: translateY(0);
 }
 
 h2.section-title {
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    /* font-weight: 700; */ /* VT323 is normal */
-    /* font-family: var(--font-secondary); */ /* Set in global h tags */
+    font-size: clamp(1.8rem, 5vw, 2.8rem); /* Responsive title size */
     text-align: center;
     margin-bottom: 40px;
     color: var(--primary-color);
-    position: relative;
-    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
+    position: relative; /* For pseudo-elements */
+    text-shadow: 0 0 5px var(--primary-color); /* Subtle glow */
 }
-
-h2.section-title::after {
+h2.section-title::after { /* Underline accent for section titles */
     content: '';
     display: block;
     width: 60px;
     height: 3px;
     background-color: var(--primary-color);
-    margin: 10px auto 0;
-    transition: width 0.5s ease-in-out;
+    margin: 10px auto 0; /* Center the underline */
+    transition: width 0.5s ease-in-out; /* Animate width on reveal */
 }
-.content-section.visible h2.section-title::after {
+.content-section.visible h2.section-title::after { /* Expand underline when section is visible */
     width: 100px;
 }
 
-
-/* 8. Cards */
+/* ===========================================================
+   9. Card Styles (3D, Glow)
+   =========================================================== */
 .card-3d, .card-glow {
     background-color: var(--card-background);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 25px;
     margin-bottom: 25px;
-    box-shadow: var(--card-shadow-base); /* Use base shadow for pulse */
-    transition: transform var(--transition-speed) ease-out, 
+    box-shadow: var(--card-shadow-base); /* Base shadow, animates on hover */
+    transition: transform var(--transition-speed) ease-out,
                 border-color var(--transition-speed),
                 background-color var(--transition-speed);
 }
-
 .card-3d:hover, .card-glow:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: var(--primary-color); /* Was matrix-green-bright */
-    animation: pulseCardShadow 1.5s infinite ease-in-out;
+    transform: translateY(-5px) scale(1.02); /* Subtle lift and scale effect */
+    border-color: var(--primary-color);
+    animation: pulseCardShadow 1.5s infinite ease-in-out; /* Pulsing shadow on hover */
 }
-
-@keyframes pulseCardShadow {
-    0% {
-        box-shadow: var(--card-shadow-base);
-    }
-    50% {
-        box-shadow: var(--card-shadow-pulse-peak);
-    }
-    100% {
-        box-shadow: var(--card-shadow-base);
-    }
+@keyframes pulseCardShadow { /* Keyframes for the pulsing shadow effect */
+    0%   { box-shadow: var(--card-shadow-base); }
+    50%  { box-shadow: var(--card-shadow-pulse-peak); } /* Peak of the pulse */
+    100% { box-shadow: var(--card-shadow-base); }
 }
 
 .card-3d h3, .card-glow h3 {
-    /* font-size: 1.5rem; */ /* Set in global h tags */
-    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     color: var(--primary-color);
     margin-bottom: 15px;
-    font-size: 1.8rem; /* VT323 often needs to be larger */
+    font-size: 1.8rem; /* Larger size for VT323 card titles */
 }
 
+/* --- Glow Card Specifics --- */
 .card-glow {
-    position: relative;
-    overflow: hidden; 
+    position: relative; /* Required for pseudo-element positioning */
+    overflow: hidden;   /* Prevents glow from spilling outside rounded corners */
 }
-.card-glow::before { 
+.card-glow::before { /* Animated glowing border effect */
     content: '';
     position: absolute;
-    top: -2px; left: -2px; right: -2px; bottom: -2px;
-    z-index: -1;
-    opacity: 0;
+    top: -2px; left: -2px; right: -2px; bottom: -2px; /* Slightly outside the card bounds */
+    z-index: -1; /* Behind the card content */
+    opacity: 0; /* Hidden by default, shown on hover */
     transition: opacity 0.4s ease;
-    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color), var(--secondary-color)); /* Was matrix-green-dark, bright */
-    background-size: 300% 300%;
-    animation: glowingBorder 8s linear infinite;
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color), var(--secondary-color));
+    background-size: 300% 300%; /* Large background size for smooth animation */
+    animation: glowingBorder 8s linear infinite; /* Continuous animation */
 }
 .card-glow:hover::before {
-    opacity: 1;
+    opacity: 1; /* Show glowing border on hover */
 }
-
-@keyframes glowingBorder {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+@keyframes glowingBorder { /* Animates the background position for the gradient */
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Grid layout for card containers */
+/* --- Grid Layout for Card Containers --- */
 .grid-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid columns */
     gap: 25px;
 }
 
-/* 9. Specific Section Styling */
-#experience-container .experience-item .company-info {
+/* ===========================================================
+   10. Specific Section Styling (Experience, Projects, Skills)
+   =========================================================== */
+
+/* --- Enhanced Matrix Timeline for Experience Section --- */
+#experience-container {
+    position: relative;
+    padding-left: 60px; /* Space for the timeline bar and year markers */
+    margin: 60px 0;     /* Top/bottom margin */
+}
+#experience-container::before { /* The vertical timeline bar */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px; /* Centered relative to the 60px padding */
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color)); /* Green gradient */
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color); /* Neon glow for the bar */
+    border-radius: 2px;
+}
+
+.experience-item { /* Individual experience entry */
+    position: relative;
+    margin-bottom: 50px;
+    padding: 20px 20px 20px 40px; /* Padding around content, extra left for spacing from timeline */
+    background-color: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed);
+}
+.experience-item::before { /* Year marker (using data-year attribute from JS) */
+    content: attr(data-year); /* Dynamically populated by JS if needed, or hardcode if static */
+    position: absolute;
+    left: -120px; /* Position to the left of the timeline bar */
+    top: 20px;    /* Align with item content */
+    font-family: var(--font-secondary);
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+.experience-item::after { /* Dot on the timeline */
+    content: '';
+    position: absolute;
+    left: -38px; /* Position over the timeline bar (30px - 16px/2 + 4px/2) */
+    top: 28px;   /* Align vertically with text or a consistent point */
+    width: 16px;
+    height: 16px;
+    background: var(--accent-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-color), inset 0 0 4px var(--secondary-color); /* Inner and outer glow */
+}
+.experience-item:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 15px var(--primary-color); /* Enhanced shadow on hover */
+}
+
+/* Experience item headings and company name with glitch effect */
+.experience-item h3 {
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+}
+.experience-item h3 .company-name { /* Span around company name for glitch */
+    display: inline-block; /* Needed for relative positioning of pseudo-elements */
+    position: relative;
+}
+.experience-item h3 .company-name::before,
+.experience-item h3 .company-name::after { /* Glitch layers */
+    content: attr(data-text); /* Text for glitch effect, set via JS or attribute */
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    overflow: hidden; /* Clip the text */
+}
+.experience-item h3 .company-name::before { /* First glitch layer */
+    left: 2px;
+    text-shadow: -1px 0 var(--secondary-color);
+    clip: rect(0, 9999px, 10px, 0); /* Initial clip */
+    animation: glitch-anim-1 2s infinite linear alternate-reverse; /* Reference general glitch animation */
+}
+.experience-item h3 .company-name::after { /* Second glitch layer */
+    left: -2px;
+    text-shadow: 1px 1px var(--accent-color);
+    clip: rect(20px, 9999px, 40px, 0); /* Initial clip */
+    animation: glitch-anim-2 3s infinite linear alternate-reverse; /* Reference general glitch animation */
+}
+
+.experience-item .company-info { /* Company name and date range */
     font-size: 0.9rem;
     color: var(--text-color-medium);
     margin-bottom: 10px;
     font-style: italic;
 }
-#experience-container .experience-item h4 { 
+.experience-item h4 { /* Role title / Responsibilities heading */
     font-size: 1.1rem;
     margin-top: 15px;
     margin-bottom: 8px;
-    color: var(--text-color-medium); /* Was text-color, then matrix-text-secondary */
+    color: var(--text-color-medium);
 }
-#experience-container .experience-item .note {
+.experience-item .note { /* Optional notes section */
     margin-top: 15px;
     font-size: 0.9em;
     padding: 10px;
-    background-color: rgba(0,255,0,0.05); /* Dark theme background */
-    border-left: 3px solid var(--secondary-color); /* Was matrix-green-medium */
+    background-color: rgba(0,255,0,0.05); /* Very subtle green background */
+    border-left: 3px solid var(--secondary-color);
     border-radius: 0 4px 4px 0;
 }
 
+/* --- Projects Section --- */
 #projects-container .project-item h3 a {
     text-decoration: underline;
-    text-decoration-color: var(--primary-color); /* Was matrix-green-bright / secondary-color */
-    text-shadow: 0 0 3px var(--primary-color); /* Dark theme shadow */
+    text-decoration-color: var(--primary-color);
+    text-shadow: 0 0 3px var(--primary-color); /* Subtle glow on link */
 }
 #projects-container .project-item h3 a:hover {
-    text-decoration-color: var(--secondary-color); /* Was primary-color */
+    text-decoration-color: var(--secondary-color);
 }
 
-
-#skills-container.skills-grid { 
+/* --- Skills Section --- */
+#skills-container.skills-grid { /* If using the .grid-layout for skills */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 #skills-container .skill-category ul {
-    columns: 2; 
+    columns: 2; /* Display skills in two columns if space allows */
     column-gap: 20px;
 }
-@media (max-width: 480px) { 
+@media (max-width: 480px) { /* Single column for skills on very small screens */
     #skills-container .skill-category ul {
         columns: 1;
     }
 }
 
-
-/* 10. Footer */
+/* ===========================================================
+   11. Footer
+   =========================================================== */
 .footer {
-    background-color: var(--header-bg); 
+    background-color: var(--header-bg); /* Consistent with header */
     color: var(--text-color);
-    padding: 40px 20px 20px;
+    padding: 40px 20px 20px; /* Top, sides, bottom padding */
     text-align: center;
-    border-top: 1px solid var(--card-border); /* Dark theme border */
-    margin-top: 50px; 
-    box-shadow: 0 -5px 20px rgba(0,255,0,0.05); /* Dark theme shadow */
+    border-top: 1px solid var(--card-border);
+    margin-top: 50px; /* Space above the footer */
+    box-shadow: 0 -5px 20px rgba(0,255,0,0.05); /* Subtle shadow upwards */
 }
 .footer-container {
     max-width: 1100px;
@@ -844,14 +798,13 @@ h2.section-title::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
+    gap: 25px; /* Spacing between footer elements */
 }
 .footer-brand h2 {
     font-size: 1.8rem;
-    /* font-family: var(--font-secondary); */ /* Set in global h tags */
     color: var(--primary-color);
     margin-bottom: 5px;
-    text-shadow: 0 0 5px var(--primary-color); /* Dark theme shadow */
+    text-shadow: 0 0 5px var(--primary-color);
 }
 .footer-brand p {
     font-size: 0.9rem;
@@ -860,20 +813,20 @@ h2.section-title::after {
 .footer-links {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
     justify-content: center;
 }
 .footer-links a {
-    font-weight: 500;
+    font-weight: 500; /* VT323 */
 }
-.footer-social a {
+.footer-social a { /* Social media icons */
     font-size: 1.5rem;
     margin: 0 10px;
     transition: transform var(--transition-speed-fast), color var(--transition-speed-fast);
 }
 .footer-social a:hover {
-    transform: scale(1.2) translateY(-2px);
-    color: var(--secondary-color); 
+    transform: scale(1.2) translateY(-2px); /* Pop effect on hover */
+    color: var(--secondary-color);
 }
 .footer-copyright {
     margin-top: 25px;
@@ -881,8 +834,10 @@ h2.section-title::after {
     opacity: 0.7;
 }
 
-/* 11. Floating Action Buttons & Contact Popup */
-#TopBtn, .contact-btn {
+/* ===========================================================
+   12. Floating Action Buttons (Scroll to Top, Contact) & Contact Popup
+   =========================================================== */
+#TopBtn, .contact-btn { /* Shared styles for FABs */
     position: fixed;
     width: 45px;
     height: 45px;
@@ -891,163 +846,131 @@ h2.section-title::after {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 0 10px var(--secondary-color); /* Was matrix-green-medium */
+    box-shadow: 0 0 10px var(--secondary-color);
     transition: transform 0.2s ease-out, background-color 0.2s, box-shadow 0.2s;
-    z-index: 800; 
-    border: 1px solid var(--primary-color); /* Was matrix-green-bright */
-    background-color: var(--secondary-color); /* Was matrix-green-dark */
-    color: var(--background-color); /* Was matrix-bg-dark */
+    z-index: 800; /* Below header, but above most content */
+    border: 1px solid var(--primary-color);
+    background-color: var(--secondary-color); /* Darker green for base */
+    color: var(--background-color); /* Contrast icon/text color */
 }
 
-
-#TopBtn {
+#TopBtn { /* Scroll to Top button */
     bottom: 30px;
     right: 30px;
-    font-size: 1.5rem; 
+    font-size: 1.5rem; /* Icon size */
 }
-.contact-btn {
+.contact-btn { /* Contact button */
     bottom: 30px;
     left: 30px;
-    font-size: 1.2rem; 
+    font-size: 1.2rem; /* Icon size */
 }
 
 #TopBtn:hover, .contact-btn:hover {
-    transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 0 15px var(--primary-color); /* Was matrix-green-bright */
-    background-color: var(--primary-color); /* Was matrix-green-bright */
+    transform: scale(1.1) translateY(-2px); /* Pop effect */
+    box-shadow: 0 0 15px var(--primary-color);
+    background-color: var(--primary-color); /* Brighter green on hover */
 }
 
-
-.contact-info-popup { 
+/* --- Contact Information Popup --- */
+.contact-info-popup {
     position: fixed;
-    bottom: 90px; 
+    bottom: 90px; /* Position above the contact button */
     left: 30px;
     background-color: var(--card-background);
     color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 0 20px rgba(0,255,0,0.15); /* Dark theme shadow */
-    z-index: 799; 
-    width: clamp(280px, 80vw, 350px); 
-    display: none; 
+    box-shadow: 0 0 20px rgba(0,255,0,0.15); /* Soft glow */
+    z-index: 799; /* Below FABs if they overlap, but above page content */
+    width: clamp(280px, 80vw, 350px); /* Responsive width */
+    display: none; /* Shown by JavaScript */
     flex-direction: column;
-    gap: 12px;
-    animation: fadeInScaleUp 0.3s ease-out forwards;
+    gap: 12px; /* Space between contact items */
+    animation: fadeInScaleUp 0.3s ease-out forwards; /* Entry animation */
 }
-
 .contact-info-popup p {
     margin-bottom: 5px;
-    font-size: 1.1rem; /* VT323 */
+    font-size: 1.1rem; /* Good size for VT323 readability */
 }
 .contact-info-popup a {
-    font-weight: 500;
-    word-break: break-all; 
+    font-weight: 500; /* VT323 */
+    word-break: break-all; /* Prevent long links from breaking layout */
 }
-
-@keyframes fadeInScaleUp {
+@keyframes fadeInScaleUp { /* Animation for popup entry */
     from { opacity: 0; transform: translateY(10px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ===========================================================
+   13. Utility & Animation Classes
+   =========================================================== */
 
-/* 12. Utility & Animation Classes */
+/* --- General Glitch Effect (can be applied to text elements) --- */
 .glitch {
     position: relative;
 }
 .glitch::before,
 .glitch::after {
-    content: attr(data-text);
+    content: attr(data-text); /* Requires data-text attribute on the element */
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--background-color); 
-    overflow: hidden;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--background-color); /* Match element background to hide original text */
+    overflow: hidden; /* Clip the pseudo-element's content */
 }
 .glitch::before {
     left: 2px;
-    text-shadow: -1px 0 var(--secondary-color); /* Was matrix-green-medium */
-    clip: rect(24px, 550px, 90px, 0);
+    text-shadow: -1px 0 var(--secondary-color);
+    clip: rect(24px, 550px, 90px, 0); /* Initial clip rectangle */
     animation: glitch-anim-1 2s infinite linear alternate-reverse;
 }
 .glitch::after {
     left: -2px;
-    text-shadow: -1px 0 var(--accent-color), 1px 1px var(--secondary-color); /* Was matrix-green-dark */
-    clip: rect(85px, 550px, 140px, 0);
+    text-shadow: -1px 0 var(--accent-color), 1px 1px var(--secondary-color);
+    clip: rect(85px, 550px, 140px, 0); /* Initial clip rectangle */
     animation: glitch-anim-2 3s infinite linear alternate-reverse;
 }
 
-
-@keyframes glitch-anim-1 {
-    0% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.3deg); }
-    5% { clip: rect(27px, 9999px, 94px, 0); }
-    10% { clip: rect(13px, 9999px, 62px, 0); }
-    15% { clip: rect(18px, 9999px, 90px, 0); }
-    20% { clip: rect(40px, 9999px, 130px, 0); }
-    25% { clip: rect(33px, 9999px, 50px, 0); }
-    30% { clip: rect(60px, 9999px, 122px, 0); }
-    35% { clip: rect(22px, 9999px, 69px, 0); }
-    40% { clip: rect(71px, 9999px, 110px, 0); }
-    45% { clip: rect(10px, 9999px, 82px, 0); }
-    50% { clip: rect(55px, 9999px, 95px, 0); }
-    55% { clip: rect(5px, 9999px, 75px, 0); }
-    60% { clip: rect(50px, 9999px, 140px, 0); }
-    65% { clip: rect(70px, 9999px, 100px, 0); }
-    70% { clip: rect(35px, 9999px, 78px, 0); }
-    75% { clip: rect(65px, 9999px, 115px, 0); }
-    80% { clip: rect(20px, 9999px, 92px, 0); }
-    85% { clip: rect(80px, 9999px, 125px, 0); }
-    90% { clip: rect(15px, 9999px, 88px, 0); }
-    95% { clip: rect(75px, 9999px, 135px, 0); }
+/* Keyframes for the glitch animations (can be shared or customized) */
+@keyframes glitch-anim-1 { /* Animates the clip-path and transform for the first glitch layer */
+    0%   { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.3deg); }
+    /* ... (add more steps for varied glitching) ... */
     100% { clip: rect(30px, 9999px, 100px, 0); transform: skew(-0.2deg); }
 }
-@keyframes glitch-anim-2 {
-    0% { clip: rect(45px, 9999px, 102px, 0); transform: skew(0.2deg); }
-    5% { clip: rect(5px, 9999px, 80px, 0); }
-    10% { clip: rect(50px, 9999px, 120px, 0); }
-    15% { clip: rect(25px, 9999px, 70px, 0); }
-    20% { clip: rect(60px, 9999px, 105px, 0); }
-    25% { clip: rect(10px, 9999px, 95px, 0); }
-    30% { clip: rect(75px, 9999px, 130px, 0); }
-    35% { clip: rect(40px, 9999px, 85px, 0); }
-    40% { clip: rect(5px, 9999px, 110px, 0); }
-    45% { clip: rect(65px, 9999px, 90px, 0); }
-    50% { clip: rect(30px, 9999px, 125px, 0); }
-    55% { clip: rect(55px, 9999px, 70px, 0); }
-    60% { clip: rect(15px, 9999px, 100px, 0); }
-    65% { clip: rect(70px, 9999px, 135px, 0); }
-    70% { clip: rect(20px, 9999px, 80px, 0); }
-    75% { clip: rect(85px, 9999px, 115px, 0); }
-    80% { clip: rect(45px, 9999px, 95px, 0); }
-    85% { clip: rect(5px, 9999px, 120px, 0); }
-    90% { clip: rect(60px, 9999px, 100px, 0); }
-    95% { clip: rect(35px, 9999px, 130px, 0); }
+@keyframes glitch-anim-2 { /* Animates the clip-path and transform for the second glitch layer */
+    0%   { clip: rect(45px, 9999px, 102px, 0); transform: skew(0.2deg); }
+    /* ... (add more steps for varied glitching) ... */
     100% { clip: rect(10px, 9999px, 75px, 0); transform: skew(-0.3deg); }
 }
+/* Additional small skew animation for cyberpunk button if needed */
 @keyframes glitch-skew {
   0% { transform: skew(0deg); }
-  100% { transform: skew(0.5deg); }
+  100% { transform: skew(0.5deg); } /* Subtle skew */
 }
 
-.fade-in { 
-    animation: fadeInElement 1s ease-out 0.5s forwards;
-    opacity: 0;
+/* --- Simple Fade-In Animation --- */
+.fade-in {
+    animation: fadeInElement 1s ease-out 0.5s forwards; /* Delayed fade-in */
+    opacity: 0; /* Start transparent */
 }
 @keyframes fadeInElement {
     to { opacity: 1; }
 }
 
+/* ===========================================================
+   14. Responsive Media Queries
+   =========================================================== */
 
-/* 13. Responsive Media Queries */
+/* --- Tablet & Larger Mobile (Hide Desktop Nav, Show Mobile Toggle) --- */
 @media (max-width: 1024px) {
     .dynamic-island {
-        display: none; 
+        display: none; /* Hide desktop "dynamic island" navigation */
     }
     .menu-toggle {
-        display: flex; 
+        display: flex; /* Show mobile menu toggle (hamburger) */
     }
+    /* Stagger animation for mobile nav items (example for up to 8 items) */
     .mobile-nav.open li:nth-child(1) { --i: 1; }
     .mobile-nav.open li:nth-child(2) { --i: 2; }
     .mobile-nav.open li:nth-child(3) { --i: 3; }
@@ -1056,55 +979,57 @@ h2.section-title::after {
     .mobile-nav.open li:nth-child(6) { --i: 6; }
     .mobile-nav.open li:nth-child(7) { --i: 7; }
     .mobile-nav.open li:nth-child(8) { --i: 8; }
-
 }
 
+/* --- Smaller Tablets & Mobile Devices --- */
 @media (max-width: 768px) {
     .header-container {
-        padding: 0 15px;
+        padding: 0 15px; /* Reduce header padding */
     }
     .content-section {
-        padding: 50px 15px;
+        padding: 50px 15px; /* Reduce section padding */
     }
     h2.section-title {
-        margin-bottom: 30px;
+        margin-bottom: 30px; /* Reduce bottom margin for section titles */
     }
     .grid-layout, #skills-container.skills-grid {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr; /* Single column for grid layouts */
         gap: 20px;
     }
     .footer-container {
-        gap: 20px;
+        gap: 20px; /* Reduce gap in footer */
     }
     .footer-links {
         gap: 15px;
     }
+    /* Adjust FAB positions and sizes */
     #TopBtn, .contact-btn {
         width: 40px;
         height: 40px;
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
         bottom: 20px;
     }
     #TopBtn { right: 20px; }
     .contact-btn { left: 20px; }
     .contact-info-popup {
-        bottom: 70px; 
+        bottom: 70px; /* Adjust position above smaller FAB */
         left: 20px;
         padding: 15px;
     }
 }
 
+/* --- Small Mobile Devices --- */
 @media (max-width: 480px) {
     body {
-        line-height: 1.6;
+        line-height: 1.6; /* Slightly adjust line height if needed */
     }
     .brand .logo-text {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* Smaller logo text */
     }
     h2.section-title {
-        font-size: 1.6rem; 
+        font-size: 1.6rem; /* Smaller section titles */
     }
-    h2.section-title::after {
+    h2.section-title::after { /* Adjust underline for smaller titles */
         width: 50px;
         height: 2px;
     }
@@ -1112,16 +1037,16 @@ h2.section-title::after {
         width: 80px;
     }
     .card-3d, .card-glow {
-        padding: 20px;
+        padding: 20px; /* Reduce card padding */
     }
     .card-3d h3, .card-glow h3 {
-        font-size: 1.6rem; /* VT323 */
+        font-size: 1.6rem; /* Adjust card title size for VT323 */
     }
     .footer-social a {
-        font-size: 1.3rem;
+        font-size: 1.3rem; /* Smaller social icons */
         margin: 0 8px;
     }
-     #skills-container .skill-category ul { 
+    #skills-container .skill-category ul { /* Ensure skills are single column */
         columns: 1;
     }
 }
