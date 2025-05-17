@@ -484,6 +484,8 @@ img {
     border: 1px solid #00cc00; /* Green border */
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5) inset, 0 0 10px rgba(0, 255, 0, 0.3);
     white-space: pre-wrap; /* Preserve line breaks and spaces */
+    word-break: break-word; /* Prevent overflow */
+    font-size: 1em ;
     text-align: left;
     min-width: 300px; /* Ensure a minimum readable width */
     max-width: 80%;   /* Prevent it from being too wide on large screens */
