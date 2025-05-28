@@ -7,7 +7,6 @@
     <title>CV - Emiliano Pizzuti</title>
     <meta name="description" content="Portfolio e CV di Emiliano Pizzuti, Web & Game Developer.">
 
-    <!-- IMPORTANT: Import Map must come before any module scripts -->
     <script type="importmap">
     {
       "imports": {
@@ -23,7 +22,6 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&family=VT323&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <!-- AOS CSS still needed -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -31,13 +29,12 @@
 </head>
 
 <body class="dark-theme">
-    <!-- Main Background Digital Rain (2D) -->
     <canvas id="main-background-canvas"></canvas>
-    <!-- Initial terminal text -->
-<div id="initial-terminal-text" class="initial-terminal"></div>
 
+    <div id="scanlines-overlay"></div>
 
-    <!-- Intro Overlay with 3D Matrix Game -->
+    <div id="initial-terminal-text" class="initial-terminal"></div>
+
     <div id="intro-overlay">
         <canvas id="intro-canvas"></canvas>
         <div class="intro-content">
@@ -50,12 +47,10 @@
             </button>
         </div>
     </div>
-    <!-- Transition Animation Overlay -->
     <div id="transition-overlay" style="display: none; opacity: 0;">
         <div id="hex-rain-container"></div>
         <pre id="terminal-text-output"></pre>
     </div>
-    <!-- Header -->
     <header class="header">
         <div class="header-container">
             <div class="brand">
@@ -97,12 +92,10 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main>
         <section id="profile" class="content-section">
             <h2 class="section-title " data-text="Profilo Professionale">Profilo Professionale</h2>
-            <p id="profile-text" class="fade-in"></p>
-        </section>
+            <p id="profile-text" class="fade-in decrypt"></p> </section>
 
         <section id="experience" class="content-section">
             <h2 class="section-title " data-text="Esperienza">Esperienza</h2>
@@ -140,7 +133,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
@@ -160,13 +152,19 @@
                     rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="mailto:emilianopizzuti95@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
             </div>
+            <div id="footer-terminal">
+                <div id="terminal-output-area">> Digita 'help' per comandi...</div>
+                <div class="terminal-prompt">
+                    <span>></span>
+                    <input type="text" id="terminal-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </div>
+            </div>
         </div>
         <div class="footer-copyright">
             <p>© <span id="year"></span> Emiliano Pizzuti • Tutti i diritti riservati.</p>
         </div>
     </footer>
 
-    <!-- Floating Action Buttons -->
     <button id="TopBtn" style="display: none;" aria-label="Torna su">↑</button>
 
     <div id="contact-btn" class="contact-btn" style="display: none;" aria-label="Mostra contatti" aria-expanded="false"
@@ -177,10 +175,35 @@
         aria-labelledby="contact-info-heading">
         <h3 id="contact-info-heading" class="visually-hidden">Informazioni di Contatto</h3>
         <div id="contact-info-details">
-            <!-- Content populated by JS -->
+            </div>
+    </div>
+    <!-- <button id="mute-btn" aria-label="Attiva/Disattiva Audio">
+        <i class="fas fa-volume-up"></i> </button> -->
+
+    <div id="project-modal" style="display: none;">
+        <div class="modal-content">
+            <button id="modal-close-btn">&times;</button>
+            <div id="modal-body">
+                </div>
         </div>
     </div>
-    <!-- Custom Scripts -->
+
+    <audio id="bg-hum" loop preload="auto">
+        <source src="audio/matrix-hum.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="kb-sound" preload="auto">
+        <source src="audio/keyboard-click.mp3" type="audio/mpeg">
+        </audio>
+     <audio id="hover-sound" preload="auto">
+        <source src="audio/blip.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="enter-sound" preload="auto">
+        <source src="audio/enter-whoosh.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
     <script type="module" src="main.js"></script>
     <script type="module" src="digitalRain.js"></script>
 

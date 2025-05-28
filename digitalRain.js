@@ -3,213 +3,206 @@
 /**
  * @class DigitalRain
  * @description Creates a "Matrix-style" digital rain effect on an HTML canvas.
- * The effect is theme-aware and can adapt its colors based on whether a 'dark-theme'
- * class is present on the `document.body`.
+ * The effect is theme-aware and can adapt its colors based on the body class.
  */
 class DigitalRain {
     /**
      * Initializes the DigitalRain effect.
      * @param {string} canvasId - The ID of the HTML canvas element.
      * @param {object} [options={}] - Configuration options for the rain effect.
-     * @param {number} [options.fontSize=16] - Font size of the falling characters.
-     * @param {string} [options.fontFamily='VT323, monospace'] - Font family for the characters.
-     * @param {string} [options.chars="..."] - String of characters to use for the rain.
-     * @param {string} [options.fontColorDark="#00FF00"] - Font color in dark theme.
-     * @param {string} [options.trailColorDark="rgba(0, 5, 0, 0.05)"] - Trail color in dark theme.
-     * @param {string} [options.glowColorDark="#00FF00"] - Glow color for leading characters in dark theme.
-     * @param {string} [options.fontColorLight="#006400"] - Font color in light theme.
-     * @param {string} [options.trailColorLight="rgba(230, 245, 230, 0.08)"] - Trail color in light theme.
-     * @param {string} [options.glowColorLight="#008F00"] - Glow color for leading characters in light theme.
      */
     constructor(canvasId, options = {}) {
         this.canvas = document.getElementById(canvasId);
         if (!this.canvas) {
-            // console.error(`Canvas with ID "${canvasId}" not found.`);
-            // Silently fail if canvas is not present (e.g., if the user removes it from HTML).
-            // This prevents errors if the script runs but the corresponding canvas is optional or removed.
             return;
         }
         this.ctx = this.canvas.getContext('2d');
+        this.options = options;
 
-        this.options = options; // Store original options for reference or re-initialization.
-
-        // --- Customizable Properties with Defaults ---
         this.fontSize = options.fontSize || 16;
-        this.fontFamily = options.fontFamily || 'VT323, monospace'; // Default to a Matrix-like font.
-        this.chars = options.chars || "0123456789ABCDEFﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ"; // Katakana included for classic Matrix feel. plus HEX digits to make it more "hacker-like".
+        this.fontFamily = options.fontFamily || 'VT323, monospace';
+        
+        // Character sets
+        this.matrixChars = options.chars || "0123456789ABCDEFﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ";
+        this.punkChars = "01$#%*@&?!<>|{}/\\ABCEFHKLMNPRSTVWXYZサЙЩЭツДЖERRORWARNCRITICAL"; // Aggiunti simboli e lettere più "cyberpunk"
+        this.shellChars = "01<>/{}\\|[]()-_=+*&^%$#@!abcdef日月火水木金土"; // Placeholder, da definire meglio per shell
 
-        // Theme-dependent color properties
-        this.isDarkTheme = document.body.classList.contains('dark-theme');
-        this.updateColorsBasedOnTheme(); // Set initial colors based on current theme.
+        this.charsToUse = this.matrixChars; // Default
+        this.currentThemeName = 'matrix'; // Per tracciare il tema corrente
 
-        // --- Internal State ---
-        this.animationId = null; // Stores the ID from requestAnimationFrame.
-        this.drops = [];         // Array to store the Y position of each column's leading character.
-        this.columns = 0;        // Number of columns, calculated on resize.
+        this.updateColorsBasedOnTheme();
 
-        // Bind `this` context for event handlers and animation loop.
+        this.animationId = null;
+        this.drops = [];
+        this.columns = 0;
+
         this.resize = this.resize.bind(this);
         this.draw = this.draw.bind(this);
-        this.handleThemeChange = this.handleThemeChange.bind(this);
+        this.refreshTheme = this.refreshTheme.bind(this); // Nuovo metodo
 
-        // --- Event Listeners ---
         window.addEventListener('resize', this.resize);
-
-        // Listen for theme changes if a theme switch element exists.
-        const themeSwitch = document.getElementById("theme-switch");
-        if (themeSwitch) {
-            themeSwitch.addEventListener('change', this.handleThemeChange);
-        }
-
-        this.resize(); // Perform initial setup and column calculation.
+        this.resize();
     }
 
     /**
-     * Updates the color properties based on the current theme (dark/light).
-     * Reads theme-specific colors from options or uses predefined defaults.
+     * Updates color and character properties based on the current body theme class.
      */
     updateColorsBasedOnTheme() {
-        this.isDarkTheme = document.body.classList.contains('dark-theme');
+        const bodyClasses = document.body.classList;
+        let themeChanged = false;
 
-        // Define default colors for dark and light themes.
-        const defaultDarkFont = "#00FF00";                     // Bright green
-        const defaultDarkTrail = "rgba(0, 5, 0, 0.05)";        // Very dark, highly transparent trail
-        const defaultDarkGlow = "#00FF00";                     // Bright green glow
+        if (bodyClasses.contains('theme-punk')) {
+            if (this.currentThemeName !== 'punk') themeChanged = true;
+            this.currentThemeName = 'punk';
+            this.fontColor = this.options.fontColorPunk || "#FF003C";       // Neon Red
+            this.trailColor = this.options.trailColorPunk || "rgba(30, 0, 10, 0.1)";  // Darker, more aggressive trail
+            this.glowColor = this.options.glowColorPunk || "#FCEE0A";        // Yellow glow
+            this.leadHighlightColor = this.options.leadHighlightPunk || "#FCEE0A"; // Yellow lead
+            this.charsToUse = this.punkChars;
+        } else if (bodyClasses.contains('theme-shell')) { // Placeholder per Shell
+            if (this.currentThemeName !== 'shell') themeChanged = true;
+            this.currentThemeName = 'shell';
+            this.fontColor = this.options.fontColorShell || "#00E5FF";      // Cyan
+            this.trailColor = this.options.trailColorShell || "rgba(0, 10, 20, 0.07)";
+            this.glowColor = this.options.glowColorShell || "#FFFFFF";      // White glow
+            this.leadHighlightColor = this.options.leadHighlightShell || "#FFFFFF"; // White lead
+            this.charsToUse = this.shellChars;
+        } else { // Default Matrix theme (basato su dark-theme o meno)
+            if (this.currentThemeName !== 'matrix') themeChanged = true;
+            this.currentThemeName = 'matrix';
+            this.isDarkTheme = bodyClasses.contains('dark-theme'); // o se non ci sono altri temi, è dark di default
 
-        const defaultLightFont = "#006400";                    // DarkGreen (for readability on light bg)
-        const defaultLightTrail = "rgba(230, 245, 230, 0.08)"; // Very light green, slightly more visible trail
-        const defaultLightGlow = "#008F00";                    // Slightly darker green glow for light theme
+            const defaultDarkFont = "#00FF00";
+            const defaultDarkTrail = "rgba(0, 5, 0, 0.05)";
+            const defaultDarkGlow = "#00FF00";
+            const defaultDarkLead = '#CCFFCC';
 
-        // Set colors: Use provided option or fall back to default.
-        this.fontColor = this.isDarkTheme
-            ? (this.options.fontColorDark || defaultDarkFont)
-            : (this.options.fontColorLight || defaultLightFont);
-        this.trailColor = this.isDarkTheme
-            ? (this.options.trailColorDark || defaultDarkTrail)
-            : (this.options.trailColorLight || defaultLightTrail);
-        this.glowColor = this.isDarkTheme
-            ? (this.options.glowColorDark || defaultDarkGlow)
-            : (this.options.glowColorLight || defaultLightGlow);
-    }
+            const defaultLightFont = "#006400";
+            const defaultLightTrail = "rgba(230, 245, 230, 0.08)";
+            const defaultLightGlow = "#008F00";
+            const defaultLightLead = '#003300';
 
-    /**
-     * Handles theme change events.
-     * Updates colors after a short delay to ensure the body class has been updated by the theme switcher.
-     */
-    handleThemeChange() {
-        // A small delay can be helpful if the theme class is updated asynchronously by another script.
-        setTimeout(() => {
-            this.updateColorsBasedOnTheme();
-        }, 50); // 50ms delay
-    }
-
-    /**
-     * Resizes the canvas to fit the window and recalculates column-dependent properties.
-     * Called on window resize and initial setup.
-     */
-    resize() {
-        if (!this.canvas) return; // Safety check if canvas was removed.
-
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-
-        this.columns = Math.floor(this.canvas.width / this.fontSize);
-        this.drops = []; // Reset drops array
-
-        // Initialize the Y position for each column's rain drop.
-        // Some drops start off-screen (negative Y) for a staggered entry.
-        for (let i = 0; i < this.columns; i++) {
-            this.drops[i] = Math.random() * this.canvas.height / this.fontSize - 20;
+            this.fontColor = this.isDarkTheme ? (this.options.fontColorDark || defaultDarkFont) : (this.options.fontColorLight || defaultLightFont);
+            this.trailColor = this.isDarkTheme ? (this.options.trailColorDark || defaultDarkTrail) : (this.options.trailColorLight || defaultLightTrail);
+            this.glowColor = this.isDarkTheme ? (this.options.glowColorDark || defaultDarkGlow) : (this.options.glowColorLight || defaultLightGlow);
+            this.leadHighlightColor = this.isDarkTheme ? (this.options.leadHighlightDark || defaultDarkLead) : (this.options.leadHighlightLight || defaultLightLead);
+            this.charsToUse = this.matrixChars;
+        }
+        if(themeChanged){
+             // console.log(`Digital Rain theme switched to: ${this.currentThemeName}`);
+             // Forzare un ricalcolo delle gocce se i caratteri o la densità cambiano drasticamente
+             // this.resize(); // Potrebbe essere troppo drastico, valutare.
         }
     }
 
     /**
-     * Draws a single frame of the digital rain animation.
+     * Public method to be called by main.js to refresh theme settings.
      */
-    draw() {
-        if (!this.ctx) return; // Safety check for rendering context.
+    refreshTheme() {
+        this.updateColorsBasedOnTheme();
+        // Potrebbe essere necessario resettare le gocce se la densità del testo cambia molto con il nuovo set di caratteri
+        // this.resize(); // Valuta se questo è necessario o se l'effetto è ok senza.
+    }
 
-        // Draw the fading trail effect: fill canvas with a semi-transparent color.
+    resize() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
+        this.drops = [];
+        for (let i = 0; i < this.columns; i++) {
+            this.drops[i] = Math.random() * this.canvas.height / this.fontSize - (Math.random() * 200); // Stagger più ampio
+        }
+    }
+
+    draw() {
+        if (!this.ctx) return;
+
         this.ctx.fillStyle = this.trailColor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Set font for drawing characters.
         this.ctx.font = this.fontSize + "px " + this.fontFamily;
 
-        // Iterate over each column to draw characters.
+        let dropSpeed = 1;
+        let leadingCharChance = 0.96; // Default Matrix
+        let shadowBlurAmount = 5;
+
+        if (this.currentThemeName === 'punk') {
+            dropSpeed = 1.3; // Leggermente più veloce
+            leadingCharChance = 0.92; // Più caratteri luminosi
+            shadowBlurAmount = 7;
+        } else if (this.currentThemeName === 'shell') {
+            dropSpeed = 0.8; // Leggermente più lento
+            leadingCharChance = 0.97;
+            shadowBlurAmount = 4;
+        }
+
+
         for (let i = 0; i < this.drops.length; i++) {
-            // Ensure the drop position exists (it might not if columns changed rapidly).
             if (this.drops[i] === undefined) continue;
 
-            // Select a random character from the character set.
-            const text = this.chars[Math.floor(Math.random() * this.chars.length)];
+            const text = this.charsToUse[Math.floor(Math.random() * this.charsToUse.length)];
+            
+            const isLeadingCharacter = Math.random() > leadingCharChance;
 
-            // Highlight the leading character in a stream with a brighter color and glow.
-            // Glow is less frequent and intense in light theme for better contrast.
-            const isLeadingCharacter = Math.random() > (this.isDarkTheme ? 0.96 : 0.98);
-            if (isLeadingCharacter && this.drops[i] > 3) { // Ensure leading character is somewhat visible.
-                this.ctx.fillStyle = this.isDarkTheme ? '#CCFFCC' : '#003300'; // Lighter green (dark) / Darker green (light)
+            if (isLeadingCharacter && this.drops[i] * this.fontSize > 0) { // Assicurati sia visibile
+                this.ctx.fillStyle = this.leadHighlightColor;
                 this.ctx.shadowColor = this.glowColor;
-                this.ctx.shadowBlur = this.isDarkTheme ? 5 : 3; // Less blur for light theme.
+                this.ctx.shadowBlur = shadowBlurAmount;
+                // Per il tema punk, potremmo fare il carattere principale più grande
+                if (this.currentThemeName === 'punk' && Math.random() > 0.7) {
+                     this.ctx.font = (this.fontSize + 2) + "px " + this.fontFamily; // Un po' più grande
+                     this.ctx.fillText(text, i * this.fontSize -1, this.drops[i] * this.fontSize);
+                     this.ctx.font = this.fontSize + "px " + this.fontFamily; // Reset
+                } else {
+                    this.ctx.fillText(text, i * this.fontSize, this.drops[i] * this.fontSize);
+                }
+
             } else {
                 this.ctx.fillStyle = this.fontColor;
-                this.ctx.shadowBlur = 0; // No glow for regular trail characters.
+                this.ctx.shadowBlur = 0;
+                this.ctx.fillText(text, i * this.fontSize, this.drops[i] * this.fontSize);
             }
+            this.ctx.shadowBlur = 0; // Reset esplicito
 
-            // Draw the character.
-            this.ctx.fillText(text, i * this.fontSize, this.drops[i] * this.fontSize);
-            this.ctx.shadowBlur = 0; // Reset shadow explicitly for the next character in this loop.
-
-            // Reset drop to the top if it goes off-screen, with a random chance to stagger respawns.
             if (this.drops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) {
                 this.drops[i] = 0;
             }
-            // Move the drop down for the next frame.
-            this.drops[i]++;
+            this.drops[i] += dropSpeed;
         }
     }
 
-    /**
-     * Starts the digital rain animation loop.
-     */
     start() {
-        if (!this.canvas) return; // Do not start if canvas is not available.
-        if (this.animationId) cancelAnimationFrame(this.animationId); // Clear any existing animation frame.
-
+        if (!this.canvas) return;
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        this.updateColorsBasedOnTheme(); // Assicurati che i colori siano aggiornati all'avvio
         const animateRain = () => {
             this.draw();
             this.animationId = requestAnimationFrame(animateRain);
         };
-        animateRain(); // Begin the loop.
+        animateRain();
     }
 
-    /**
-     * Stops the digital rain animation loop.
-     */
     stop() {
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;
         }
+        // Opzionale: pulire il canvas quando si ferma
+        // if (this.ctx && this.canvas) {
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // }
     }
 }
 
-// --- Instantiate and Start the Rain Effect ---
-
-// Configuration options for the main background digital rain.
 const rainOptions = {
-    fontSize: 18, // VT323 font generally looks better at slightly larger sizes for background effects.
-    // Example of how to override a theme-specific color:
-    // trailColorDark: "rgba(0, 0, 0, 0.04)", // A custom, slightly less opaque trail for dark theme.
+    fontSize: 18,
 };
 
-// Create an instance of DigitalRain for the main background canvas.
 const mainDigitalRain = new DigitalRain('main-background-canvas', rainOptions);
 
-// Start the animation only if the DigitalRain instance was successfully created (i.e., canvas was found).
 if (mainDigitalRain.canvas) {
     mainDigitalRain.start();
+    window.mainDigitalRain = mainDigitalRain; // Rendi accessibile globalmente
 }
 
-// Export the class for use in other modules if needed (e.g., in a module bundler setup).
 export default DigitalRain;
