@@ -166,6 +166,10 @@ const modalBody = document.getElementById("modal-body");
 const modalCloseBtn = document.getElementById("modal-close-btn");
 const projectsSection = document.getElementById("projects"); // Aggiunto selettore per la sezione progetti
 const projectsContainer = document.getElementById("projects-container"); // Già presente, ma riferimento utile
+// NUOVI SELETTORI PER MODALE TERMINALE
+const terminalSuggestionModal = document.getElementById("terminal-suggestion-modal");
+const terminalModalCloseBtn = document.getElementById("terminal-modal-close-btn");
+const terminalModalOkBtn = document.getElementById("terminal-modal-ok-btn");
 
 // ============================================================
 // Utility Functions
@@ -312,6 +316,29 @@ if (projectModal) projectModal.addEventListener('click', (e) => {
 });
 
 // ============================================================
+// Terminal Suggestion Modal Logic (AGGIUNTO)
+// ============================================================
+function openTerminalSuggestionModal() {
+    if (!terminalSuggestionModal) return;
+    terminalSuggestionModal.style.display = "flex";
+    setTimeout(() => terminalSuggestionModal.classList.add("visible"), 10);
+}
+
+function closeTerminalSuggestionModal() {
+    if (!terminalSuggestionModal) return;
+    terminalSuggestionModal.classList.remove("visible");
+    setTimeout(() => terminalSuggestionModal.style.display = "none", 400);
+}
+
+// Add Event Listeners
+if (terminalModalCloseBtn) terminalModalCloseBtn.addEventListener('click', closeTerminalSuggestionModal);
+if (terminalModalOkBtn) terminalModalOkBtn.addEventListener('click', closeTerminalSuggestionModal);
+if (terminalSuggestionModal) terminalSuggestionModal.addEventListener('click', (e) => {
+    if (e.target === terminalSuggestionModal) closeTerminalSuggestionModal();
+});
+
+
+// ============================================================
 // Theme Management
 // ============================================================
 function setTheme(themeName) {
@@ -394,7 +421,7 @@ function processTerminalCommand(command) {
 
     switch (command) {
         case 'help':
-            appendToTerminalOutput("Comandi: help, profile, experience, projects, skills, contact, clear, matrix (easter_egg), punk, shell, default, exit");
+            appendToTerminalOutput("Comandi: help, profile, experience, projects, skills, contact, clear, matrix (easter_egg), punk, shell, default, cv, exit");
             break;
         case 'profile':
         case 'experience':
@@ -431,6 +458,20 @@ function processTerminalCommand(command) {
         case 'default':
             setTheme('default');
             break;
+             case 'cv': // <-- NUOVO COMANDO
+            if (window.confirm("Stai per scaricare il CV in formato PDF. Confermi?")) {
+                appendToTerminalOutput("Download del CV in corso...");
+                const link = document.createElement('a');
+                link.href = 'cv/CV_PIZZUTI_2025.pdf';
+                link.download = 'CV_PIZZUTI_2025.pdf'; 
+                document.body.appendChild(link); 
+                link.click();
+                document.body.removeChild(link);
+                appendToTerminalOutput("Download avviato.");
+            } else {
+                appendToTerminalOutput("Download annullato.");
+            }
+            break;
         case 'exit':
             appendToTerminalOutput("Disconnessione... Addio.");
             break;
@@ -464,7 +505,7 @@ function createMatrixBulletTexture() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = 'bold 48px monospace'; ctx.fillStyle = '#00FF00';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('1', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('01', canvas.width / 2, canvas.height / 2);
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
     return texture;
@@ -746,11 +787,11 @@ async function runIntermediateTransition() {
     if (terminalTextOutput) { terminalTextOutput.innerHTML = ''; terminalTextOutput.classList.add('cursor-active'); }
 
     const msg1 = "SYSTEM_CHECK::INITIATED";
-    const msg2 = "ACCESSING_MAINFRAME::0xF200";
-    const msg3 = "DECRYPTION_STATUS::200_SUCCESS";
-    const msg4 = "LOADING_USER_INTERFACE...";
-    const typeSpeeds = [50, 60, 80, 70];
-    const animationDelays = [800, 200, 200, 500, 1200, 700];
+    const msg2 = "ACCESSING_MAINFRAME@0xF200";
+    const msg3 = "DECRYPTION_STATUS::SUCCESS";
+    const msg4 = "LOADING_USER_INTERFACE";
+    const typeSpeeds = [50, 10, 30, 10];
+    const animationDelays = [200, 200, 200, 100, 200, 150];
 
     await delay(animationDelays[0]);
     transitionOverlay.classList.add('glitching');
@@ -784,6 +825,9 @@ async function runIntermediateTransition() {
         }
         if (typeof AOS !== 'undefined' && AOS) AOS.refreshHard();
         document.body.style.overflow = '';
+
+        // *** MOSTRA IL MODALE DEL TERMINALE ***
+        openTerminalSuggestionModal(); 
 
     }, animationDelays[5]);
 }

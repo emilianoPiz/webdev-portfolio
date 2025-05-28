@@ -13,7 +13,8 @@
    10. Specific Section Styling (Experience, Skills, etc.)
    11. Footer & Terminal Input
    12. Floating Action Buttons & Contact Popup
-   13. Project Modal
+   13. Project Modal & Base Modal Styles (MODIFICATO)
+   13.5 Terminal Suggestion Modal (AGGIUNTO)
    14. Utility & Animation Classes (Glitch, FadeIn)
    15. Responsive Media Queries
    =========================================================== */
@@ -467,7 +468,8 @@ img {
     opacity: 0.9;
 }
 
-#enter-btn.cybr-btn {
+#enter-btn.cybr-btn,
+.cybr-btn { /* Make .cybr-btn reusable */
     font-family: var(--font-primary);
     --primary-hue: 120;
     --primary-lightness: 40;
@@ -490,15 +492,19 @@ img {
     position: relative;
     line-height: 1.5;
     letter-spacing: 1px;
+    display: inline-block; /* Ensure it behaves well */
 }
 
-#enter-btn.cybr-btn:focus-visible {
+#enter-btn.cybr-btn:focus-visible,
+.cybr-btn:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
 
 #enter-btn.cybr-btn:after,
-#enter-btn.cybr-btn:before {
+#enter-btn.cybr-btn:before,
+.cybr-btn:after,
+.cybr-btn:before {
     content: '';
     position: absolute;
     top: 0;
@@ -509,12 +515,14 @@ img {
     z-index: -1;
 }
 
-#enter-btn.cybr-btn:before {
+#enter-btn.cybr-btn:before,
+.cybr-btn:before {
     background: var(--shadow-primary);
     transform: translate(var(--border), var(--border));
 }
 
-#enter-btn.cybr-btn:after {
+#enter-btn.cybr-btn:after,
+.cybr-btn:after {
     background: var(--primary);
 }
 
@@ -539,7 +547,8 @@ img {
     display: none;
 }
 
-#enter-btn.cybr-btn:hover .cybr-btn__glitch {
+#enter-btn.cybr-btn:hover .cybr-btn__glitch,
+.cybr-btn:hover .cybr-btn__glitch {
     display: block;
 }
 
@@ -1111,9 +1120,9 @@ h2.section-title::after {
 }
 
 /* ===========================================================
-   13. Project Modal
+   13. Project Modal & Base Modal Styles
    =========================================================== */
-#project-modal {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -1131,7 +1140,7 @@ h2.section-title::after {
     pointer-events: none;
 }
 
-#project-modal.visible {
+.modal-overlay.visible {
     opacity: 1;
     pointer-events: auto;
 }
@@ -1142,7 +1151,6 @@ h2.section-title::after {
     border-radius: 10px;
     padding: 30px;
     width: 90%;
-    max-width: 800px;
     box-shadow: 0 0 30px var(--primary-color), 0 0 15px var(--secondary-color) inset;
     position: relative;
     transform: scale(0.8);
@@ -1152,11 +1160,11 @@ h2.section-title::after {
     overflow-y: auto;
 }
 
-#project-modal.visible .modal-content {
+.modal-overlay.visible .modal-content {
     transform: scale(1);
 }
 
-#modal-close-btn {
+.modal-close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -1169,9 +1177,13 @@ h2.section-title::after {
     transition: transform 0.2s, color 0.2s;
 }
 
-#modal-close-btn:hover {
+.modal-close-btn:hover {
     color: #ff5555;
     transform: scale(1.2);
+}
+
+#project-modal .modal-content {
+    max-width: 800px;
 }
 
 #modal-body h3 {
@@ -1196,6 +1208,45 @@ h2.section-title::after {
     text-decoration: underline;
     font-weight: bold;
 }
+
+/* ===========================================================
+   13.5 Terminal Suggestion Modal (AGGIUNTO)
+   =========================================================== */
+.terminal-suggestion-content {
+    max-width: 550px;
+    text-align: center;
+}
+
+.terminal-suggestion-content h3 {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+.terminal-suggestion-content h3 i {
+    margin-right: 10px;
+}
+
+.terminal-suggestion-content p {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+.terminal-suggestion-content code {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--card-border);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'VT323', monospace;
+    color: var(--secondary-color);
+}
+
+.cybr-btn.small-btn {
+    --font-size: 1.1rem;
+    padding: 0.8em 1.5em;
+    margin-top: 20px;
+}
+
 
 /* ===========================================================
    14. Utility & Animation Classes (Glitch, FadeIn) - Senza Decrypt
@@ -1537,12 +1588,6 @@ body.theme-punk {
 
     --card-shadow-base: 0 0 15px rgba(255, 0, 60, 0.15), 0 0 5px rgba(255, 0, 60, 0.2) inset;
     --card-shadow-pulse-peak: 0 0 25px rgba(255, 0, 60, 0.4), 0 0 10px rgba(252, 238, 10, 0.3) inset;
-    /* Mix Rosso/Giallo */
-
-    /* --- Typography --- */
-    /* Potresti considerare un font diverso qui, ma per ora usiamo VT323 */
-    /* --font-primary: 'Rajdhani', sans-serif; */
-    /* Esempio di font alternativo */
 }
 
 /* --- Override specifici per Cyberpunk --- */
@@ -1550,14 +1595,12 @@ body.theme-punk {
 /* Link Hover */
 body.theme-punk a:hover {
     color: var(--primary-color);
-    /* Giallo su hover */
     text-shadow: 0 0 6px var(--secondary-color), 0 0 3px var(--primary-color);
 }
 
 /* Scrollbar */
 body.theme-punk ::-webkit-scrollbar-track {
     background: #000510;
-    /* Ancora più scuro */
 }
 
 body.theme-punk ::-webkit-scrollbar-thumb {
@@ -1574,18 +1617,15 @@ body.theme-punk ::-webkit-scrollbar-thumb:hover {
 /* Glitch Effect Colors */
 body.theme-punk .glitch::before {
     text-shadow: -1px 0 var(--secondary-color);
-    /* Glitch Giallo */
 }
 
 body.theme-punk .glitch::after {
     text-shadow: -1px 0 var(--accent-color), 1px 1px var(--secondary-color);
-    /* Glitch Ciano/Giallo */
 }
 
 /* Titoli Sezione */
 body.theme-punk h2.section-title {
     color: var(--secondary-color);
-    /* Titoli Gialli */
     text-shadow: 0 0 5px var(--secondary-color);
 }
 
@@ -1658,21 +1698,17 @@ body.theme-punk #terminal-input {
     caret-color: var(--primary-color);
 }
 
-/* Bottone Cyberpunk "Enter" (se ancora presente o riutilizzato) */
-body.theme-punk #enter-btn.cybr-btn {
+body.theme-punk #enter-btn.cybr-btn,
+body.theme-punk .cybr-btn {
     --primary-hue: 345;
-    /* Rosso */
     --primary-lightness: 50;
     --shadow-primary-hue: 60;
-    /* Giallo */
     --shadow-secondary-hue: 180;
-    /* Ciano */
 }
 
 /* Modal */
-body.theme-punk #project-modal {
+body.theme-punk .modal-overlay {
     background-color: rgba(10, 5, 20, 0.8);
-    /* Sfondo viola/blu scuro */
 }
 
 body.theme-punk .modal-content {
@@ -1680,11 +1716,11 @@ body.theme-punk .modal-content {
     box-shadow: 0 0 30px var(--primary-color), 0 0 15px var(--secondary-color) inset;
 }
 
-body.theme-punk #modal-close-btn {
+body.theme-punk .modal-close-btn {
     color: var(--primary-color);
 }
 
-body.theme-punk #modal-close-btn:hover {
+body.theme-punk .modal-close-btn:hover {
     color: var(--secondary-color);
 }
 
@@ -1722,8 +1758,7 @@ body.theme-shell {
 
 /* Link Hover */
 body.theme-shell a:hover {
-    color: #000;
-    /* Bianco su hover */
+    color: var(--secondary-color); /* Bianco su hover */
     text-shadow: 0 0 7px var(--secondary-color), 0 0 4px var(--primary-color);
 }
 
@@ -1769,7 +1804,6 @@ body.theme-shell h2.section-title {
 body.theme-shell h2.section-title::after {
     background-color: var(--primary-color);
     box-shadow: 0 0 5px var(--primary-color);
-    /* Leggero alone anche alla linea */
 }
 
 /* Card Hover */
@@ -1778,7 +1812,6 @@ body.theme-shell .card-glow:hover {
     border-color: var(--primary-color);
 }
 
-/* Rimuoviamo la scan-line specifica del tema matrix */
 body.theme-shell .card-3d:hover::before,
 body.theme-shell .card-glow:hover::before {
     display: none;
@@ -1844,8 +1877,8 @@ body.theme-shell #terminal-output-area {
 }
 
 
-/* Bottone Cyberpunk "Enter" (se ancora presente o riutilizzato) */
-body.theme-shell #enter-btn.cybr-btn {
+body.theme-shell #enter-btn.cybr-btn,
+body.theme-shell .cybr-btn {
     --primary-hue: 190;
     /* Ciano */
     --primary-lightness: 50;
@@ -1857,19 +1890,21 @@ body.theme-shell #enter-btn.cybr-btn {
     /* Testo scuro su bottone chiaro */
 }
 
-body.theme-shell #enter-btn.cybr-btn:after {
+body.theme-shell #enter-btn.cybr-btn:after,
+body.theme-shell .cybr-btn:after {
     /* Main color layer */
     background: var(--primary-color);
 }
 
-body.theme-shell #enter-btn.cybr-btn:before {
+body.theme-shell #enter-btn.cybr-btn:before,
+body.theme-shell .cybr-btn:before {
     /* Shadow layer */
     background: var(--accent-color);
 }
 
 
 /* Modal */
-body.theme-shell #project-modal {
+body.theme-shell .modal-overlay {
     background-color: rgba(3, 12, 23, 0.85);
 }
 
@@ -1878,23 +1913,80 @@ body.theme-shell .modal-content {
     box-shadow: 0 0 30px var(--primary-color), 0 0 15px var(--accent-color) inset;
 }
 
-body.theme-shell #modal-close-btn {
+body.theme-shell .modal-close-btn {
     color: var(--primary-color);
 }
 
-body.theme-shell #modal-close-btn:hover {
+body.theme-shell .modal-close-btn:hover {
     color: var(--secondary-color);
 }
 
-/* Scanlines Overlay più sottili e bluastre */
 body.theme-shell #scanlines-overlay {
     background: repeating-linear-gradient(0deg,
             rgba(0, 100, 150, 0.02),
-            /* Bluastro molto trasparente */
             rgba(0, 100, 150, 0.02) 1px,
             transparent 1px,
             transparent 4px
             /* Righe più distanziate */
         );
     opacity: 0.5;
+}
+/* ===========================================================
+   MODIFICHE PER SCROLLING ORIZZONTALE E TRANSIZIONI AVANZATE
+   =========================================================== */
+
+/* Sezione Progetti per Scrolling Orizzontale */
+#projects {
+    overflow: hidden; /* Nasconde lo scrollbar verticale della sezione se pinnata */
+    /* Potrebbe essere necessario impostare un'altezza definita se la pinni */
+}
+
+#projects-container {
+    /* Rimuoviamo il grid-layout standard per i progetti */
+    /* display: grid; */ /* COMMENTATO O RIMOSSO */
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */ /* COMMENTATO O RIMOSSO */
+    /* gap: 25px; */ /* COMMENTATO O RIMOSSO */
+
+    display: flex; /* Usiamo flex per allineare gli item orizzontalmente */
+    flex-wrap: nowrap; /* Impedisce agli item di andare a capo */
+    width: fit-content; /* La larghezza del container si adatta al contenuto */
+    padding-left: 20px; /* Spazio iniziale */
+    padding-right: 20px; /* Spazio finale */
+    padding-bottom: 40px; /* Spazio per eventuale scrollbar orizzontale custom o per respiro */
+    /* La larghezza effettiva verrà calcolata da JS o sarà molto grande */
+}
+
+#projects-container .project-item {
+    flex: 0 0 auto; /* Impedisce agli item di restringersi/allargarsi */
+    width: 320px;   /* Larghezza fissa per card progetto, o usa min-width */
+    margin-right: 25px; /* Spazio tra le card */
+    /* Mantieni gli stili .card-3d esistenti */
+}
+#projects-container .project-item:last-child {
+    margin-right: 0;
+}
+
+
+/* Stili di base per elementi che animeremo con GSAP (alcuni potrebbero già esistere) */
+.section-title.animated-title > span { /* Se dividiamo i titoli in span per animazioni lettera per lettera */
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px) scale(0.8) rotateX(-90deg);
+}
+
+/* Esempio per un effetto parallax leggero sui titoli (da attivare con GSAP) */
+h2.section-title.parallax-title {
+    /* GSAP gestirà il transform per il parallax */
+}
+
+/* Stili per cards (oltre a .card-3d) per animazioni più complesse */
+.animated-card {
+    opacity: 0; /* Stato iniziale per GSAP */
+    /* GSAP imposterà transform come: perspective, rotateX, rotateY, scale etc. */
+}
+
+/* Per la timeline esperienza, se vogliamo animare gli item in modo diverso */
+.experience-item.animated-timeline-item {
+    opacity: 0;
+    /* GSAP imposterà transform: translateX, etc. */
 }

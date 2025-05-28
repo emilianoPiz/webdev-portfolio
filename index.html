@@ -177,31 +177,29 @@
         <div id="contact-info-details">
             </div>
     </div>
-    <!-- <button id="mute-btn" aria-label="Attiva/Disattiva Audio">
-        <i class="fas fa-volume-up"></i> </button> -->
-
-    <div id="project-modal" style="display: none;">
+    <div id="project-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <button id="modal-close-btn">&times;</button>
+            <button id="modal-close-btn" class="modal-close-btn">&times;</button>
             <div id="modal-body">
                 </div>
         </div>
     </div>
 
-    <audio id="bg-hum" loop preload="auto">
-        <source src="audio/matrix-hum.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <audio id="kb-sound" preload="auto">
-        <source src="audio/keyboard-click.mp3" type="audio/mpeg">
-        </audio>
-     <audio id="hover-sound" preload="auto">
-        <source src="audio/blip.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="enter-sound" preload="auto">
-        <source src="audio/enter-whoosh.mp3" type="audio/mpeg">
-    </audio>
+    <div id="terminal-suggestion-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content terminal-suggestion-content">
+            <button id="terminal-modal-close-btn" class="modal-close-btn">&times;</button>
+            <h3><i class="fas fa-terminal"></i> Consiglio Pro</h3>
+            <p>Esplora il sito in modo interattivo! Prova a digitare comandi come '<code>help</code>', '<code>cv</code>', '<code>punk</code>', o '<code>shell</code>' nel terminale presente nel footer.</p>
+            <p>Buona navigazione!</p>
+            <button id="terminal-modal-ok-btn" class="cybr-btn small-btn">
+                Ho Capito<span aria-hidden>_</span>
+                <span aria-hidden class="cybr-btn__glitch">Ho Capito_</span>
+            </button>
+        </div>
+    </div>
 
+
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
     <script type="module" src="main.js"></script>
